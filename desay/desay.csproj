@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{322C9251-5B04-45C4-BFCB-3C2C84D2AC41}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>_0R02</RootNamespace>
+    <AssemblyName>0R02</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EDCMESASS, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\EDCMESASS.dll</HintPath>
+    </Reference>
+    <Reference Include="HslCommunication, Version=7.0.1.0, Culture=neutral, PublicKeyToken=cdb2261fa039ed67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\HslCommunication.dll</HintPath>
+    </Reference>
+    <Reference Include="License, Version=7.8.15153.60000, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\License.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\System.Device\bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="SvSql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\SvSql.dll</HintPath>
+    </Reference>
+    <Reference Include="SV_CSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\SV_CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SV_Interlocking_Main_64, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\SV_Interlocking_Main_64.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\AppConfig.cs" />
+    <Compile Include="Data\AxisParameter.cs" />
+    <Compile Include="Data\Common.cs" />
+    <Compile Include="Data\Delay.cs" />
+    <Compile Include="Flow\Backflow.cs" />
+    <Compile Include="Flow\StoveRefresh.cs" />
+    <Compile Include="Flow\Robot.cs" />
+    <Compile Include="Form\FrmOperation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmOperation.Designer.cs">
+      <DependentUpon>FrmOperation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmRunSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmRunSet.Designer.cs">
+      <DependentUpon>FrmRunSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\IOsign.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Form\IOsign.Designer.cs">
+      <DependentUpon>IOsign.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IoPoints.cs" />
+    <Compile Include="Data\RunPara.cs" />
+    <Compile Include="Data\Product.cs" />
+    <Compile Include="Data\DataStruct.cs" />
+    <Compile Include="Data\Global.cs" />
+    <Compile Include="Data\Marking.cs" />
+    <Compile Include="Form\FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmLogin.designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmPasswordChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmPasswordChange.designer.cs">
+      <DependentUpon>FrmPasswordChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmRecipe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmRecipe.designer.cs">
+      <DependentUpon>FrmRecipe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmIOmonitor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmIOmonitor.designer.cs">
+      <DependentUpon>FrmIOmonitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmStarting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmStarting.designer.cs">
+      <DependentUpon>FrmStarting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Flow\Connection.cs" />
+    <Compile Include="refreshData.cs" />
+    <EmbeddedResource Include="Form\FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmOperation.resx">
+      <DependentUpon>FrmOperation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmPasswordChange.resx">
+      <DependentUpon>FrmPasswordChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmRecipe.resx">
+      <DependentUpon>FrmRecipe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmIOmonitor.resx">
+      <DependentUpon>FrmIOmonitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmRunSet.resx">
+      <DependentUpon>FrmRunSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmStarting.resx">
+      <DependentUpon>FrmStarting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Form\App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_barcode_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="logo.ico" />
+    <None Include="Resources\LedRed.jpg" />
+    <None Include="Resources\LedGreen.jpg" />
+    <None Include="Resources\ic_action_gear.png" />
+    <None Include="Resources\ic_action_reload.png" />
+    <None Include="Resources\ic_action_playback_stop.png" />
+    <None Include="Resources\ic_action_playback_play.png" />
+    <None Include="Resources\ic_action_playback_play2.png" />
+    <None Include="Resources\ic_action_balloon.png" />
+    <None Include="Resources\ic_action_gmail.png" />
+    <None Include="Resources\ic_action_mes.png" />
+    <None Include="Resources\Loading.png" />
+    <None Include="Resources\ic_action_playback_repeat.png" />
+    <None Include="Resources\ic_action_card.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CVMes\CVMes.csproj">
+      <Project>{eab1fd1d-bf6d-4e97-9bcb-a0da80bc6c64}</Project>
+      <Name>CVMes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\System.Toolkit\System.Toolkit.csproj">
+      <Project>{c4277b2a-a208-43d2-b6c8-66510b3eb016}</Project>
+      <Name>System.Toolkit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Device\System.Device.csproj">
+      <Project>{eec0ed61-1d8a-4160-a45a-00268172bec9}</Project>
+      <Name>System.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Motion\AdlinkAps\Motion.AdlinkAps.csproj">
+      <Project>{4e5618be-0ee1-4760-b939-893a31efdf8f}</Project>
+      <Name>Motion.AdlinkAps</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Motion\AdlinkDash\Motion.AdlinkDash.csproj">
+      <Project>{16d0b02c-7859-44aa-b07d-705bf8f22b8c}</Project>
+      <Name>Motion.AdlinkDash</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Motion\Enginee\Motion.Enginee.csproj">
+      <Project>{bf2fb01d-3d28-42f1-907e-7de72433784f}</Project>
+      <Name>Motion.Enginee</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Motion\Interfaces\Motion.Interfaces.csproj">
+      <Project>{e87bbf52-f612-40bb-ad3d-d6a20fd635b1}</Project>
+      <Name>Motion.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

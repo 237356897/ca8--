@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EEC0ED61-1D8A-4160-A45A-00268172BEC9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Device</RootNamespace>
+    <AssemblyName>System.Device</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AxInterop.ACTETHERLib, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\AxInterop.ACTETHERLib.dll</HintPath>
+    </Reference>
+    <Reference Include="AxInterop.ACTPCCOMLib, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\AxInterop.ACTPCCOMLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.ActUtlTypeLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>bin\Debug\Interop.ActUtlTypeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interface\ExecuteInfo.cs" />
+    <Compile Include="Interface\IDevice.cs" />
+    <Compile Include="Interface\INetWork.cs" />
+    <Compile Include="Interface\ISerialPort.cs" />
+    <Compile Include="Interface\ITriggerModel.cs" />
+    <Compile Include="Interface\NetworkParam.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\NetworkParam.Designer.cs">
+      <DependentUpon>NetworkParam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\SerialPortParam.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\SerialPortParam.Designer.cs">
+      <DependentUpon>SerialPortParam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\UniversalFlags.cs" />
+    <Compile Include="MelsecPLC\Common.cs" />
+    <Compile Include="MelsecPLC\FrmManualPLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MelsecPLC\FrmManualPLC.designer.cs">
+      <DependentUpon>FrmManualPLC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MelsecPLC\MelsecPLC.cs" />
+    <Compile Include="MelsecPLC\MelsecPLCOperator.cs" />
+    <Compile Include="MelsecPLC\MelsecPLCRs232.cs" />
+    <Compile Include="MelsecPLC\MelsecPLCTcp.cs" />
+    <Compile Include="MelsecPLC\MelsecPLCTcpUtl.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SerialPort\Comm.cs" />
+    <Compile Include="SerialPort\Current.cs" />
+    <Compile Include="SerialPort\DM100Q.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\DM50S.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\DM70.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\FrmCurrent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SerialPort\FrmCurrent.designer.cs">
+      <DependentUpon>FrmCurrent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SerialPort\FrmPLCCom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SerialPort\FrmPLCCom.designer.cs">
+      <DependentUpon>FrmPLCCom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SerialPort\frmSerialPort.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SerialPort\frmSerialPort.designer.cs">
+      <DependentUpon>frmSerialPort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SerialPort\MT400A.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\PLCCom.cs" />
+    <Compile Include="SerialPort\RS1A.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Interface\NetworkParam.resx">
+      <DependentUpon>NetworkParam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\SerialPortParam.resx">
+      <DependentUpon>SerialPortParam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MelsecPLC\FrmManualPLC.resx">
+      <DependentUpon>FrmManualPLC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SerialPort\FrmCurrent.resx">
+      <DependentUpon>FrmCurrent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SerialPort\FrmPLCCom.resx">
+      <DependentUpon>FrmPLCCom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SerialPort\FrmSerialPort.resx">
+      <DependentUpon>frmSerialPort.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework\System.Toolkit\System.Toolkit.csproj">
+      <Project>{c4277b2a-a208-43d2-b6c8-66510b3eb016}</Project>
+      <Name>System.Toolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
