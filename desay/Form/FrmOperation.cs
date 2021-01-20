@@ -19,41 +19,21 @@ namespace Desay
 {
     public partial class FrmOperationReversal : Form
     {
-
-        private CylinderOperate positioningCylinder, openClampCylinder, translationCylinder;
-
-        private CylinderParameter positioningParameter, openClampParameter, translationParameter;
-
-        private Connection m_Connection;
         private Backflow m_Backflow;
         private Robot m_Robot;
 
-        public FrmOperationReversal(Connection connection, Backflow backflow, Robot robot)
+        public FrmOperationReversal(Backflow backflow, Robot robot)
         {
             InitializeComponent();
-
-            m_Connection = connection;
             m_Backflow = backflow;
             m_Robot = robot;
-
-            positioningParameter = new CylinderParameter(Delay.Instance.PositioningDelay) {  Name = "接驳台定位气缸" };
-            flpCylinderParam.Controls.Add(positioningParameter);
-            openClampParameter = new CylinderParameter(Delay.Instance.OpenClampDelay) { Name = "接驳台开夹气缸" };
-            flpCylinderParam.Controls.Add(openClampParameter);
-            translationParameter = new CylinderParameter(Delay.Instance.TranslationDelay) { Name = "接驳台平移气缸" };
-            flpCylinderParam.Controls.Add(translationParameter);
-
         }
 
         private void FrmOperation_Load(object sender, EventArgs e)
-        {
-            positioningCylinder = new CylinderOperate(() => { m_Connection.PositioningCylinder.ManualExecute(); }) { CylinderName = "接驳台定位气缸" };
-            flpCylinder.Controls.Add(positioningCylinder);
-            openClampCylinder = new CylinderOperate(() => { m_Connection.OpenClampCylinder.ManualExecute(); }) { CylinderName = "接驳台开夹气缸" };
-            flpCylinder.Controls.Add(openClampCylinder);
-            translationCylinder = new CylinderOperate(() => { m_Connection.TranslationCylinder.ManualExecute(); }) { CylinderName = "接驳台平移气缸" };
-            flpCylinder.Controls.Add(translationCylinder);
-            m_Backflow.CarryAxis.Speed = 10;
+        {          
+            m_Backflow.CarryAxis.Speed = 50;
+            tbrJogSpeed.Value = 50;
+            lblJogSpeed.Text = tbrJogSpeed.Value.ToString("0.00") + "mm/s";
 
             labOrgPos.Text = RunPara.Instance.CarryAxisOrgPos.ToString("0.000");
             labCoolingPos.Text = RunPara.Instance.CarryAxisCoolingPos.ToString("0.000");
@@ -78,28 +58,9 @@ namespace Desay
 
             #region 气缸状态
 
-            positioningCylinder.InOrigin = m_Connection.PositioningCylinder.OutOriginStatus;
-            positioningCylinder.InMove = m_Connection.PositioningCylinder.OutMoveStatus;
-            positioningCylinder.OutMove = m_Connection.PositioningCylinder.IsOutMove;
-
-            openClampCylinder.InOrigin = m_Connection.OpenClampCylinder.OutOriginStatus;
-            openClampCylinder.InMove = m_Connection.OpenClampCylinder.OutMoveStatus;
-            openClampCylinder.OutMove = m_Connection.OpenClampCylinder.IsOutMove;
-
-            translationCylinder.InOrigin = m_Connection.TranslationCylinder.OutOriginStatus;
-            translationCylinder.InMove = m_Connection.TranslationCylinder.OutMoveStatus;
-            translationCylinder.OutMove = m_Connection.TranslationCylinder.IsOutMove;
-
             #endregion
 
             refreshTimer.Enabled = true;
-        }
-
-        private void btnSaveCylinder_Click(object sender, EventArgs e)
-        {
-            Delay.Instance.PositioningDelay = positioningParameter.Save;
-            Delay.Instance.OpenClampDelay = openClampParameter.Save;
-            Delay.Instance.TranslationDelay = translationParameter.Save;
         }
 
         private void chkCarryAxisIsServoOn_CheckedChanged(object sender, EventArgs e)
@@ -465,13 +426,13 @@ namespace Desay
             if (IoPoints.T1DO00.Value)
             {
                 IoPoints.T1DO00.Value = false;
-                btnReadyToAA.Text = "接驳台Ready开(ToAA)";
+                btnReadyToAA.Text = "ABB取料信号-OFF";
                 btnReadyToAA.BackColor = System.Drawing.SystemColors.Control;
             }
             else
             {
                 IoPoints.T1DO00.Value = true;
-                btnReadyToAA.Text = "接驳台Ready关(ToAA)";
+                btnReadyToAA.Text = "ABB取料信号-ON";
                 btnReadyToAA.BackColor = Color.Green;
             }
         }
@@ -481,15 +442,26 @@ namespace Desay
             if (IoPoints.T1DO01.Value)
             {
                 IoPoints.T1DO01.Value = false;
-                btnProductToAA.Text = "接驳台有料开(ToAA)";
+                btnProductToAA.Text = "ABB开夹信号-OFF";
                 btnProductToAA.BackColor = System.Drawing.SystemColors.Control;
             }
             else
             {
                 IoPoints.T1DO01.Value = true;
-                btnProductToAA.Text = "接驳台有料关(ToAA)";
+                btnProductToAA.Text = "ABB开夹信号-ON";
                 btnProductToAA.BackColor = Color.Green;
             }
+        }
+
+        private void btnscan2_Click(object sender, EventArgs e)
+        {
+            m_Backflow.TrayCodeReader.receiveFinish = false;
+            m_Backflow.TrayCodeReader.Trigger(new TriggerArgs()  //扫码
+            {
+                sender = this,
+                tryTimes = 1,
+                message = "FN\r\n"
+            });
         }
     }
 }

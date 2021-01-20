@@ -150,6 +150,11 @@ namespace System.Device
 
         #region WriteBit
 
+        /// <summary>
+        /// 锁控件        
+        /// </summary>
+        public int StoveLockControl = 500;
+
         //一号炉
         /// <summary>
         /// 门开关
@@ -163,10 +168,6 @@ namespace System.Device
         /// 自动停止
         /// </summary>
         public int Stove1AutoStop = 111;     
-        /// <summary>
-        /// 锁控件        
-        /// </summary>
-        public int StoveLockControl = 700;
 
         //二号炉
         /// <summary>
@@ -271,7 +272,7 @@ namespace System.Device
         //ReadInt16
         //一号炉
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove1RunState = 71;         
         /// <summary>
@@ -293,7 +294,7 @@ namespace System.Device
 
         //二号炉
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove2RunState = 72;     
         /// <summary>
@@ -315,7 +316,7 @@ namespace System.Device
 
         //三号炉
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove3RunState = 73;        
         /// <summary>
@@ -337,7 +338,7 @@ namespace System.Device
 
         //四号炉
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove4RunState = 74;        
         /// <summary>
@@ -359,7 +360,7 @@ namespace System.Device
 
         //五号炉
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove5RunState = 75;        
         /// <summary>
@@ -381,7 +382,7 @@ namespace System.Device
 
         //六号炉
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove6RunState = 76;       
         /// <summary>

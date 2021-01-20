@@ -13,7 +13,7 @@ namespace Desay
 
         public frmStarting(byte maxValue)
             : this()
-        {
+        {            
             PBress.Maximum = maxValue;
             PBress.Step = 1;
             label1.Text = "加载中";

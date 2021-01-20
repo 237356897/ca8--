@@ -181,7 +181,7 @@ namespace Desay
         //扫描出来的 sn 50594102 999999
         public string A2C = "900168503941";
         /// <summary>
-        /// 是否启用Mes互锁
+        /// 是否启用Mes查询
         /// </summary>
         public bool IsUseMesLock = true;
 

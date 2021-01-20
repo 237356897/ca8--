@@ -37,6 +37,7 @@
             this.toolStripBtnSave = new System.Windows.Forms.ToolStripButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBIDI = new System.Windows.Forms.GroupBox();
+            this.Refresh = new System.Windows.Forms.Button();
             this.btnPLCI24 = new System.Windows.Forms.Button();
             this.btnPLCI21 = new System.Windows.Forms.Button();
             this.btnPLCI17 = new System.Windows.Forms.Button();
@@ -144,7 +145,6 @@
             this.txtChannel1Lever = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
-            this.Refresh = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.groupBIDI.SuspendLayout();
             this.groupBIDO.SuspendLayout();
@@ -220,7 +220,6 @@
             // groupBIDI
             // 
             this.groupBIDI.BackColor = System.Drawing.Color.Transparent;
-            this.groupBIDI.Controls.Add(this.Refresh);
             this.groupBIDI.Controls.Add(this.btnPLCI24);
             this.groupBIDI.Controls.Add(this.btnPLCI21);
             this.groupBIDI.Controls.Add(this.btnPLCI17);
@@ -278,6 +277,19 @@
             this.groupBIDI.TabIndex = 123;
             this.groupBIDI.TabStop = false;
             this.groupBIDI.Text = "PLC输入信号";
+            // 
+            // Refresh
+            // 
+            this.Refresh.BackColor = System.Drawing.Color.Transparent;
+            this.Refresh.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Refresh.Location = new System.Drawing.Point(164, 411);
+            this.Refresh.Name = "Refresh";
+            this.Refresh.Size = new System.Drawing.Size(90, 33);
+            this.Refresh.TabIndex = 149;
+            this.Refresh.Tag = "";
+            this.Refresh.Text = "数据刷新";
+            this.Refresh.UseVisualStyleBackColor = false;
+            this.Refresh.Click += new System.EventHandler(this.Refresh_Click);
             // 
             // btnPLCI24
             // 
@@ -1109,6 +1121,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.Refresh);
             this.groupBox1.Controls.Add(this.btnDataOutPlc);
             this.groupBox1.Controls.Add(this.txtChannel18Lever);
             this.groupBox1.Controls.Add(this.label37);
@@ -1158,7 +1171,7 @@
             // 
             this.btnDataOutPlc.BackColor = System.Drawing.Color.Transparent;
             this.btnDataOutPlc.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnDataOutPlc.Location = new System.Drawing.Point(163, 409);
+            this.btnDataOutPlc.Location = new System.Drawing.Point(68, 411);
             this.btnDataOutPlc.Name = "btnDataOutPlc";
             this.btnDataOutPlc.Size = new System.Drawing.Size(90, 33);
             this.btnDataOutPlc.TabIndex = 149;
@@ -1518,20 +1531,6 @@
             this.label21.Size = new System.Drawing.Size(83, 12);
             this.label21.TabIndex = 123;
             this.label21.Text = "炉1运行状态：";
-            // 
-            // Refresh
-            // 
-            this.Refresh.BackColor = System.Drawing.Color.Transparent;
-            this.Refresh.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Refresh.Location = new System.Drawing.Point(293, 409);
-            this.Refresh.Name = "Refresh";
-            this.Refresh.Size = new System.Drawing.Size(90, 33);
-            this.Refresh.TabIndex = 149;
-            this.Refresh.Tag = "";
-            this.Refresh.Text = "数据刷新";
-            this.Refresh.UseVisualStyleBackColor = false;
-            this.Refresh.Visible = false;
-            this.Refresh.Click += new System.EventHandler(this.Refresh_Click);
             // 
             // FrmManualPLC
             // 

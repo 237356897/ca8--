@@ -36,7 +36,7 @@ namespace Desay
         /// <summary>
         /// 输送轴
         /// </summary>
-        public ServoAxis CarryAxis { set; get; }
+        public StepAxis CarryAxis { set; get; }
         /// <summary>
         /// 工作盘数(除NG盘外)
         /// </summary>
@@ -140,7 +140,8 @@ namespace Desay
                 {
                     #region 自动化流程
                     if (stationOperate.Running)
-                    {                        
+                    {
+
                         calTrayNum(); //OK/待料位1/待料位2之一无料盘，则去取空盘
 
                         switch (Marking.RobotStatus)
@@ -306,7 +307,7 @@ namespace Desay
                                             message = "FN\r\n"
                                         });
                                     }
-                                    if (TrayCodeReader.receiveFinish && RunPara.Instance.OrgTrayCode != string.Empty)
+                                    if (TrayCodeReader.receiveFinish && RunPara.Instance.OrgTrayCode != string.Empty) //此处增加条码判断
                                     {
                                         Marking.RobotStatus = Output.s80;
                                     }

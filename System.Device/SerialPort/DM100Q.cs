@@ -97,11 +97,11 @@ namespace System.Device
             for (int i = 0; i < args.tryTimes; i++)
             {
                 try
-                {
+                {                   
                     StopTrigger();
                     receiveString = string.Empty;
                     DiscardInBuffer();
-                    WriteLine("+\r\n");
+                    WriteLine("\u0016T\r");
                     receiveString = ReadTo("\r");
                     break;
                 }
@@ -126,7 +126,7 @@ namespace System.Device
         {
             try
             {
-                WriteLine("-\r\n");
+                WriteLine("\u0016U\r");
                 return UniversalFlags.successStr;
             }
             catch (Exception ex)

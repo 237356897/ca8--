@@ -34,14 +34,18 @@ namespace Desay
         }
 
         /// <summary>
-        ///     当前产品型号
+        /// 当前产品型号
         /// </summary>
         public string CurrentProductType = "Default";
 
         /// <summary>
-        ///     产品型号列表
+        /// 产品型号列表
         /// </summary>
         public List<string> ProductType = new List<string>();
+        /// <summary>
+        /// 是否有接驳台组件
+        /// </summary>
+        public bool HaveConnection = false;
 
     }
 }

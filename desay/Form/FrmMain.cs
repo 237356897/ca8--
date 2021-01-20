@@ -30,14 +30,12 @@ namespace Desay
         /// 初始化提示信息
         /// </summary>
         private event Action<string> LoadingMessage;
-        private AlarmType MachineIsAlarm, ConnectionAlarm, BackflowAlarm, RobotAlarm, StoveRefreshAlarm;
+        private AlarmType MachineIsAlarm, BackflowAlarm, RobotAlarm;
         //外部条件
         private External m_External = new External();
         private MachineOperate MachineOperation;
-        private Connection m_Connection;
         private Backflow m_Backflow;//输送
         private Robot m_Robot;
-        private StoveRefresh m_StoveRefresh;
 
         private FrmManualPLC FrmPlc;
         private DM100Q QRCodeCom;
@@ -50,10 +48,6 @@ namespace Desay
         private Thread threadMachineRun = null;
         private Thread threadAlarmCheck = null;
         private Thread threadStatusCheck = null;
-
-        string ps;
-        string producttype;
-        int ix = 0;
         /// <summary>
         /// 是否NG标志(空跑模式)
         /// </summary>
@@ -113,6 +107,7 @@ namespace Desay
                         btnRecipe.Enabled = false;
                         btnOperation.Enabled = false;
                         btnQRCodeSet.Enabled = false;
+                        btnTrayCodeSet.Enabled = false;
                         btnMes.Enabled = false;
                         break;
                     case UserLevel.工程师:
@@ -122,6 +117,7 @@ namespace Desay
                         btnRecipe.Enabled = true;
                         btnOperation.Enabled = true;
                         btnQRCodeSet.Enabled = true;
+                        btnTrayCodeSet.Enabled = true;
                         btnMes.Enabled = true;
                         break;
                     default:
@@ -131,6 +127,7 @@ namespace Desay
                         btnRecipe.Enabled = false;
                         btnOperation.Enabled = false;
                         btnQRCodeSet.Enabled = false;
+                        btnTrayCodeSet.Enabled = false;
                         btnMes.Enabled = false;
                         break;
                 }
@@ -256,13 +253,13 @@ namespace Desay
 
             LoadingMessage("初始化轴");
 
-            var carryAxis = new ServoAxis(IoPoints.m_ApsController)
+            var carryAxis = new StepAxis(IoPoints.m_ApsController)
             {
                 NoId = 0,
                 Name = "输送轴",
                 Transmission = AxisParameter.Instance.CarrytransParams,
             };
-            carryAxis.SetAxisHomeParam(new HomeParams(0, 1, 0, 10000, 5000, 0));
+            carryAxis.SetAxisHomeParam(new HomeParams(0, 1, 0, 20000, 5000, 0));
 
             Thread.Sleep(100);
 
@@ -272,39 +269,11 @@ namespace Desay
 
             LoadingMessage("初始化气缸");
 
-            var positioningCylinder = new SingleCylinder(IoPoints.T1DI02, IoPoints.T1DI03, IoPoints.I2DO30)
-            {
-                Name = "接驳台定位气缸",
-                Delay = Delay.Instance.PositioningDelay,
-                Condition = new CylinderCondition(() => { return true; }, () => { return true; }) { External = m_External }
-            };
-
-            var openClampCylinder = new SingleCylinder(IoPoints.T1DI04, IoPoints.T1DI05, IoPoints.I2DO31)
-            {
-                Name = "接驳台开夹气缸",
-                Delay = Delay.Instance.OpenClampDelay,
-                Condition = new CylinderCondition(() => { return true; }, () => { return true; }) { External = m_External }
-            };
-
-            var translationCylinder = new DoubleCylinder(IoPoints.I2DI30, IoPoints.I2DI31, IoPoints.I2DO28, IoPoints.I2DO19)
-            {
-                Name = "接驳台平移气缸",
-                Delay = Delay.Instance.TranslationDelay,
-                Condition = new CylinderCondition(() => { return true; }, () => { return true; }) { External = m_External }
-            };
-
             #endregion
 
             #region 加载模组操作资源
 
             LoadingMessage("加载模组操作资源");
-
-            var ConnectionInitialize = new StationInitialize(
-                () => { return !ManualAutoMode/* && (hasp.LicenseIsOK && !LicenseSheild)*/; },
-                () => { return ConnectionAlarm.IsAlarm; });
-            var ConnectionOperate = new StationOperate(
-                () => { return ConnectionInitialize.InitializeDone/* && (hasp.LicenseIsOK && !LicenseSheild)*/; },
-                () => { return ConnectionAlarm.IsAlarm; });
 
             var BackflowInitialize = new StationInitialize(
                 () => { return !ManualAutoMode/* && (hasp.LicenseIsOK && !LicenseSheild)*/; },
@@ -318,23 +287,7 @@ namespace Desay
                 () => { return RobotAlarm.IsAlarm; });
             var RobotOperate = new StationOperate(
                 () => { return RobotInitialize.InitializeDone/* && (hasp.LicenseIsOK && !LicenseSheild)*/; },
-                () => { return RobotAlarm.IsAlarm; });
-
-            var StoveRefreshInitialize = new StationInitialize(
-                () => { return !ManualAutoMode/* && (hasp.LicenseIsOK && !LicenseSheild)*/; },
-                () => { return StoveRefreshAlarm.IsAlarm; });
-            var StoveRefreshOperate = new StationOperate(
-                () => { return StoveRefreshInitialize.InitializeDone/* && (hasp.LicenseIsOK && !LicenseSheild)*/; },
-                () => { return StoveRefreshAlarm.IsAlarm; });
-
-            m_Connection = new Connection(m_External, ConnectionInitialize, ConnectionOperate)
-            {
-                PositioningCylinder = positioningCylinder,
-                OpenClampCylinder = openClampCylinder,
-                TranslationCylinder = translationCylinder,
-            };
-            m_Connection.AddPart();
-            m_Connection.Run(RunningModes.Online);
+                () => { return RobotAlarm.IsAlarm; });        
 
             m_Backflow = new Backflow(m_External, BackflowInitialize, BackflowOperate)
             {
@@ -354,25 +307,15 @@ namespace Desay
             m_Robot.AddPart();
             m_Robot.Run(RunningModes.Online);
             m_Robot.RefreshDataDataGridView += new RefreshDataCompleteEventHandler(DealWithDGVReceiveData);
-            //   m_StoveRefresh.RefreshDataDataGridView += new RefreshDataCompleteEventHandler(DealWithDGVReceiveData);
-
-
-            m_StoveRefresh = new StoveRefresh(m_External, StoveRefreshInitialize, StoveRefreshOperate)
-            {
-                frmPlc = FrmPlc,
-            };
-            m_StoveRefresh.AddPart();
-            m_StoveRefresh.Run(RunningModes.Online);
+            //m_StoveRefresh.RefreshDataDataGridView += new RefreshDataCompleteEventHandler(DealWithDGVReceiveData);
 
             MachineOperation = new MachineOperate(() =>
             {
-                return ConnectionInitialize.InitializeDone && BackflowInitialize.InitializeDone &&
-                RobotInitialize.InitializeDone && StoveRefreshInitialize.InitializeDone/*&& (hasp.LicenseIsOK && !LicenseSheild)*/;
+                return BackflowInitialize.InitializeDone && RobotInitialize.InitializeDone /*&& (hasp.LicenseIsOK && !LicenseSheild)*/;
             },
            () =>
             {
-                return MachineIsAlarm.IsAlarm | ConnectionAlarm.IsAlarm | BackflowAlarm.IsAlarm
-                       | RobotAlarm.IsAlarm | StoveRefreshAlarm.IsAlarm;
+                return MachineIsAlarm.IsAlarm | BackflowAlarm.IsAlarm | RobotAlarm.IsAlarm;
             });
 
             Thread.Sleep(100);
@@ -382,10 +325,10 @@ namespace Desay
             #region 加载信号灯资源
 
             LoadingMessage("加载信号灯资源");
-            StartButton = new EventButton(IoPoints.I2DI00);
+            StartButton = new LightButton(IoPoints.I2DI00,IoPoints.I2DO04);
             ResetButton = new LightButton(IoPoints.I2DI02, IoPoints.I2DO06);
             PauseButton = new LightButton(IoPoints.I2DI01, IoPoints.I2DO05);
-            StopButton = new LightButton(IoPoints.I2DI14, IoPoints.I2DO04);
+            StopButton = new LightButton(IoPoints.I2DI14, IoPoints.I2DO14);
             EstopButton = new EventButton(IoPoints.I2DI03);
             layerLight = new LayerLight(IoPoints.I2DO02, IoPoints.I2DO01, IoPoints.I2DO00, IoPoints.I2DO03);
 
@@ -458,9 +401,6 @@ namespace Desay
 
             #endregion
 
-
-            //DialogResult result = MessageBox.Show("继续上次运行", "开始", MessageBoxButtons.OK);
-
             int n1 = 0;
             if (RunPara.Instance.OKTary.ProductPos == RunPara.Instance.TrayPoint + 1)
             {
@@ -485,21 +425,6 @@ namespace Desay
 
             try
             {
-                ps = System.Windows.Forms.Application.StartupPath + "\\ParmInI.ini";
-                producttype = System.Windows.Forms.Application.StartupPath + "\\Product.md";
-
-                if (File.Exists(producttype))
-                {
-                    RunPara2.data = (List<ProductA2C>)ProductA2C.ReserializeMethod(producttype);
-                    if (RunPara2.data[0].selindex >= 0)
-                    {
-                        RunPara.Instance.A2C = RunPara2.data[RunPara2.data[0].selindex].A2CX;
-                    }
-                    else
-                    {
-                        //无数据
-                    }
-                }
                 if (!RunPara.Instance.ShieldEntraceGuard)
                 {
                     IoPoints.I2DO29.Value = true;
@@ -535,11 +460,6 @@ namespace Desay
                 layerLight.Status = MachineOperation.Status;
                 layerLight.Refreshing();
 
-                m_Connection.stationOperate.ManualAutoMode = ManualAutoMode;
-                m_Connection.stationOperate.AutoRun = MachineOperation.Running;
-                m_Connection.stationInitialize.Run();
-                m_Connection.stationOperate.Run();
-
                 m_Backflow.stationOperate.ManualAutoMode = ManualAutoMode;
                 m_Backflow.stationOperate.AutoRun = MachineOperation.Running;
                 m_Backflow.stationInitialize.Run();
@@ -549,11 +469,6 @@ namespace Desay
                 m_Robot.stationOperate.AutoRun = MachineOperation.Running;
                 m_Robot.stationInitialize.Run();
                 m_Robot.stationOperate.Run();
-
-                m_StoveRefresh.stationOperate.ManualAutoMode = ManualAutoMode;
-                m_StoveRefresh.stationOperate.AutoRun = MachineOperation.Running;
-                m_StoveRefresh.stationInitialize.Run();
-                m_StoveRefresh.stationOperate.Run();
 
                 #region 按钮灯响应
                 IoPoints.I2DO04.Value = IoPoints.I2DI00.Value;
@@ -571,14 +486,10 @@ namespace Desay
                         case 0:
                             m_External.InitializingDone = false;
                             MachineOperation.IniliazieDone = false;
-                            m_Connection.stationInitialize.InitializeDone = false;
                             m_Backflow.stationInitialize.InitializeDone = false;
                             m_Robot.stationInitialize.InitializeDone = false;
-                            m_StoveRefresh.stationInitialize.InitializeDone = false;
-                            m_Connection.stationInitialize.Start = false;
                             m_Backflow.stationInitialize.Start = false;
                             m_Robot.stationInitialize.Start = false;
-                            m_StoveRefresh.stationInitialize.Start = false;
                             MachineOperation.Flow = 10;
                             break;
                         case 10:
@@ -596,11 +507,9 @@ namespace Desay
                             }
                             else if (m_Robot.stationInitialize.InitializeDone)
                             {
-                                m_Connection.stationInitialize.Start = true;
+
                                 m_Backflow.stationInitialize.Start = true;
-                                m_StoveRefresh.stationInitialize.Start = true;
-                                if (m_Connection.stationInitialize.Running && m_Backflow.stationInitialize.Running &&
-                                    m_StoveRefresh.stationInitialize.Running)
+                                if (m_Backflow.stationInitialize.Running)
                                 {
                                     MachineOperation.Flow = 30;
                                     _watch.Restart();
@@ -608,14 +517,12 @@ namespace Desay
                             }
                             break;
                         case 30:
-                            if (m_Connection.stationInitialize.Flow == -1 || m_Backflow.stationInitialize.Flow == -1 ||
-                                m_StoveRefresh.stationInitialize.Flow == -1)
+                            if (m_Backflow.stationInitialize.Flow == -1)
                             {
                                 MachineOperation.IniliazieDone = false;
                                 MachineOperation.Flow = -1;
                             }
-                            else if (m_Connection.stationInitialize.InitializeDone && m_Backflow.stationInitialize.InitializeDone &&
-                               m_StoveRefresh.stationInitialize.InitializeDone)
+                            else if (m_Backflow.stationInitialize.InitializeDone)
                             {
                                 MachineOperation.IniliazieDone = true;
                                 MachineOperation.Flow = 40;
@@ -624,28 +531,18 @@ namespace Desay
                             if (_watch.ElapsedMilliseconds > 20000)
                             {
                                 string res = "";
-                                if (m_Connection.stationInitialize.InitializeDone)
-                                {
-                                    res += res + "接驳台复位异常";
-                                }
-
                                 if (m_Backflow.stationInitialize.InitializeDone)
                                 {
                                     res += res + "输出轴复位异常";
-                                }
-                                if (m_StoveRefresh.stationInitialize.InitializeDone)
-                                {
-                                    res += res + "固化炉复位异常";
                                 }
                                 AppendText(res);
                                 // MessageBox.Show(res);
                             }
                             break;
                         default:
-                            m_Connection.stationInitialize.Start = false;
                             m_Backflow.stationInitialize.Start = false;
                             m_Robot.stationInitialize.Start = false;
-                            m_StoveRefresh.stationInitialize.Start = false;
+
                             break;
                     }
                 }
@@ -656,20 +553,15 @@ namespace Desay
                 if (MachineOperation.Stopping)
                 {
                     m_Backflow.CarryAxis.Stop();
-                    m_Connection.stationInitialize.Estop = true;
                     m_Backflow.stationInitialize.Estop = true;
                     m_Robot.stationInitialize.Estop = true;
-                    m_StoveRefresh.stationInitialize.Estop = true;
 
-                    if (!m_Connection.stationInitialize.Running && !m_Backflow.stationInitialize.Running
-                        && !m_Robot.stationInitialize.Running && !m_StoveRefresh.stationInitialize.Running)
+                    if (!m_Backflow.stationInitialize.Running  && !m_Robot.stationInitialize.Running)
                     {
                         MachineOperation.IniliazieDone = false;
                         MachineOperation.Stopping = false;
-                        m_Connection.stationInitialize.Estop = false;
                         m_Backflow.stationInitialize.Estop = false;
                         m_Robot.stationInitialize.Estop = false;
-                        m_StoveRefresh.stationInitialize.Estop = false;
                     }
                 }
                 #endregion
@@ -678,11 +570,8 @@ namespace Desay
                 if (!EstopButton.PressedIO.Value)
                 {
                     m_Backflow.CarryAxis.Stop();
-
-                    m_Connection.stationInitialize.InitializeDone = false;
                     m_Backflow.stationInitialize.InitializeDone = false;
                     m_Robot.stationInitialize.InitializeDone = false;
-                    m_StoveRefresh.stationInitialize.InitializeDone = false;
                     MachineOperation.IniliazieDone = false;
 
                     //ABB停止
@@ -751,11 +640,8 @@ namespace Desay
                     });
                 }
 
-                ConnectionAlarm = AlarmCheck(m_Connection.Alarms);
                 BackflowAlarm = AlarmCheck(m_Backflow.Alarms);
                 RobotAlarm = AlarmCheck(m_Robot.Alarms);
-                StoveRefreshAlarm = AlarmCheck(m_StoveRefresh.Alarms);
-
                 MachineIsAlarm = AlarmCheck(list);
             }
         }
@@ -765,14 +651,10 @@ namespace Desay
         private void StatusCheck()
         {
             var list = new List<ICylinderStatusJugger>();
-            m_Connection.stationInitialize.Estop = false;
             m_Backflow.stationInitialize.Estop = false;
             m_Robot.stationInitialize.Estop = false;
-            m_StoveRefresh.stationInitialize.Estop = false;
-            list.AddRange(m_Connection.CylinderStatus);
             list.AddRange(m_Backflow.CylinderStatus);
             list.AddRange(m_Robot.CylinderStatus);
-            list.AddRange(m_StoveRefresh.CylinderStatus);
             while (true)
             {
                 Thread.Sleep(500);
@@ -805,6 +687,7 @@ namespace Desay
         }
         #endregion
 
+        #region 刷新状态——refreshStateTimer
         //刷新状态
         private void refreshStateTimer_Tick(object sender, EventArgs e)
         {
@@ -814,9 +697,13 @@ namespace Desay
             labQRCodeCom.BackColor = QRCodeCom.IsOpen ? Color.Green : Color.Red;
             labRobot.BackColor = AsynTcpRobot.IsConnected ? Color.Green : Color.Red;
             labTrayCodeCom.BackColor = TrayCodeCom.IsOpen ? Color.Green : Color.Red;
+            lblProductType.Text = Product.Instance.CurrentProductType;
 
-            if (RunPara2.data.Count() > 0 && RunPara2.data[0].selindex >= 0)
-                lblProductType.Text = RunPara2.data[RunPara2.data[0].selindex].ProductName;
+            //if (RunPara2.data.Count() > 0 && RunPara2.data[0].selindex >= 0)
+            //    lblProductType.Text = RunPara2.data[RunPara2.data[0].selindex].ProductName;
+
+            cb_down.Text = cb_down.Checked ? "下炉" : "上炉";
+
 
 
             if (!FrmPlc.IsConnect) return;
@@ -825,8 +712,7 @@ namespace Desay
             lblMachineStatus.Text = MachineOperation.Status.ToString();
             lblMachineStatus.ForeColor = MachineStatusColor(MachineOperation.Status);
             rbHand.Enabled = !MachineOperation.Running;
-
-            label9.Text = cb_down.Checked ? "下炉" : "上炉";
+           
             if (cb_down.Checked)
             {
                 labOven1Start.BackColor = (Marking.DownStoveRefreshState[0]) ? Color.Green : Color.Red;
@@ -849,20 +735,20 @@ namespace Desay
             //lblCycleTime.Text = FrmPlc.ReadInt16Data(FrmPlc.Stove1CuringTime).ToString();
             //labSetTemperature.Text = FrmPlc.ReadInt16Data(FrmPlc.SetStove1Temperature).ToString();
 
-            if (((1 == Global.Instance.Stove1RunState) || (1 == Global.Instance.Stove2RunState) ||
-                (1 == Global.Instance.Stove3RunState) || (1 == Global.Instance.Stove4RunState) ||
-                (1 == Global.Instance.Stove5RunState) || (1 == Global.Instance.Stove6RunState)) &&
+            if (((0 == Global.Instance.Stove1RunState) || (0 == Global.Instance.Stove2RunState) ||
+                (0 == Global.Instance.Stove3RunState) || (0 == Global.Instance.Stove4RunState) ||
+                (0 == Global.Instance.Stove5RunState) || (0 == Global.Instance.Stove6RunState)) &&
                  !Marking.plcStoveTotalStart)
             {
                 Marking.plcStoveTotalStart = true;
                 StoveStartTime.Restart();
             }
-            else if ((((((0 == Global.Instance.Stove1RunState) || (2 == Global.Instance.Stove1RunState) &&
-                (0 == Global.Instance.Stove2RunState) || (2 == Global.Instance.Stove2RunState) &&
-                (0 == Global.Instance.Stove3RunState) || (2 == Global.Instance.Stove3RunState) &&
-                (0 == Global.Instance.Stove4RunState)) || (2 == Global.Instance.Stove4RunState) &&
-                (0 == Global.Instance.Stove5RunState) || (2 == Global.Instance.Stove5RunState) &&
-                (0 == Global.Instance.Stove6RunState) || (2 == Global.Instance.Stove6RunState)) &&
+            else if ((((((1 == Global.Instance.Stove1RunState) || (2 == Global.Instance.Stove1RunState) &&
+                (1 == Global.Instance.Stove2RunState) || (2 == Global.Instance.Stove2RunState) &&
+                (1 == Global.Instance.Stove3RunState) || (2 == Global.Instance.Stove3RunState) &&
+                (1 == Global.Instance.Stove4RunState)) || (2 == Global.Instance.Stove4RunState) &&
+                (1 == Global.Instance.Stove5RunState) || (2 == Global.Instance.Stove5RunState) &&
+                (1 == Global.Instance.Stove6RunState) || (2 == Global.Instance.Stove6RunState)) &&
                 Marking.plcStoveTotalStart)) || (StoveStartTime.ElapsedMilliseconds / 1000) > 18000)
             {
                 Marking.plcStoveTotalStart = false;
@@ -912,7 +798,9 @@ namespace Desay
 
             refreshStateTimer.Enabled = true;
         }
+        #endregion
 
+        #region 刷新数据——refreshDatatimer
         int xaxis = 0;
         int checktime = 0;
         //刷新数据
@@ -1008,6 +896,7 @@ namespace Desay
 
             //refreshDatatimer.Enabled = true;
         }
+        #endregion
 
         #endregion
 
@@ -1023,10 +912,9 @@ namespace Desay
             try
             {
                 //Marking.QRCodeSign = false;
-                if (Robot.ifemptyrun)
+                if (Robot.ifemptyrun) //空跑模式
                 {
                     result = "CV1V3CV4" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Millisecond.ToString();
-                    ix++;
                     TaryQRCode(result);
                     appendText(result);
                 }
@@ -1036,11 +924,10 @@ namespace Desay
                     {
                         throw new Exception(result);
                     }
-
                     if (result != string.Empty)
                     {
                         Thread.Sleep(200);
-                        if (m_Robot.ScanSN(result))
+                        if (m_Robot.ScanSN(result)) 
                         {
                             TaryQRCode(result);
                             appendText(result);
@@ -1072,17 +959,25 @@ namespace Desay
         {
             try
             {
-                if (result.Contains(UniversalFlags.errorStr))
+                if (Robot.ifemptyrun)  //空跑模式
                 {
-                    throw new Exception(result);
-                }
-
-                if (result != string.Empty)
-                {
-                    Thread.Sleep(200);
+                    result = "TrayNum" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Millisecond.ToString();
                     RunPara.Instance.OrgTrayCode = result;
                     appendText(result);
                 }
+                else
+                {
+                    if (result.Contains(UniversalFlags.errorStr))
+                    {
+                        throw new Exception(result);
+                    }
+                    if (result != string.Empty)
+                    {
+                        Thread.Sleep(200);
+                        RunPara.Instance.OrgTrayCode = result;
+                        appendText(result);
+                    }
+                }                
             }
             catch (Exception ex)
             {
@@ -1191,7 +1086,7 @@ namespace Desay
                     }
 
                 }), tbgRecipe);
-            GenerateForm(new FrmOperationReversal(m_Connection, m_Backflow, m_Robot), tbgOperation);
+            GenerateForm(new FrmOperationReversal(m_Backflow, m_Robot), tbgOperation);
         }
 
         /// <summary>
@@ -1365,7 +1260,7 @@ namespace Desay
         {
             //蜂鸣
             layerLight.VoiceClosed = !layerLight.VoiceClosed;
-            btnTricolorLamp.Text = layerLight.VoiceClosed ? "蜂铃静止" : "蜂铃正常";
+            btnTricolorLamp.Text = layerLight.VoiceClosed ? "蜂鸣静止" : "蜂鸣正常";
             btnTricolorLamp.BackColor = layerLight.VoiceClosed ? Color.Red : System.Drawing.SystemColors.Control;
         }
 
@@ -1694,12 +1589,12 @@ namespace Desay
         }
 
         /// <summary>
-        /// 扫产品码
+        /// 检查产品码，填入数据
         /// </summary>
         /// <param name="QRCode"></param>
         public void TaryQRCode(string QRCode)
         {
-            //检查固化数据
+            //检查固化炉中产品数据
             for (int i = 0; i < RunPara.Instance.Stove.Length; i++)
             {
                 for (int j = 0; j < RunPara.Instance.Stove[i].Tray.QRCode.Length; j++)
@@ -1710,7 +1605,7 @@ namespace Desay
                     }
                 }
             }
-            //检查OK盘数据
+            //检查OK盘中产品数据
             if (Marking.QRCodeSign)
             {
                 //   Marking.QRCodeSign = true;
@@ -1722,7 +1617,7 @@ namespace Desay
                     }
                 }
             }
-            if (Marking.QRCodeSign) //固化数据或 ok盘数据有就不扫入
+            if (Marking.QRCodeSign) //固化炉 或 ok盘中有过数据就不扫入
             {
                 RunPara.Instance.OKTary.QRCode[RunPara.Instance.OKTary.ProductPos].SN = QRCode;
                 RunPara.Instance.OKTary.QRCode[RunPara.Instance.OKTary.ProductPos].sign = true;
@@ -1731,7 +1626,7 @@ namespace Desay
                 TaryDGVShow(RunPara.Instance.OKTary.ProductPos);
             }
             Marking.QRCodeSign = true;
-        }
+        }        
 
         public void DGVLoad()
         {
@@ -1934,8 +1829,7 @@ namespace Desay
         {
             if (ManualAutoMode)
             {
-                if (!MachineIsAlarm.IsAlarm && !ConnectionAlarm.IsAlarm && !BackflowAlarm.IsAlarm
-                    && !RobotAlarm.IsAlarm)
+                if (!MachineIsAlarm.IsAlarm && !BackflowAlarm.IsAlarm && !RobotAlarm.IsAlarm)
                     AppendText("设备手动状态时，才能复位。自动状态只能清除报警！");
                 m_External.AlarmReset = true;
                 if (m_Backflow.CarryAxis.IsAlarmed) m_Backflow.CarryAxis.Clean();
@@ -2053,16 +1947,17 @@ namespace Desay
         /// <param name="e"></param>
         private void button5_Click(object sender, EventArgs e)
         {
+            RunPara.Instance.cbAuto = !RunPara.Instance.cbAuto;
             if (RunPara.Instance.cbAuto)
             {
+                button5.Text = "空跑模式";
                 Robot.ifemptyrun = true;
-                Marking.ConnectionInform = true;
                 timer1.Enabled = true;
             }
             else
             {
+                button5.Text = "生产模式";
                 Robot.ifemptyrun = false;
-                Marking.ConnectionInform = false;
                 timer1.Enabled = false;
             }
         }

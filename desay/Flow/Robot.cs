@@ -131,6 +131,8 @@ namespace Desay
 
                     if (stationOperate.Running && Marking.AlarmStopThread)
                     {
+                        frmPlc.WriteM(frmPlc.StoveLockControl, true);
+                        PLCSignal();
                         switch (Step)
                         {
                             #region 空盘调度(节点0~100)
@@ -233,7 +235,7 @@ namespace Desay
                                 if (tcpResults.Length > 0 && tcpResults[0].Contains("4plapt"))
                                 {
                                     Marking.RobotStatus = Output.s20;
-                                    if(RunPara.Instance.OrgTrayCode != string.Empty)
+                                    if (RunPara.Instance.OrgTrayCode != string.Empty)
                                     {
                                         RunPara.Instance.WaitTary2.TrayCode = RunPara.Instance.OrgTrayCode;
                                         RunPara.Instance.OrgTrayCode = string.Empty;
@@ -246,7 +248,7 @@ namespace Desay
                                     //  Marking.BackflowInform = false;
                                 }
                                 break;
-                            case 50://
+                            case 50:
                                 if (Marking.DownStoveRefreshState[0] && (Marking.RobotStatus == Output.s20) && !RunPara.Instance.Stove1Shield)
                                 {
                                     if (!Marking.RobotInformOutputting)
@@ -704,7 +706,7 @@ namespace Desay
                                 tcpResults = mAsynTcpRobot.Result.Split('\r');
                                 if (tcpResults.Length > 0 && tcpResults[0].Contains("4boxpw"))
                                 {
-                                    frmPlc.WriteM(frmPlc.Stove4DoorTrip, true); //炉1开门
+                                    frmPlc.WriteM(frmPlc.Stove4DoorTrip, true); //炉4开门
                                     try
                                     {
                                         //清除料盘信息
@@ -1091,8 +1093,11 @@ namespace Desay
                                         ///10014
                                     }
                                 }
-                                else if (Marking.ConnectionInform)//通知机械手——取料
+                                else if ((IoPoints.T1DI00.Value || IoPoints.T1DI01.Value) && (IoPoints.T1DI00.Value != IoPoints.T1DI01.Value))//通知机械手——取料
                                 {
+                                    Marking.AAOK = IoPoints.T1DI00.Value;
+                                    Marking.AANG = IoPoints.T1DI01.Value;
+                                    IoPoints.T1DO00.Value = false;
                                     AwaitProductTime.Restart();//等待产品时间
                                     Step = 710;
                                 }
@@ -1205,14 +1210,17 @@ namespace Desay
                                     tcpResults = mAsynTcpRobot.Result.Split('\r');
                                     if (tcpResults.Length > 0 && tcpResults[0].Contains("1linpk"))
                                     {
-                                        Marking.ConnectionInform = false;
-                                        mAsynTcpRobot.AsynSend("codeps");
-                                        Step = 760;
+                                        IoPoints.T1DO01.Value = true; //机械手已到位，通知AA开夹
+                                        if (IoPoints.T1DI02.Value)    //接驳台已开夹
+                                        {
+                                            Thread.Sleep(500);
+                                            mAsynTcpRobot.AsynSend("codeps");
+                                            Step = 760;
+                                        }
                                     }
                                 }
                                 else
-                                {
-                                    Marking.ConnectionInform = false;
+                                {                                    
                                     mAsynTcpRobot.AsynSend("codeps");
                                     Step = 760;
                                 }
@@ -1221,6 +1229,8 @@ namespace Desay
                                 tcpResults = mAsynTcpRobot.Result.Split('\r');
                                 if (tcpResults.Length > 0 && tcpResults[0].Contains("codeps"))
                                 {
+                                    IoPoints.T1DO00.Value = true;
+                                    IoPoints.T1DO01.Value = false;
                                     QRCodeTime.Restart();
                                     Step = 770;
                                 }
@@ -1309,15 +1319,18 @@ namespace Desay
                                     tcpResults = mAsynTcpRobot.Result.Split('\r');
                                     if (tcpResults.Length > 0 && tcpResults[0].Contains("1linpk"))
                                     {
-                                        Marking.ConnectionInform = false;
-                                        TcpRobotCmd = "2pla" + (RunPara.Instance.NGTary.ProductPos + 1).ToString("D2");
-                                        mAsynTcpRobot.AsynSend(TcpRobotCmd); //NG物料放置
-                                        Step = 810;
+                                        IoPoints.T1DO01.Value = true; //机械手已到位，通知AA开夹
+                                        if (IoPoints.T1DI02.Value)    //接驳台已开夹
+                                        {
+                                            Thread.Sleep(500);
+                                            TcpRobotCmd = "2pla" + (RunPara.Instance.NGTary.ProductPos + 1).ToString("D2");
+                                            mAsynTcpRobot.AsynSend(TcpRobotCmd); //NG物料放置
+                                            Step = 810;
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    Marking.ConnectionInform = false;
                                     TcpRobotCmd = "2pla" + (RunPara.Instance.NGTary.ProductPos + 1).ToString("D2");
                                     mAsynTcpRobot.AsynSend(TcpRobotCmd); //NG物料放置
                                     Step = 810;
@@ -1327,6 +1340,8 @@ namespace Desay
                                 tcpResults = mAsynTcpRobot.Result.Split('\r');
                                 if (tcpResults.Length > 0 && tcpResults[0].Contains(TcpRobotCmd))
                                 {
+                                    IoPoints.T1DO00.Value = true;
+                                    IoPoints.T1DO01.Value = false;
                                     RunPara.Instance.NGTary.ProductPos++;
                                     FrmMain.prepos = 1; //已NG标志
                                     if (RunPara.Instance.NGTary.ProductPos >= RunPara.Instance.TrayPoint)
@@ -1669,7 +1684,7 @@ namespace Desay
                                 if (tcpResults.Length > 0 && tcpResults[0].Contains("4boxpt"))
                                 {
                                     frmPlc.WriteM(frmPlc.Stove4DoorTrip, true); //炉4关门
-                                     // Thread.Sleep(4000);                                                                               
+                                                                                // Thread.Sleep(4000);                                                                               
                                     Step = 1250;
                                 }
                                 break;
@@ -1905,7 +1920,10 @@ namespace Desay
                                 break;
                         }
                     }
-
+                    else
+                    {
+                        frmPlc.WriteM(frmPlc.StoveLockControl, false);
+                    }
                     #endregion
 
                     #region 初始化流程
@@ -1955,6 +1973,9 @@ namespace Desay
 
 
         bool ifwait01 = true;
+        /// <summary>
+        /// 检查条码是否正常
+        /// </summary>
         public bool ScanSN(string strSN)
         {
             bool result = true;
@@ -2002,6 +2023,347 @@ namespace Desay
             {
                 LogHelper.Error("Test_WriteMesTxtAndCsvFile Error");
             }
+        }
+
+        public void PLCSignal()
+        {
+            #region PLC
+            if (frmPlc.IsConnect)
+            {
+                Global.Instance.Stove1RunState = frmPlc.ReadInt16Data(frmPlc.Stove1RunState);
+                Global.Instance.Stove2RunState = frmPlc.ReadInt16Data(frmPlc.Stove2RunState);
+                Global.Instance.Stove3RunState = frmPlc.ReadInt16Data(frmPlc.Stove3RunState);
+                Global.Instance.Stove4RunState = frmPlc.ReadInt16Data(frmPlc.Stove4RunState);
+                Global.Instance.Stove5RunState = frmPlc.ReadInt16Data(frmPlc.Stove5RunState);
+                Global.Instance.Stove6RunState = frmPlc.ReadInt16Data(frmPlc.Stove6RunState);
+
+                Global.Instance.Stove1AnyMaterial = frmPlc.ReadM(frmPlc.Stove1AnyMaterial);
+                Global.Instance.Stove2AnyMaterial = frmPlc.ReadM(frmPlc.Stove2AnyMaterial);
+                Global.Instance.Stove3AnyMaterial = frmPlc.ReadM(frmPlc.Stove3AnyMaterial);
+                Global.Instance.Stove4AnyMaterial = frmPlc.ReadM(frmPlc.Stove4AnyMaterial);
+                Global.Instance.Stove5AnyMaterial = frmPlc.ReadM(frmPlc.Stove5AnyMaterial);
+                Global.Instance.Stove6AnyMaterial = frmPlc.ReadM(frmPlc.Stove6AnyMaterial);
+
+                RunPara.Instance.Stove[0].Temperature = frmPlc.ReadInt16Data(frmPlc.Stove1Temperature);
+                RunPara.Instance.Stove[1].Temperature = frmPlc.ReadInt16Data(frmPlc.Stove2Temperature);
+                RunPara.Instance.Stove[2].Temperature = frmPlc.ReadInt16Data(frmPlc.Stove3Temperature);
+                RunPara.Instance.Stove[3].Temperature = frmPlc.ReadInt16Data(frmPlc.Stove4Temperature);
+                RunPara.Instance.Stove[4].Temperature = frmPlc.ReadInt16Data(frmPlc.Stove5Temperature);
+                RunPara.Instance.Stove[5].Temperature = frmPlc.ReadInt16Data(frmPlc.Stove6Temperature);
+            }
+            #endregion
+
+            #region 上炉刷新状态                        
+
+            if ((0 == Global.Instance.Stove1RunState || 2 == Global.Instance.Stove1RunState) && !Marking.DownStoveRefreshState[0]
+                && !Global.Instance.Stove1AnyMaterial && frmPlc.ReadM(frmPlc.Stove1AllowHouse))
+            {
+                Marking.UpStoveRefreshState[0] = true;
+            }
+            else
+            {
+                Marking.UpStoveRefreshState[0] = false;
+            }
+            if ((0 == Global.Instance.Stove2RunState || 2 == Global.Instance.Stove2RunState) && !Marking.DownStoveRefreshState[1]
+                && !Global.Instance.Stove2AnyMaterial && frmPlc.ReadM(frmPlc.Stove2AllowHouse))
+            {
+                Marking.UpStoveRefreshState[1] = true;
+            }
+            else
+            {
+                Marking.UpStoveRefreshState[1] = false;
+            }
+            if ((0 == Global.Instance.Stove3RunState || 2 == Global.Instance.Stove3RunState) && !Marking.DownStoveRefreshState[2]
+                && !Global.Instance.Stove3AnyMaterial && frmPlc.ReadM(frmPlc.Stove3AllowHouse))
+            {
+                Marking.UpStoveRefreshState[2] = true;
+            }
+            else
+            {
+                Marking.UpStoveRefreshState[2] = false;
+            }
+            if ((0 == Global.Instance.Stove4RunState || 2 == Global.Instance.Stove4RunState) && !Marking.DownStoveRefreshState[3]
+                && !Global.Instance.Stove4AnyMaterial && frmPlc.ReadM(frmPlc.Stove4AllowHouse))
+            {
+                Marking.UpStoveRefreshState[3] = true;
+            }
+            else
+            {
+                Marking.UpStoveRefreshState[3] = false;
+            }
+            if ((0 == Global.Instance.Stove5RunState || 2 == Global.Instance.Stove5RunState) && !Marking.DownStoveRefreshState[4]
+                && !Global.Instance.Stove5AnyMaterial && frmPlc.ReadM(frmPlc.Stove5AllowHouse))
+            {
+                Marking.UpStoveRefreshState[4] = true;
+            }
+            else
+            {
+                Marking.UpStoveRefreshState[4] = false;
+            }
+
+            if ((0 == Global.Instance.Stove6RunState || 2 == Global.Instance.Stove6RunState) && !Marking.DownStoveRefreshState[5]
+                && !Global.Instance.Stove6AnyMaterial && frmPlc.ReadM(frmPlc.Stove6AllowHouse))
+            {
+                Marking.UpStoveRefreshState[5] = true;
+            }
+            else
+            {
+                Marking.UpStoveRefreshState[5] = false;
+            }
+            #endregion
+
+            #region 下炉刷新状态
+            //***
+            if (2 == Global.Instance.Stove1RunState && !Marking.UpStoveRefreshState[0] && Global.Instance.Stove1AnyMaterial)
+            {
+                Thread.Sleep(2000);
+                if (2 == Global.Instance.Stove1RunState)
+                {
+                    Marking.DownStoveRefreshState[0] = true;
+                }
+                else
+                {
+                    Marking.DownStoveRefreshState[0] = false;
+                }
+            }
+            else
+            {
+                Marking.DownStoveRefreshState[0] = false;
+            }
+            //***
+            if (2 == Global.Instance.Stove2RunState && !Marking.UpStoveRefreshState[1] && Global.Instance.Stove2AnyMaterial)
+            {
+                Thread.Sleep(2000);
+                if (2 == Global.Instance.Stove2RunState)
+                {
+                    Marking.DownStoveRefreshState[1] = true;
+                }
+                else
+                {
+                    Marking.DownStoveRefreshState[1] = false;
+                }
+            }
+            else
+            {
+                Marking.DownStoveRefreshState[1] = false;
+            }
+            //***
+            if (2 == Global.Instance.Stove3RunState && !Marking.UpStoveRefreshState[2] && Global.Instance.Stove3AnyMaterial)
+            {
+                Thread.Sleep(2000);
+                if (2 == Global.Instance.Stove3RunState)
+                {
+                    Marking.DownStoveRefreshState[2] = true;
+                }
+                else
+                {
+                    Marking.DownStoveRefreshState[2] = false;
+                }
+            }
+            else
+            {
+                Marking.DownStoveRefreshState[2] = false;
+            }
+            //***
+            if (2 == Global.Instance.Stove4RunState && !Marking.UpStoveRefreshState[3] && Global.Instance.Stove4AnyMaterial)
+            {
+                Thread.Sleep(2000);
+                if (2 == Global.Instance.Stove4RunState)
+                {
+                    Marking.DownStoveRefreshState[3] = true;
+                }
+                else
+                {
+                    Marking.DownStoveRefreshState[3] = false;
+                }
+            }
+            else
+            {
+                Marking.DownStoveRefreshState[3] = false;
+            }
+            //***
+            if (2 == Global.Instance.Stove5RunState && !Marking.UpStoveRefreshState[4] && Global.Instance.Stove5AnyMaterial)
+            {
+                Thread.Sleep(2000);
+                if (2 == Global.Instance.Stove5RunState)
+                {
+                    Marking.DownStoveRefreshState[4] = true;
+                }
+                else
+                {
+                    Marking.DownStoveRefreshState[4] = false;
+                }
+            }
+            else
+            {
+                Marking.DownStoveRefreshState[4] = false;
+            }
+            //***
+            if (2 == Global.Instance.Stove6RunState && !Marking.UpStoveRefreshState[5] && Global.Instance.Stove6AnyMaterial)
+            {
+                if (2 == Global.Instance.Stove6RunState)
+                {
+                    Marking.DownStoveRefreshState[5] = true;
+                }
+                else
+                {
+                    Marking.DownStoveRefreshState[5] = false;
+                }
+            }
+            else
+            {
+                Marking.DownStoveRefreshState[5] = false;
+            }
+
+            #endregion
+
+            #region 炉1固化数据获取
+
+            if (1 == Global.Instance.Stove1RunState)
+            {
+                if (RunPara.Instance.MesStoveTemperature.min <= RunPara.Instance.Stove[0].Temperature && !Marking.StartTemperatureSign[0])
+                {
+                    Marking.StartTemperatureSign[0] = true;
+                }
+                if (Marking.StartTemperatureSign[0])
+                {
+                    if (Marking.FirstTemperatureSign[0])
+                    {
+                        Marking.FirstTemperatureSign[0] = false;
+                        RunPara.Instance.AverageTemperature[0] = RunPara.Instance.Stove[0].Temperature;
+                    }
+                    else  //平均固化温度
+                    {
+                        RunPara.Instance.AverageTemperature[0] = (RunPara.Instance.AverageTemperature[0] + RunPara.Instance.Stove[0].Temperature) / 2;
+                    }
+                }
+            }
+
+            #endregion
+
+            #region 炉2固化数据获取
+            if (1 == Global.Instance.Stove2RunState)
+            {
+                if (RunPara.Instance.MesStoveTemperature.min <= RunPara.Instance.Stove[1].Temperature && !Marking.StartTemperatureSign[1])
+                {
+                    Marking.StartTemperatureSign[1] = true;
+                }
+                if (Marking.StartTemperatureSign[1])
+                {
+                    if (Marking.FirstTemperatureSign[1])
+                    {
+                        Marking.FirstTemperatureSign[1] = false;
+                        RunPara.Instance.AverageTemperature[1] = RunPara.Instance.Stove[1].Temperature;
+                    }
+                    else  //平均固化温度
+                    {
+                        RunPara.Instance.AverageTemperature[1] = (RunPara.Instance.AverageTemperature[1] + RunPara.Instance.Stove[1].Temperature) / 2;
+                    }
+                }
+            }
+
+            #endregion
+
+            #region 炉3固化数据获取
+            if (1 == Global.Instance.Stove3RunState)
+            {
+                //refreshTemperatureChart(3, StoveStartTime.ElapsedMilliseconds / 1000, RunPara.Instance.Stove[2].Temperature);
+                if (RunPara.Instance.MesStoveTemperature.min <= RunPara.Instance.Stove[2].Temperature && !Marking.StartTemperatureSign[2])
+                {
+                    Marking.StartTemperatureSign[2] = true;
+                }
+                if (Marking.StartTemperatureSign[2])
+                {
+                    if (Marking.FirstTemperatureSign[2])
+                    {
+                        Marking.CuringTime[2].Restart();  //开始固化计时
+                        Marking.FirstTemperatureSign[2] = false;
+                        RunPara.Instance.AverageTemperature[2] = RunPara.Instance.Stove[2].Temperature;
+                    }
+                    else  //平均固化温度
+                    {
+                        RunPara.Instance.AverageTemperature[2] = (RunPara.Instance.AverageTemperature[2] + RunPara.Instance.Stove[2].Temperature) / 2;
+                    }
+                }
+            }
+
+            #endregion
+
+            #region 炉4固化数据获取
+            if (1 == Global.Instance.Stove4RunState)
+            {
+                //refreshTemperatureChart(4, StoveStartTime.ElapsedMilliseconds / 1000, RunPara.Instance.Stove[3].Temperature);
+                if (RunPara.Instance.MesStoveTemperature.min <= RunPara.Instance.Stove[3].Temperature && !Marking.StartTemperatureSign[3])
+                {
+                    Marking.StartTemperatureSign[3] = true;
+                }
+                if (Marking.StartTemperatureSign[3])
+                {
+                    if (Marking.FirstTemperatureSign[3])
+                    {
+                        Marking.CuringTime[3].Restart();  //开始固化计时
+                        Marking.FirstTemperatureSign[3] = false;
+                        RunPara.Instance.AverageTemperature[3] = RunPara.Instance.Stove[3].Temperature;
+                    }
+                    else  //平均固化温度
+                    {
+                        RunPara.Instance.AverageTemperature[3] = (RunPara.Instance.AverageTemperature[3] + RunPara.Instance.Stove[3].Temperature) / 2;
+                    }
+                }
+            }
+
+            #endregion
+
+            #region 炉5固化数据获取
+            if (1 == Global.Instance.Stove5RunState)
+            {
+                //refreshTemperatureChart(5, StoveStartTime.ElapsedMilliseconds / 1000, RunPara.Instance.Stove[4].Temperature);
+                if (RunPara.Instance.MesStoveTemperature.min <= RunPara.Instance.Stove[4].Temperature && !Marking.StartTemperatureSign[4])
+                {
+                    Marking.StartTemperatureSign[4] = true;
+                }
+                if (Marking.StartTemperatureSign[4])
+                {
+                    if (Marking.FirstTemperatureSign[4])
+                    {
+                        Marking.CuringTime[4].Restart();  //开始固化计时
+                        Marking.FirstTemperatureSign[4] = false;
+                        RunPara.Instance.AverageTemperature[4] = RunPara.Instance.Stove[4].Temperature;
+                    }
+                    else  //平均固化温度
+                    {
+                        RunPara.Instance.AverageTemperature[4] = (RunPara.Instance.AverageTemperature[4] + RunPara.Instance.Stove[4].Temperature) / 2;
+                    }
+                }
+            }
+
+            #endregion
+
+            #region 炉6固化数据获取
+            if (1 == Global.Instance.Stove6RunState)
+            {
+                //refreshTemperatureChart(6, StoveStartTime.ElapsedMilliseconds / 1000, RunPara.Instance.Stove[5].Temperature);
+                if (RunPara.Instance.MesStoveTemperature.min <= RunPara.Instance.Stove[5].Temperature && !Marking.StartTemperatureSign[5])
+                {
+                    Marking.StartTemperatureSign[5] = true;
+                }
+                if (Marking.StartTemperatureSign[5])
+                {
+                    if (Marking.FirstTemperatureSign[5])
+                    {
+                        Marking.CuringTime[5].Restart();  //开始固化计时
+                        Marking.FirstTemperatureSign[5] = false;
+                        RunPara.Instance.AverageTemperature[5] = RunPara.Instance.Stove[5].Temperature;
+                    }
+                    else  //平均固化温度
+                    {
+                        RunPara.Instance.AverageTemperature[5] = (RunPara.Instance.AverageTemperature[5] + RunPara.Instance.Stove[5].Temperature) / 2;
+                    }
+                }
+            }
+
+            #endregion
+
         }
 
         /// <summary>
@@ -2066,7 +2428,7 @@ namespace Desay
         public enum RobotAlarm : int
         {
             无消息,
-            初始化故障,            
+            初始化故障,
             NG料盘已满_清料,
             待料位满盘报警,
             无盘等待超时报警,

@@ -35,11 +35,13 @@
             this.btnRobotElectrify = new System.Windows.Forms.Button();
             this.btnRobotReset = new System.Windows.Forms.Button();
             this.btnRobotStop = new System.Windows.Forms.Button();
-            this.flpCylinder = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.SN = new System.Windows.Forms.TextBox();
+            this.btnscan2 = new System.Windows.Forms.Button();
+            this.btnscan = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -77,9 +79,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.btnSaveCylinder = new System.Windows.Forms.Button();
-            this.flpCylinderParam = new System.Windows.Forms.FlowLayoutPanel();
             this.btnConnectionForeward = new System.Windows.Forms.Button();
             this.btnConnectionStop = new System.Windows.Forms.Button();
             this.btnLonFan = new System.Windows.Forms.Button();
@@ -87,10 +86,7 @@
             this.btnReadyToAA = new System.Windows.Forms.Button();
             this.btnProductToAA = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.btnscan = new System.Windows.Forms.Button();
-            this.SN = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.grpLocationMoveSelect.SuspendLayout();
@@ -99,7 +95,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbrJogSpeed)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRobotConnect
@@ -168,14 +163,6 @@
             this.btnRobotStop.UseVisualStyleBackColor = true;
             this.btnRobotStop.Click += new System.EventHandler(this.btnRobotStop_Click);
             // 
-            // flpCylinder
-            // 
-            this.flpCylinder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flpCylinder.Location = new System.Drawing.Point(3, 17);
-            this.flpCylinder.Name = "flpCylinder";
-            this.flpCylinder.Size = new System.Drawing.Size(733, 50);
-            this.flpCylinder.TabIndex = 5;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btnRobotStop);
@@ -184,7 +171,7 @@
             this.groupBox1.Controls.Add(this.btnRobotStart);
             this.groupBox1.Controls.Add(this.btnRobotElectrify);
             this.groupBox1.Controls.Add(this.btnRobotInit);
-            this.groupBox1.Location = new System.Drawing.Point(750, 3);
+            this.groupBox1.Location = new System.Drawing.Point(744, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(162, 249);
             this.groupBox1.TabIndex = 12;
@@ -195,19 +182,11 @@
             // 
             this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.flpCylinder);
-            this.groupBox2.Location = new System.Drawing.Point(4, 182);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(739, 70);
-            this.groupBox2.TabIndex = 13;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "气缸操作";
-            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.SN);
+            this.groupBox3.Controls.Add(this.btnscan2);
             this.groupBox3.Controls.Add(this.btnscan);
             this.groupBox3.Controls.Add(this.tableLayoutPanel2);
             this.groupBox3.Controls.Add(this.btnRightMove);
@@ -217,12 +196,48 @@
             this.groupBox3.Controls.Add(this.lblJogSpeed);
             this.groupBox3.Controls.Add(this.tbrJogSpeed);
             this.groupBox3.Controls.Add(this.tableLayoutPanel1);
-            this.groupBox3.Location = new System.Drawing.Point(4, 258);
+            this.groupBox3.Location = new System.Drawing.Point(12, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(740, 259);
+            this.groupBox3.Size = new System.Drawing.Size(726, 514);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "轴操作";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(19, 211);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(65, 12);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "移动速度：";
+            // 
+            // SN
+            // 
+            this.SN.Location = new System.Drawing.Point(12, 462);
+            this.SN.Name = "SN";
+            this.SN.Size = new System.Drawing.Size(271, 21);
+            this.SN.TabIndex = 14;
+            // 
+            // btnscan2
+            // 
+            this.btnscan2.Location = new System.Drawing.Point(301, 476);
+            this.btnscan2.Name = "btnscan2";
+            this.btnscan2.Size = new System.Drawing.Size(104, 23);
+            this.btnscan2.TabIndex = 13;
+            this.btnscan2.Text = "料盘扫码";
+            this.btnscan2.UseVisualStyleBackColor = true;
+            this.btnscan2.Click += new System.EventHandler(this.btnscan2_Click);
+            // 
+            // btnscan
+            // 
+            this.btnscan.Location = new System.Drawing.Point(301, 447);
+            this.btnscan.Name = "btnscan";
+            this.btnscan.Size = new System.Drawing.Size(104, 23);
+            this.btnscan.TabIndex = 13;
+            this.btnscan.Text = "产品扫码";
+            this.btnscan.UseVisualStyleBackColor = true;
+            this.btnscan.Click += new System.EventHandler(this.btnscan_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -244,7 +259,7 @@
             this.tableLayoutPanel2.Controls.Add(this.btnGotoMove, 3, 2);
             this.tableLayoutPanel2.Controls.Add(this.btnSaveMove, 2, 2);
             this.tableLayoutPanel2.Controls.Add(this.labMovePos, 1, 2);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(5, 18);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 284);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -397,11 +412,11 @@
             // btnRightMove
             // 
             this.btnRightMove.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRightMove.Location = new System.Drawing.Point(593, 201);
+            this.btnRightMove.Location = new System.Drawing.Point(301, 242);
             this.btnRightMove.Name = "btnRightMove";
-            this.btnRightMove.Size = new System.Drawing.Size(108, 44);
+            this.btnRightMove.Size = new System.Drawing.Size(108, 28);
             this.btnRightMove.TabIndex = 10;
-            this.btnRightMove.Text = "右移 ";
+            this.btnRightMove.Text = "左移";
             this.btnRightMove.UseVisualStyleBackColor = true;
             this.btnRightMove.Click += new System.EventHandler(this.btnRightMove_Click);
             this.btnRightMove.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnRightMove_MouseDown);
@@ -410,11 +425,11 @@
             // btnLeftMove
             // 
             this.btnLeftMove.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnLeftMove.Location = new System.Drawing.Point(451, 201);
+            this.btnLeftMove.Location = new System.Drawing.Point(301, 214);
             this.btnLeftMove.Name = "btnLeftMove";
-            this.btnLeftMove.Size = new System.Drawing.Size(108, 44);
+            this.btnLeftMove.Size = new System.Drawing.Size(108, 28);
             this.btnLeftMove.TabIndex = 11;
-            this.btnLeftMove.Text = "左移";
+            this.btnLeftMove.Text = "右移";
             this.btnLeftMove.UseVisualStyleBackColor = true;
             this.btnLeftMove.Click += new System.EventHandler(this.btnLeftMove_Click);
             this.btnLeftMove.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnLeftMove_MouseDown);
@@ -428,9 +443,9 @@
             this.grpLocationMoveSelect.Controls.Add(this.rbnPos1000um);
             this.grpLocationMoveSelect.Controls.Add(this.rbnPos100um);
             this.grpLocationMoveSelect.Controls.Add(this.rbnPos10um);
-            this.grpLocationMoveSelect.Location = new System.Drawing.Point(529, 93);
+            this.grpLocationMoveSelect.Location = new System.Drawing.Point(153, 123);
             this.grpLocationMoveSelect.Name = "grpLocationMoveSelect";
-            this.grpLocationMoveSelect.Size = new System.Drawing.Size(199, 69);
+            this.grpLocationMoveSelect.Size = new System.Drawing.Size(256, 69);
             this.grpLocationMoveSelect.TabIndex = 8;
             this.grpLocationMoveSelect.TabStop = false;
             this.grpLocationMoveSelect.Text = "定距选择";
@@ -444,7 +459,7 @@
             0,
             0,
             131072});
-            this.ndnPosOther.Location = new System.Drawing.Point(114, 38);
+            this.ndnPosOther.Location = new System.Drawing.Point(157, 37);
             this.ndnPosOther.Minimum = new decimal(new int[] {
             10,
             0,
@@ -472,7 +487,7 @@
             // rbnPosOtherum
             // 
             this.rbnPosOtherum.AutoSize = true;
-            this.rbnPosOtherum.Location = new System.Drawing.Point(98, 42);
+            this.rbnPosOtherum.Location = new System.Drawing.Point(140, 41);
             this.rbnPosOtherum.Name = "rbnPosOtherum";
             this.rbnPosOtherum.Size = new System.Drawing.Size(14, 13);
             this.rbnPosOtherum.TabIndex = 0;
@@ -481,7 +496,7 @@
             // rbnPos1000um
             // 
             this.rbnPos1000um.AutoSize = true;
-            this.rbnPos1000um.Location = new System.Drawing.Point(98, 20);
+            this.rbnPos1000um.Location = new System.Drawing.Point(140, 19);
             this.rbnPos1000um.Name = "rbnPos1000um";
             this.rbnPos1000um.Size = new System.Drawing.Size(59, 16);
             this.rbnPos1000um.TabIndex = 0;
@@ -491,7 +506,7 @@
             // rbnPos100um
             // 
             this.rbnPos100um.AutoSize = true;
-            this.rbnPos100um.Location = new System.Drawing.Point(24, 42);
+            this.rbnPos100um.Location = new System.Drawing.Point(40, 42);
             this.rbnPos100um.Name = "rbnPos100um";
             this.rbnPos100um.Size = new System.Drawing.Size(59, 16);
             this.rbnPos100um.TabIndex = 0;
@@ -502,7 +517,7 @@
             // 
             this.rbnPos10um.AutoSize = true;
             this.rbnPos10um.Checked = true;
-            this.rbnPos10um.Location = new System.Drawing.Point(24, 20);
+            this.rbnPos10um.Location = new System.Drawing.Point(40, 20);
             this.rbnPos10um.Name = "rbnPos10um";
             this.rbnPos10um.Size = new System.Drawing.Size(59, 16);
             this.rbnPos10um.TabIndex = 0;
@@ -514,17 +529,17 @@
             // 
             this.groupBox4.Controls.Add(this.rbnLocationMoveSelect);
             this.groupBox4.Controls.Add(this.rbnContinueMoveSelect);
-            this.groupBox4.Location = new System.Drawing.Point(422, 93);
+            this.groupBox4.Location = new System.Drawing.Point(6, 123);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(101, 69);
+            this.groupBox4.Size = new System.Drawing.Size(141, 69);
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "移动模式选择";
+            this.groupBox4.Text = "模式选择";
             // 
             // rbnLocationMoveSelect
             // 
             this.rbnLocationMoveSelect.AutoSize = true;
-            this.rbnLocationMoveSelect.Location = new System.Drawing.Point(29, 42);
+            this.rbnLocationMoveSelect.Location = new System.Drawing.Point(49, 42);
             this.rbnLocationMoveSelect.Name = "rbnLocationMoveSelect";
             this.rbnLocationMoveSelect.Size = new System.Drawing.Size(47, 16);
             this.rbnLocationMoveSelect.TabIndex = 0;
@@ -535,7 +550,7 @@
             // 
             this.rbnContinueMoveSelect.AutoSize = true;
             this.rbnContinueMoveSelect.Checked = true;
-            this.rbnContinueMoveSelect.Location = new System.Drawing.Point(29, 20);
+            this.rbnContinueMoveSelect.Location = new System.Drawing.Point(49, 20);
             this.rbnContinueMoveSelect.Name = "rbnContinueMoveSelect";
             this.rbnContinueMoveSelect.Size = new System.Drawing.Size(47, 16);
             this.rbnContinueMoveSelect.TabIndex = 0;
@@ -546,7 +561,7 @@
             // lblJogSpeed
             // 
             this.lblJogSpeed.AutoSize = true;
-            this.lblJogSpeed.Location = new System.Drawing.Point(672, 177);
+            this.lblJogSpeed.Location = new System.Drawing.Point(93, 211);
             this.lblJogSpeed.Name = "lblJogSpeed";
             this.lblJogSpeed.Size = new System.Drawing.Size(41, 12);
             this.lblJogSpeed.TabIndex = 7;
@@ -555,11 +570,11 @@
             // tbrJogSpeed
             // 
             this.tbrJogSpeed.AutoSize = false;
-            this.tbrJogSpeed.Location = new System.Drawing.Point(424, 174);
+            this.tbrJogSpeed.Location = new System.Drawing.Point(13, 233);
             this.tbrJogSpeed.Maximum = 100;
             this.tbrJogSpeed.Name = "tbrJogSpeed";
             this.tbrJogSpeed.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tbrJogSpeed.Size = new System.Drawing.Size(243, 23);
+            this.tbrJogSpeed.Size = new System.Drawing.Size(270, 23);
             this.tbrJogSpeed.TabIndex = 6;
             this.tbrJogSpeed.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tbrJogSpeed.Value = 10;
@@ -581,32 +596,33 @@
             this.tableLayoutPanel1.Controls.Add(this.label12, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label13, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(422, 17);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(306, 66);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(403, 90);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.chkCarryAxisIsServoOn);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(217, 36);
+            this.panel1.Location = new System.Drawing.Point(284, 48);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(85, 26);
+            this.panel1.Size = new System.Drawing.Size(115, 38);
             this.panel1.TabIndex = 5;
             // 
             // chkCarryAxisIsServoOn
             // 
             this.chkCarryAxisIsServoOn.AutoSize = true;
-            this.chkCarryAxisIsServoOn.Dock = System.Windows.Forms.DockStyle.Left;
+            this.chkCarryAxisIsServoOn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chkCarryAxisIsServoOn.Location = new System.Drawing.Point(0, 0);
             this.chkCarryAxisIsServoOn.Name = "chkCarryAxisIsServoOn";
-            this.chkCarryAxisIsServoOn.Size = new System.Drawing.Size(84, 26);
+            this.chkCarryAxisIsServoOn.Size = new System.Drawing.Size(115, 38);
             this.chkCarryAxisIsServoOn.TabIndex = 5;
-            this.chkCarryAxisIsServoOn.Text = "是否伺服ON";
+            this.chkCarryAxisIsServoOn.Text = "是否ON  ";
+            this.chkCarryAxisIsServoOn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkCarryAxisIsServoOn.UseVisualStyleBackColor = true;
             this.chkCarryAxisIsServoOn.CheckedChanged += new System.EventHandler(this.chkCarryAxisIsServoOn_CheckedChanged);
             // 
@@ -615,9 +631,9 @@
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(4, 33);
+            this.label1.Location = new System.Drawing.Point(4, 45);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 32);
+            this.label1.Size = new System.Drawing.Size(73, 44);
             this.label1.TabIndex = 0;
             this.label1.Text = "输送轴";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -629,9 +645,9 @@
             this.lblCurrentPositionCarry.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentPositionCarry.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblCurrentPositionCarry.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblCurrentPositionCarry.Location = new System.Drawing.Point(65, 33);
+            this.lblCurrentPositionCarry.Location = new System.Drawing.Point(84, 45);
             this.lblCurrentPositionCarry.Name = "lblCurrentPositionCarry";
-            this.lblCurrentPositionCarry.Size = new System.Drawing.Size(69, 32);
+            this.lblCurrentPositionCarry.Size = new System.Drawing.Size(93, 44);
             this.lblCurrentPositionCarry.TabIndex = 2;
             this.lblCurrentPositionCarry.Text = "000.000";
             this.lblCurrentPositionCarry.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -643,9 +659,9 @@
             this.lblCurrentSpeedCarry.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentSpeedCarry.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblCurrentSpeedCarry.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblCurrentSpeedCarry.Location = new System.Drawing.Point(141, 33);
+            this.lblCurrentSpeedCarry.Location = new System.Drawing.Point(184, 45);
             this.lblCurrentSpeedCarry.Name = "lblCurrentSpeedCarry";
-            this.lblCurrentSpeedCarry.Size = new System.Drawing.Size(69, 32);
+            this.lblCurrentSpeedCarry.Size = new System.Drawing.Size(93, 44);
             this.lblCurrentSpeedCarry.TabIndex = 4;
             this.lblCurrentSpeedCarry.Text = "000.000";
             this.lblCurrentSpeedCarry.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -655,9 +671,9 @@
             this.label11.AutoSize = true;
             this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.Location = new System.Drawing.Point(65, 1);
+            this.label11.Location = new System.Drawing.Point(84, 1);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(69, 31);
+            this.label11.Size = new System.Drawing.Size(93, 43);
             this.label11.TabIndex = 7;
             this.label11.Text = "当前位置mm";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -667,9 +683,9 @@
             this.label12.AutoSize = true;
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label12.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label12.Location = new System.Drawing.Point(141, 1);
+            this.label12.Location = new System.Drawing.Point(184, 1);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(69, 31);
+            this.label12.Size = new System.Drawing.Size(93, 43);
             this.label12.TabIndex = 7;
             this.label12.Text = "当前速度mm/s";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -679,11 +695,11 @@
             this.label13.AutoSize = true;
             this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label13.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.Location = new System.Drawing.Point(217, 1);
+            this.label13.Location = new System.Drawing.Point(284, 1);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(85, 31);
+            this.label13.Size = new System.Drawing.Size(115, 43);
             this.label13.TabIndex = 7;
-            this.label13.Text = "伺服状态";
+            this.label13.Text = "步进状态";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label5
@@ -692,45 +708,15 @@
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Location = new System.Drawing.Point(4, 1);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(54, 31);
+            this.label5.Size = new System.Drawing.Size(73, 43);
             this.label5.TabIndex = 8;
             this.label5.Text = "轴名";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.btnSaveCylinder);
-            this.groupBox5.Controls.Add(this.flpCylinderParam);
-            this.groupBox5.Location = new System.Drawing.Point(7, 3);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(737, 173);
-            this.groupBox5.TabIndex = 15;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "气缸参数";
-            // 
-            // btnSaveCylinder
-            // 
-            this.btnSaveCylinder.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSaveCylinder.Location = new System.Drawing.Point(1, 136);
-            this.btnSaveCylinder.Name = "btnSaveCylinder";
-            this.btnSaveCylinder.Size = new System.Drawing.Size(108, 35);
-            this.btnSaveCylinder.TabIndex = 1;
-            this.btnSaveCylinder.Text = "保存";
-            this.btnSaveCylinder.UseVisualStyleBackColor = true;
-            this.btnSaveCylinder.Click += new System.EventHandler(this.btnSaveCylinder_Click);
-            // 
-            // flpCylinderParam
-            // 
-            this.flpCylinderParam.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flpCylinderParam.Location = new System.Drawing.Point(3, 17);
-            this.flpCylinderParam.Name = "flpCylinderParam";
-            this.flpCylinderParam.Size = new System.Drawing.Size(731, 113);
-            this.flpCylinderParam.TabIndex = 0;
-            // 
             // btnConnectionForeward
             // 
             this.btnConnectionForeward.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnConnectionForeward.Location = new System.Drawing.Point(756, 258);
+            this.btnConnectionForeward.Location = new System.Drawing.Point(750, 258);
             this.btnConnectionForeward.Name = "btnConnectionForeward";
             this.btnConnectionForeward.Size = new System.Drawing.Size(153, 31);
             this.btnConnectionForeward.TabIndex = 12;
@@ -742,7 +728,7 @@
             // 
             this.btnConnectionStop.BackColor = System.Drawing.SystemColors.Control;
             this.btnConnectionStop.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnConnectionStop.Location = new System.Drawing.Point(756, 334);
+            this.btnConnectionStop.Location = new System.Drawing.Point(750, 334);
             this.btnConnectionStop.Name = "btnConnectionStop";
             this.btnConnectionStop.Size = new System.Drawing.Size(153, 31);
             this.btnConnectionStop.TabIndex = 12;
@@ -753,7 +739,7 @@
             // btnLonFan
             // 
             this.btnLonFan.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnLonFan.Location = new System.Drawing.Point(756, 372);
+            this.btnLonFan.Location = new System.Drawing.Point(750, 372);
             this.btnLonFan.Name = "btnLonFan";
             this.btnLonFan.Size = new System.Drawing.Size(153, 31);
             this.btnLonFan.TabIndex = 12;
@@ -764,7 +750,7 @@
             // btnConnectionReversal
             // 
             this.btnConnectionReversal.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnConnectionReversal.Location = new System.Drawing.Point(756, 296);
+            this.btnConnectionReversal.Location = new System.Drawing.Point(750, 296);
             this.btnConnectionReversal.Name = "btnConnectionReversal";
             this.btnConnectionReversal.Size = new System.Drawing.Size(153, 31);
             this.btnConnectionReversal.TabIndex = 12;
@@ -775,28 +761,28 @@
             // btnReadyToAA
             // 
             this.btnReadyToAA.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnReadyToAA.Location = new System.Drawing.Point(756, 410);
+            this.btnReadyToAA.Location = new System.Drawing.Point(750, 410);
             this.btnReadyToAA.Name = "btnReadyToAA";
             this.btnReadyToAA.Size = new System.Drawing.Size(153, 31);
             this.btnReadyToAA.TabIndex = 12;
-            this.btnReadyToAA.Text = "接驳台Ready（ToAA）";
+            this.btnReadyToAA.Text = "ABB取料信号-OFF";
             this.btnReadyToAA.UseVisualStyleBackColor = true;
             this.btnReadyToAA.Click += new System.EventHandler(this.btnReadyToAA_Click);
             // 
             // btnProductToAA
             // 
             this.btnProductToAA.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnProductToAA.Location = new System.Drawing.Point(756, 448);
+            this.btnProductToAA.Location = new System.Drawing.Point(750, 448);
             this.btnProductToAA.Name = "btnProductToAA";
             this.btnProductToAA.Size = new System.Drawing.Size(153, 31);
             this.btnProductToAA.TabIndex = 12;
-            this.btnProductToAA.Text = "接驳台有料（ToAA）";
+            this.btnProductToAA.Text = "ABB开夹信号-OFF";
             this.btnProductToAA.UseVisualStyleBackColor = true;
             this.btnProductToAA.Click += new System.EventHandler(this.btnProductToAA_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(756, 485);
+            this.button1.Location = new System.Drawing.Point(750, 485);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(150, 32);
             this.button1.TabIndex = 16;
@@ -804,30 +790,12 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // btnscan
-            // 
-            this.btnscan.Location = new System.Drawing.Point(47, 190);
-            this.btnscan.Name = "btnscan";
-            this.btnscan.Size = new System.Drawing.Size(75, 23);
-            this.btnscan.TabIndex = 13;
-            this.btnscan.Text = "扫码";
-            this.btnscan.UseVisualStyleBackColor = true;
-            this.btnscan.Click += new System.EventHandler(this.btnscan_Click);
-            // 
-            // SN
-            // 
-            this.SN.Location = new System.Drawing.Point(133, 190);
-            this.SN.Name = "SN";
-            this.SN.Size = new System.Drawing.Size(175, 21);
-            this.SN.TabIndex = 14;
-            // 
             // FrmOperationReversal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(918, 522);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.btnProductToAA);
             this.Controls.Add(this.btnReadyToAA);
             this.Controls.Add(this.btnLonFan);
@@ -835,13 +803,11 @@
             this.Controls.Add(this.btnConnectionReversal);
             this.Controls.Add(this.btnConnectionForeward);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "FrmOperationReversal";
             this.Text = "设备操作";
             this.Load += new System.EventHandler(this.FrmOperation_Load);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -856,7 +822,6 @@
             this.tableLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -869,10 +834,8 @@
         private System.Windows.Forms.Button btnRobotElectrify;
         private System.Windows.Forms.Button btnRobotReset;
         private System.Windows.Forms.Button btnRobotStop;
-        private System.Windows.Forms.FlowLayoutPanel flpCylinder;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Timer refreshTimer;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
@@ -897,7 +860,6 @@
         private System.Windows.Forms.RadioButton rbnContinueMoveSelect;
         private System.Windows.Forms.Button btnRightMove;
         private System.Windows.Forms.Button btnLeftMove;
-        private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnSaveOrg;
@@ -906,8 +868,6 @@
         private System.Windows.Forms.Button btnGotoCooling;
         private System.Windows.Forms.Label labOrgPos;
         private System.Windows.Forms.Label labCoolingPos;
-        private System.Windows.Forms.FlowLayoutPanel flpCylinderParam;
-        private System.Windows.Forms.Button btnSaveCylinder;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
@@ -923,5 +883,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnscan;
         private System.Windows.Forms.TextBox SN;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnscan2;
     }
 }

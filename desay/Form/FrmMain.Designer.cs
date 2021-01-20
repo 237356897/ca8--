@@ -65,6 +65,7 @@
             this.labRobot = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.labTrayCodeCom = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel7 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tstrobotstatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel6 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -77,8 +78,8 @@
             this.QRCodeName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbcMain = new System.Windows.Forms.TabControl();
             this.tbgMain = new System.Windows.Forms.TabPage();
-            this.label9 = new System.Windows.Forms.Label();
             this.tbOven6Temperature = new System.Windows.Forms.TextBox();
+            this.cb_down = new System.Windows.Forms.CheckBox();
             this.tbOven5Temperature = new System.Windows.Forms.TextBox();
             this.tbOven4Temperature = new System.Windows.Forms.TextBox();
             this.tbOven3Temperature = new System.Windows.Forms.TextBox();
@@ -101,7 +102,6 @@
             this.tbgIOMonitor = new System.Windows.Forms.TabPage();
             this.tbgRecipe = new System.Windows.Forms.TabPage();
             this.tbgOperation = new System.Windows.Forms.TabPage();
-            this.cb_down = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
@@ -298,6 +298,7 @@
             this.labRobot,
             this.toolStripStatusLabel2,
             this.labTrayCodeCom,
+            this.toolStripStatusLabel7,
             this.toolStripStatusLabel4,
             this.tstrobotstatus,
             this.toolStripStatusLabel6,
@@ -362,6 +363,12 @@
             this.labTrayCodeCom.Size = new System.Drawing.Size(36, 17);
             this.labTrayCodeCom.Text = "       ";
             // 
+            // toolStripStatusLabel7
+            // 
+            this.toolStripStatusLabel7.Name = "toolStripStatusLabel7";
+            this.toolStripStatusLabel7.Size = new System.Drawing.Size(40, 17);
+            this.toolStripStatusLabel7.Text = "        ";
+            // 
             // toolStripStatusLabel4
             // 
             this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
@@ -370,9 +377,9 @@
             // 
             // tstrobotstatus
             // 
-            this.tstrobotstatus.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tstrobotstatus.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tstrobotstatus.Name = "tstrobotstatus";
-            this.tstrobotstatus.Size = new System.Drawing.Size(49, 17);
+            this.tstrobotstatus.Size = new System.Drawing.Size(43, 17);
             this.tstrobotstatus.Text = "Status";
             // 
             // toolStripStatusLabel6
@@ -384,9 +391,9 @@
             // tstrobotstep
             // 
             this.tstrobotstep.ActiveLinkColor = System.Drawing.Color.Red;
-            this.tstrobotstep.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tstrobotstep.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tstrobotstep.Name = "tstrobotstep";
-            this.tstrobotstep.Size = new System.Drawing.Size(35, 17);
+            this.tstrobotstep.Size = new System.Drawing.Size(33, 17);
             this.tstrobotstep.Text = "step";
             // 
             // txtMessage
@@ -482,8 +489,8 @@
             // 
             // tbgMain
             // 
-            this.tbgMain.Controls.Add(this.label9);
             this.tbgMain.Controls.Add(this.tbOven6Temperature);
+            this.tbgMain.Controls.Add(this.cb_down);
             this.tbgMain.Controls.Add(this.tbOven5Temperature);
             this.tbgMain.Controls.Add(this.tbOven4Temperature);
             this.tbgMain.Controls.Add(this.tbOven3Temperature);
@@ -507,15 +514,6 @@
             this.tbgMain.Text = "主界面";
             this.tbgMain.UseVisualStyleBackColor = true;
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(877, 251);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 12);
-            this.label9.TabIndex = 84;
-            this.label9.Text = "上炉";
-            // 
             // tbOven6Temperature
             // 
             this.tbOven6Temperature.Enabled = false;
@@ -525,6 +523,16 @@
             this.tbOven6Temperature.TabIndex = 80;
             this.tbOven6Temperature.Text = "0.000";
             this.tbOven6Temperature.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // cb_down
+            // 
+            this.cb_down.AutoSize = true;
+            this.cb_down.Location = new System.Drawing.Point(870, 251);
+            this.cb_down.Name = "cb_down";
+            this.cb_down.Size = new System.Drawing.Size(48, 16);
+            this.cb_down.TabIndex = 83;
+            this.cb_down.Text = "下炉";
+            this.cb_down.UseVisualStyleBackColor = true;
             // 
             // tbOven5Temperature
             // 
@@ -818,16 +826,6 @@
             this.tbgOperation.Text = "tbgOperation";
             this.tbgOperation.UseVisualStyleBackColor = true;
             // 
-            // cb_down
-            // 
-            this.cb_down.AutoSize = true;
-            this.cb_down.Location = new System.Drawing.Point(1136, 591);
-            this.cb_down.Name = "cb_down";
-            this.cb_down.Size = new System.Drawing.Size(72, 16);
-            this.cb_down.TabIndex = 83;
-            this.cb_down.Text = "下炉状态";
-            this.cb_down.UseVisualStyleBackColor = true;
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.tableLayoutPanel3);
@@ -1012,7 +1010,7 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(102, 29);
             this.button5.TabIndex = 97;
-            this.button5.Text = "空跑";
+            this.button5.Text = "生产模式";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -1299,7 +1297,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1227, 765);
-            this.Controls.Add(this.cb_down);
             this.Controls.Add(this.cb_doorok);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
@@ -1319,6 +1316,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "固化设备(V0.1.2.0)";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
@@ -1429,7 +1427,6 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox cb_down;
         private System.Windows.Forms.CheckBox cb_doorok;
         private System.Windows.Forms.Button btnAlarmClean;
@@ -1440,6 +1437,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel6;
         private System.Windows.Forms.ToolStripButton btnTrayCodeSet;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel7;
     }
 }
 

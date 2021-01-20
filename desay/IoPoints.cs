@@ -24,91 +24,91 @@ namespace Desay
         #region Card204C IO list
 
         /// <summary>
-        ///  备用
+        ///  AA结果OK
         /// </summary>
         public static IoPoint T1DI00 = new IoPoint(m_ApsController, Card204C, 8, IoModes.Senser)
         {
             Name = "T1DI00",
-            Description = "备用"
+            Description = "AA OK"
         };
         /// <summary>
-        ///   备用 
+        ///   AA结果NG 
         /// </summary>
         public static IoPoint T1DI01 = new IoPoint(m_ApsController, Card204C, 9, IoModes.Senser)
         {
             Name = "T1DI01",
-            Description = "备用"
+            Description = "AA NG"
         };
 
         /// <summary>
-        ///   接驳台定位气缸原点
+        ///   AA夹子打开完成
         /// </summary>
         public static IoPoint T1DI02 = new IoPoint(m_ApsController, Card204C, 10, IoModes.Senser)
         {
             Name = "T1DI02",
-            Description = "接驳台定位气缸原点"
+            Description = "AA夹子已打开"
         };
 
         /// <summary>
-        ///   接驳台定位气缸动点
+        ///   备用
         /// </summary>
         public static IoPoint T1DI03 = new IoPoint(m_ApsController, Card204C, 11, IoModes.Senser)
         {
             Name = "T1DI03",
-            Description = "接驳台定位气缸动点"
+            Description = "备用"
         };
 
         /// <summary>
-        ///   接驳台开夹气缸原点
+        ///   备用
         /// </summary>
         public static IoPoint T1DI04 = new IoPoint(m_ApsController, Card204C, 12, IoModes.Senser)
         {
             Name = "T1DI04",
-            Description = "接驳台开夹气缸原点"
+            Description = "备用"
         };
 
         /// <summary>
-        ///   接驳台开夹气缸动点
+        ///   备用
         /// </summary>
         public static IoPoint T1DI05 = new IoPoint(m_ApsController, Card204C, 13, IoModes.Senser)
         {
             Name = "T1DI05",
-            Description = "接驳台开夹气缸动点"
+            Description = "备用"
         };
 
         /// <summary>
-        ///   AA有料信号
+        ///   备用
         /// </summary>
         public static IoPoint T1DI06 = new IoPoint(m_ApsController, Card204C, 14, IoModes.Senser)
         {
             Name = "T1DI06",
-            Description = "AA有料信号"
+            Description = "备用"
         };
 
         /// <summary>
-        ///   AA Ready信号
+        ///   备用
         /// </summary>
         public static IoPoint T1DI07 = new IoPoint(m_ApsController, Card204C, 15, IoModes.Senser)
         {
             Name = "T1DI07",
-            Description = "AA Ready信号"
+            Description = "备用"
         };
 
         /// <summary>
-        ///   AA OK信号
+        ///   备用
         /// </summary>
         public static IoPoint T1DI08 = new IoPoint(m_ApsController, Card204C, 16, IoModes.Senser)
         {
             Name = "T1DI08",
-            Description = "AA OK信号"
+            Description = "备用"
         };
         /// <summary>
-        ///   AA NG信号
+        ///   备用
         /// </summary>
         public static IoPoint T1DI09 = new IoPoint(m_ApsController, Card204C, 17, IoModes.Senser)
         {
             Name = "T1DI09",
-            Description = "AA NG信号"
+            Description = "备用"
         };
         /// <summary>
         ///   备用
@@ -161,21 +161,21 @@ namespace Desay
         };
 
         /// <summary>
-        ///   接驳台Ready（ToAA）
+        ///   机械手取料完成（ToAA）
         /// </summary>
         public static IoPoint T1DO00 = new IoPoint(m_ApsController, Card204C, 8, IoModes.Signal)
         {
             Name = "T1DO00",
-            Description = "接驳台Ready（ToAA）"
+            Description = "机械手取料完成（ToAA）"
         };
 
         /// <summary>
-        /// 接驳台有料（ToAA）
+        /// 机械手请求开夹（ToAA）
         /// </summary>
         public static IoPoint T1DO01 = new IoPoint(m_ApsController, Card204C, 9, IoModes.Signal)
         {
             Name = "T1DO01",
-            Description = "接驳台有料（ToAA）"
+            Description = "机械手请求开夹（ToAA）"
         };
 
         /// <summary>
@@ -420,12 +420,12 @@ namespace Desay
             Description = "备用"
         };
         /// <summary>
-        ///   虚似端子，务接线
+        ///   虚似端子，勿接线
         /// </summary>
         public static IoPoint I2DI14 = new IoPoint(m_DaskController, PCI7432, 14, IoModes.Senser)
         {
             Name = "I2DI14",
-            Description = "虚似端子，务接线"
+            Description = "虚似端子，勿接线"
         };
         /// <summary>
         ///   备用
@@ -596,12 +596,12 @@ namespace Desay
             Description = " 蜂鸣器"
         };
         /// <summary>
-        ///   停止按钮灯
+        ///   启动按钮灯
         /// </summary>
         public static IoPoint I2DO04 = new IoPoint(m_DaskController, PCI7432, 4, IoModes.Signal)
         {
             Name = "I2DO04",
-            Description = "停止按钮灯"
+            Description = "启动按钮灯"
         };
         /// <summary>
         ///   暂停按钮灯
@@ -676,12 +676,12 @@ namespace Desay
             Description = "备用"
         };
         /// <summary>
-        ///   备用
+        ///   虚似端子，勿接线
         /// </summary>
         public static IoPoint I2DO14 = new IoPoint(m_DaskController, PCI7432, 14, IoModes.Signal)
         {
             Name = "I2DO14",
-            Description = "备用"
+            Description = "虚似端子，勿接线"
         };
         /// <summary>
         ///   备用

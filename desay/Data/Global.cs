@@ -19,27 +19,27 @@ namespace Desay
         #endregion
 
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove1RunState = 0;
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove2RunState = 0;
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove3RunState = 0;
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove4RunState = 0;
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove5RunState = 0;
         /// <summary>
-        /// 自动运行状态(0=运行 1=停止 2=完成)
+        /// 自动运行状态(0=待料 1=运行 2=完成)
         /// </summary>
         public int Stove6RunState = 0;
         /// <summary>
@@ -67,7 +67,6 @@ namespace Desay
         /// </summary>
         public bool Stove6AnyMaterial = false;
 
-
         //用户相关信息
         public string AdminPassword = SecurityHelper.TextToMd5("321");
         public string OperatePassword = SecurityHelper.TextToMd5("123");
@@ -79,15 +78,15 @@ namespace Desay
         /// <summary>
         /// 产品扫描器参数 ca7 ca8
         /// </summary>
-        public string QRCodeComParam = "COM6,115200,None,8,One,1500,1500";
+        public string QRCodeComParam = "COM4,115200,None,8,One,3000,3000"; //COM4
         /// <summary>
         /// 料盘扫码器参数
         /// </summary>
-        public string TrayCodeComParam = "COM7,115200,None,8,One,1500,1500";
+        public string TrayCodeComParam = "COM5,115200,None,8,One,3000,3000"; //COM5
         /// <summary>
         /// 三菱PLC MX端口
         /// </summary>
-        public int PLCMX = 0;
+        public int PLCMX = 1;
         /// <summary>
         /// 机器人IP
         /// </summary>

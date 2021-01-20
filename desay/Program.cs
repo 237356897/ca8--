@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Toolkit;
 using System.Toolkit.Helpers;
+using System.Device;
 
 namespace Desay
 {
@@ -38,8 +39,10 @@ namespace Desay
                 RunPara.Instance = SerializerManager<RunPara>.Instance.Load(Product.Instance.ProductDataFile);
 
                 //SerializerManager<RunPara>.Instance.Save(Product.Instance.ProductDataFile, RunPara.Instance);
+                //SerializerManager<Product>.Instance.Save(AppConfig.RecipeFilePath, Product.Instance);
 
                 Application.Run(new FrmMain());
+                
             }
             else
             {

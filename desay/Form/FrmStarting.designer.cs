@@ -33,6 +33,17 @@
             this.timerStart = new System.Windows.Forms.Timer(this.components);
             this.PBress = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblCompany = new System.Windows.Forms.Label();
+            this.lblContact = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.lblAddress = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // PBress
@@ -43,6 +54,7 @@
             this.PBress.Name = "PBress";
             this.PBress.Size = new System.Drawing.Size(719, 8);
             this.PBress.TabIndex = 7;
+            this.PBress.Value = 1;
             // 
             // label1
             // 
@@ -56,14 +68,167 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "Loading...";
             // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("楷体", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(234, -1);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(485, 47);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "惠州市德赛自动化技术有限公司";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lblCompany, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lblContact, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label8, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.lblVersion, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.lblAddress, 1, 2);
+            this.tableLayoutPanel1.ForeColor = System.Drawing.Color.White;
+            this.tableLayoutPanel1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 318);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(724, 107);
+            this.tableLayoutPanel1.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.ForeColor = System.Drawing.Color.Yellow;
+            this.label3.Location = new System.Drawing.Point(2, 0);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(285, 26);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "公司名称：";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblCompany
+            // 
+            this.lblCompany.AutoSize = true;
+            this.lblCompany.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCompany.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblCompany.ForeColor = System.Drawing.Color.Yellow;
+            this.lblCompany.Location = new System.Drawing.Point(291, 0);
+            this.lblCompany.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblCompany.Name = "lblCompany";
+            this.lblCompany.Size = new System.Drawing.Size(431, 26);
+            this.lblCompany.TabIndex = 0;
+            this.lblCompany.Text = "惠州市德赛自动化技术有限公司";
+            this.lblCompany.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblContact
+            // 
+            this.lblContact.AutoSize = true;
+            this.lblContact.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblContact.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblContact.ForeColor = System.Drawing.Color.Yellow;
+            this.lblContact.Location = new System.Drawing.Point(291, 26);
+            this.lblContact.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblContact.Name = "lblContact";
+            this.lblContact.Size = new System.Drawing.Size(431, 26);
+            this.lblContact.TabIndex = 0;
+            this.lblContact.Text = "4000-222-500";
+            this.lblContact.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label6.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.ForeColor = System.Drawing.Color.Yellow;
+            this.label6.Location = new System.Drawing.Point(2, 26);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(285, 26);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "服务热线：";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label7.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.ForeColor = System.Drawing.Color.Yellow;
+            this.label7.Location = new System.Drawing.Point(2, 52);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(285, 26);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "公司地址：";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label8.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.ForeColor = System.Drawing.Color.Yellow;
+            this.label8.Location = new System.Drawing.Point(2, 78);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(285, 29);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "软件版本：";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblVersion.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblVersion.ForeColor = System.Drawing.Color.Yellow;
+            this.lblVersion.Location = new System.Drawing.Point(291, 78);
+            this.lblVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(431, 29);
+            this.lblVersion.TabIndex = 0;
+            this.lblVersion.Text = "V 1.2.0";
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblAddress
+            // 
+            this.lblAddress.AutoSize = true;
+            this.lblAddress.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAddress.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblAddress.ForeColor = System.Drawing.Color.Yellow;
+            this.lblAddress.Location = new System.Drawing.Point(291, 52);
+            this.lblAddress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblAddress.Name = "lblAddress";
+            this.lblAddress.Size = new System.Drawing.Size(431, 26);
+            this.lblAddress.TabIndex = 0;
+            this.lblAddress.Text = "广东省惠州市仲恺区陈江德赛第三工业区厂房B栋";
+            this.lblAddress.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frmStarting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.BackgroundImage = global::_0R02.Properties.Resources.Loading;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(719, 464);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.PBress);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -72,6 +237,8 @@
             this.MinimizeBox = false;
             this.Name = "frmStarting";
             this.Text = "frmStarting";
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -81,5 +248,15 @@
         private System.Windows.Forms.Timer timerStart;
         private System.Windows.Forms.ProgressBar PBress;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblCompany;
+        private System.Windows.Forms.Label lblContact;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblAddress;
     }
 }
