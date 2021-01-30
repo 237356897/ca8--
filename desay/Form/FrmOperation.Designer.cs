@@ -79,13 +79,12 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.btnConnectionForeward = new System.Windows.Forms.Button();
-            this.btnConnectionStop = new System.Windows.Forms.Button();
             this.btnLonFan = new System.Windows.Forms.Button();
-            this.btnConnectionReversal = new System.Windows.Forms.Button();
             this.btnReadyToAA = new System.Windows.Forms.Button();
             this.btnProductToAA = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.btnChangeType = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -95,12 +94,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbrJogSpeed)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRobotConnect
             // 
             this.btnRobotConnect.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotConnect.Location = new System.Drawing.Point(6, 212);
+            this.btnRobotConnect.Location = new System.Drawing.Point(14, 230);
             this.btnRobotConnect.Name = "btnRobotConnect";
             this.btnRobotConnect.Size = new System.Drawing.Size(153, 31);
             this.btnRobotConnect.TabIndex = 6;
@@ -111,7 +111,7 @@
             // btnRobotStart
             // 
             this.btnRobotStart.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotStart.Location = new System.Drawing.Point(6, 173);
+            this.btnRobotStart.Location = new System.Drawing.Point(14, 189);
             this.btnRobotStart.Name = "btnRobotStart";
             this.btnRobotStart.Size = new System.Drawing.Size(153, 31);
             this.btnRobotStart.TabIndex = 7;
@@ -122,7 +122,7 @@
             // btnRobotInit
             // 
             this.btnRobotInit.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotInit.Location = new System.Drawing.Point(6, 134);
+            this.btnRobotInit.Location = new System.Drawing.Point(14, 148);
             this.btnRobotInit.Name = "btnRobotInit";
             this.btnRobotInit.Size = new System.Drawing.Size(153, 31);
             this.btnRobotInit.TabIndex = 8;
@@ -133,7 +133,7 @@
             // btnRobotElectrify
             // 
             this.btnRobotElectrify.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotElectrify.Location = new System.Drawing.Point(6, 95);
+            this.btnRobotElectrify.Location = new System.Drawing.Point(14, 107);
             this.btnRobotElectrify.Name = "btnRobotElectrify";
             this.btnRobotElectrify.Size = new System.Drawing.Size(153, 31);
             this.btnRobotElectrify.TabIndex = 9;
@@ -144,7 +144,7 @@
             // btnRobotReset
             // 
             this.btnRobotReset.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotReset.Location = new System.Drawing.Point(6, 56);
+            this.btnRobotReset.Location = new System.Drawing.Point(14, 66);
             this.btnRobotReset.Name = "btnRobotReset";
             this.btnRobotReset.Size = new System.Drawing.Size(153, 31);
             this.btnRobotReset.TabIndex = 10;
@@ -155,7 +155,7 @@
             // btnRobotStop
             // 
             this.btnRobotStop.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotStop.Location = new System.Drawing.Point(6, 17);
+            this.btnRobotStop.Location = new System.Drawing.Point(14, 25);
             this.btnRobotStop.Name = "btnRobotStop";
             this.btnRobotStop.Size = new System.Drawing.Size(153, 31);
             this.btnRobotStop.TabIndex = 11;
@@ -165,15 +165,17 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnChangeType);
             this.groupBox1.Controls.Add(this.btnRobotStop);
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.btnRobotConnect);
             this.groupBox1.Controls.Add(this.btnRobotReset);
             this.groupBox1.Controls.Add(this.btnRobotStart);
             this.groupBox1.Controls.Add(this.btnRobotElectrify);
             this.groupBox1.Controls.Add(this.btnRobotInit);
-            this.groupBox1.Location = new System.Drawing.Point(744, 3);
+            this.groupBox1.Location = new System.Drawing.Point(726, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(162, 249);
+            this.groupBox1.Size = new System.Drawing.Size(180, 363);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "机器人操作";
@@ -198,7 +200,7 @@
             this.groupBox3.Controls.Add(this.tableLayoutPanel1);
             this.groupBox3.Location = new System.Drawing.Point(12, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(726, 514);
+            this.groupBox3.Size = new System.Drawing.Size(697, 514);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "轴操作";
@@ -713,33 +715,10 @@
             this.label5.Text = "轴名";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnConnectionForeward
-            // 
-            this.btnConnectionForeward.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnConnectionForeward.Location = new System.Drawing.Point(750, 258);
-            this.btnConnectionForeward.Name = "btnConnectionForeward";
-            this.btnConnectionForeward.Size = new System.Drawing.Size(153, 31);
-            this.btnConnectionForeward.TabIndex = 12;
-            this.btnConnectionForeward.Text = "接驳台正转";
-            this.btnConnectionForeward.UseVisualStyleBackColor = true;
-            this.btnConnectionForeward.Click += new System.EventHandler(this.btnConnectionForeward_Click);
-            // 
-            // btnConnectionStop
-            // 
-            this.btnConnectionStop.BackColor = System.Drawing.SystemColors.Control;
-            this.btnConnectionStop.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnConnectionStop.Location = new System.Drawing.Point(750, 334);
-            this.btnConnectionStop.Name = "btnConnectionStop";
-            this.btnConnectionStop.Size = new System.Drawing.Size(153, 31);
-            this.btnConnectionStop.TabIndex = 12;
-            this.btnConnectionStop.Text = "接驳台停止";
-            this.btnConnectionStop.UseVisualStyleBackColor = false;
-            this.btnConnectionStop.Click += new System.EventHandler(this.btnConnectionStop_Click);
-            // 
             // btnLonFan
             // 
             this.btnLonFan.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnLonFan.Location = new System.Drawing.Point(750, 372);
+            this.btnLonFan.Location = new System.Drawing.Point(13, 21);
             this.btnLonFan.Name = "btnLonFan";
             this.btnLonFan.Size = new System.Drawing.Size(153, 31);
             this.btnLonFan.TabIndex = 12;
@@ -747,61 +726,66 @@
             this.btnLonFan.UseVisualStyleBackColor = true;
             this.btnLonFan.Click += new System.EventHandler(this.btnLonFan_Click);
             // 
-            // btnConnectionReversal
-            // 
-            this.btnConnectionReversal.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnConnectionReversal.Location = new System.Drawing.Point(750, 296);
-            this.btnConnectionReversal.Name = "btnConnectionReversal";
-            this.btnConnectionReversal.Size = new System.Drawing.Size(153, 31);
-            this.btnConnectionReversal.TabIndex = 12;
-            this.btnConnectionReversal.Text = "接驳台反转";
-            this.btnConnectionReversal.UseVisualStyleBackColor = true;
-            this.btnConnectionReversal.Click += new System.EventHandler(this.btnConnectionReversal_Click);
-            // 
             // btnReadyToAA
             // 
             this.btnReadyToAA.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnReadyToAA.Location = new System.Drawing.Point(750, 410);
+            this.btnReadyToAA.Location = new System.Drawing.Point(13, 62);
             this.btnReadyToAA.Name = "btnReadyToAA";
             this.btnReadyToAA.Size = new System.Drawing.Size(153, 31);
             this.btnReadyToAA.TabIndex = 12;
-            this.btnReadyToAA.Text = "ABB取料信号-OFF";
+            this.btnReadyToAA.Text = "取料完成信号-OFF";
             this.btnReadyToAA.UseVisualStyleBackColor = true;
             this.btnReadyToAA.Click += new System.EventHandler(this.btnReadyToAA_Click);
             // 
             // btnProductToAA
             // 
             this.btnProductToAA.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnProductToAA.Location = new System.Drawing.Point(750, 448);
+            this.btnProductToAA.Location = new System.Drawing.Point(13, 100);
             this.btnProductToAA.Name = "btnProductToAA";
             this.btnProductToAA.Size = new System.Drawing.Size(153, 31);
             this.btnProductToAA.TabIndex = 12;
-            this.btnProductToAA.Text = "ABB开夹信号-OFF";
+            this.btnProductToAA.Text = "AA开夹信号-OFF";
             this.btnProductToAA.UseVisualStyleBackColor = true;
             this.btnProductToAA.Click += new System.EventHandler(this.btnProductToAA_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(750, 485);
+            this.button1.Location = new System.Drawing.Point(14, 313);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(150, 32);
+            this.button1.Size = new System.Drawing.Size(153, 32);
             this.button1.TabIndex = 16;
             this.button1.Text = "机器人一键复位";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnChangeType
+            // 
+            this.btnChangeType.Location = new System.Drawing.Point(14, 271);
+            this.btnChangeType.Name = "btnChangeType";
+            this.btnChangeType.Size = new System.Drawing.Size(153, 32);
+            this.btnChangeType.TabIndex = 17;
+            this.btnChangeType.Text = "ABB换型";
+            this.btnChangeType.UseVisualStyleBackColor = true;
+            this.btnChangeType.Click += new System.EventHandler(this.btnChangeType_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btnProductToAA);
+            this.groupBox2.Controls.Add(this.btnLonFan);
+            this.groupBox2.Controls.Add(this.btnReadyToAA);
+            this.groupBox2.Location = new System.Drawing.Point(726, 372);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(180, 145);
+            this.groupBox2.TabIndex = 16;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "AA操作";
             // 
             // FrmOperationReversal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(918, 522);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.btnProductToAA);
-            this.Controls.Add(this.btnReadyToAA);
-            this.Controls.Add(this.btnLonFan);
-            this.Controls.Add(this.btnConnectionStop);
-            this.Controls.Add(this.btnConnectionReversal);
-            this.Controls.Add(this.btnConnectionForeward);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Name = "FrmOperationReversal";
@@ -822,6 +806,7 @@
             this.tableLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -874,10 +859,7 @@
         private System.Windows.Forms.Button btnGotoMove;
         private System.Windows.Forms.Button btnSaveMove;
         private System.Windows.Forms.Label labMovePos;
-        private System.Windows.Forms.Button btnConnectionForeward;
-        private System.Windows.Forms.Button btnConnectionStop;
         private System.Windows.Forms.Button btnLonFan;
-        private System.Windows.Forms.Button btnConnectionReversal;
         private System.Windows.Forms.Button btnReadyToAA;
         private System.Windows.Forms.Button btnProductToAA;
         private System.Windows.Forms.Button button1;
@@ -885,5 +867,7 @@
         private System.Windows.Forms.TextBox SN;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnscan2;
+        private System.Windows.Forms.Button btnChangeType;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }

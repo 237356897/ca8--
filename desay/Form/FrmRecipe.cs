@@ -173,7 +173,6 @@ namespace Desay
             nudTemperatureMax.Value = (decimal)RunPara.Instance.MesStoveTemperature.max;
             nudStoveNoMin.Value = (decimal)RunPara.Instance.MesStoveNo.min;
             nudStoveNoMax.Value = (decimal)RunPara.Instance.MesStoveNo.max;
-            tbA2C.Text = RunPara.Instance.A2C;
         }
 
         string _configNamg_find;
@@ -190,7 +189,6 @@ namespace Desay
             RunPara.Instance.MesStoveTemperature.max = Convert.ToDouble(nudTemperatureMax.Value);
             RunPara.Instance.MesStoveNo.min = Convert.ToInt32(nudStoveNoMin.Value);
             RunPara.Instance.MesStoveNo.max = Convert.ToInt32(nudStoveNoMax.Value);
-            RunPara.Instance.A2C = tbA2C.Text;
 
             SerializerManager<RunPara>.Instance.Save(Product.Instance.ProductDataFile, RunPara.Instance);
             MessageBox.Show("保存成功！", "提示",MessageBoxButtons.OK);

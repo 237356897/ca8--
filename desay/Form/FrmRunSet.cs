@@ -24,9 +24,10 @@ namespace Desay
             numRotatingDisk.Value = decimal.Parse(RunPara.Instance.RotatingDisk.ToString());
             cbFirstStart.Checked = RunPara.Instance.FirstStart;
             cbImmediatelyUpStove.Checked = Marking.ImmediatelyUpStove;
-            cbAuto.Checked = RunPara.Instance.cbAuto;
-
-
+            cbImmediatelyDownStove.Checked = Marking.ImmediatelyDownStove;
+            cbshieldProductCode.Checked = RunPara.Instance.ShieldProductCode;
+            cbshieldTrayCode.Checked = RunPara.Instance.ShieldTrayCode;
+            cbTraySolidify.Checked = RunPara.Instance.TraySolidify;
 
             //nudSupplyDelayTime.Value = (decimal)RunPara.Instance.SupplyDelayTime / 1000;
             nudQRCodeDelayTime.Value = (decimal)RunPara.Instance.QRCodeDelayTime / 1000;
@@ -69,6 +70,7 @@ namespace Desay
             RunPara.Instance.RotatingDisk = (int)numRotatingDisk.Value;
             RunPara.Instance.FirstStart = cbFirstStart.Checked;
             Marking.ImmediatelyUpStove = cbImmediatelyUpStove.Checked;
+            Marking.ImmediatelyDownStove = cbImmediatelyDownStove.Checked;
 
             //RunPara.Instance.SupplyDelayTime = Convert.ToInt32(Convert.ToDouble(nudSupplyDelayTime.Value) * 1000);
             RunPara.Instance.QRCodeDelayTime = Convert.ToInt32(Convert.ToDouble(nudQRCodeDelayTime.Value) * 1000);
@@ -92,6 +94,9 @@ namespace Desay
             RunPara.Instance.ShieldAAOK = cbShieldAAOK.Checked;
             RunPara.Instance.ShieldAANG = cbShieldAANG.Checked;
             RunPara.Instance.ShieldFixtureInduction = cbShieldFixtureInduction.Checked;
+            RunPara.Instance.ShieldProductCode = cbshieldProductCode.Checked;
+            RunPara.Instance.ShieldTrayCode = cbshieldTrayCode.Checked;
+            RunPara.Instance.TraySolidify = cbTraySolidify.Checked;
 
             Marking.StoveProductClear[0] = cbStove1ProductClear.Checked;
             Marking.StoveProductClear[1] = cbStove2ProductClear.Checked;
@@ -107,8 +112,6 @@ namespace Desay
             RunPara.Instance.Stove4Shield = cbStove4Shield.Checked;
             RunPara.Instance.Stove5Shield = cbStove5Shield.Checked;
             RunPara.Instance.Stove6Shield = cbStove6Shield.Checked;
-
-            RunPara.Instance.cbAuto = cbAuto.Checked;
 
             SerializerManager<RunPara>.Instance.Save(Product.Instance.ProductDataFile, RunPara.Instance);
 

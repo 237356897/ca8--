@@ -68,6 +68,7 @@
             this.toolStripStatusLabel7 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tstrobotstatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel8 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel6 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tstrobotstep = new System.Windows.Forms.ToolStripStatusLabel();
             this.txtMessage = new System.Windows.Forms.TextBox();
@@ -104,6 +105,7 @@
             this.tbgOperation = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnImmediatelyUp = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.lblStationName = new System.Windows.Forms.Label();
             this.btnAlarmClean = new System.Windows.Forms.Button();
@@ -124,7 +126,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.btnClearCount = new System.Windows.Forms.Button();
             this.btnIllumination = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnReset = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
@@ -138,7 +139,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.cb_doorok = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -301,6 +301,7 @@
             this.toolStripStatusLabel7,
             this.toolStripStatusLabel4,
             this.tstrobotstatus,
+            this.toolStripStatusLabel8,
             this.toolStripStatusLabel6,
             this.tstrobotstep});
             this.statusStrip1.Location = new System.Drawing.Point(0, 743);
@@ -381,6 +382,12 @@
             this.tstrobotstatus.Name = "tstrobotstatus";
             this.tstrobotstatus.Size = new System.Drawing.Size(43, 17);
             this.tstrobotstatus.Text = "Status";
+            // 
+            // toolStripStatusLabel8
+            // 
+            this.toolStripStatusLabel8.Name = "toolStripStatusLabel8";
+            this.toolStripStatusLabel8.Size = new System.Drawing.Size(20, 17);
+            this.toolStripStatusLabel8.Text = "   ";
             // 
             // toolStripStatusLabel6
             // 
@@ -845,6 +852,7 @@
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel3.Controls.Add(this.btnImmediatelyUp, 0, 9);
             this.tableLayoutPanel3.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.lblStationName, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.btnAlarmClean, 1, 11);
@@ -863,7 +871,6 @@
             this.tableLayoutPanel3.Controls.Add(this.label7, 0, 8);
             this.tableLayoutPanel3.Controls.Add(this.btnClearCount, 1, 8);
             this.tableLayoutPanel3.Controls.Add(this.btnIllumination, 1, 9);
-            this.tableLayoutPanel3.Controls.Add(this.label14, 0, 9);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 22);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -883,6 +890,18 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.803734F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(265, 348);
             this.tableLayoutPanel3.TabIndex = 8;
+            // 
+            // btnImmediatelyUp
+            // 
+            this.btnImmediatelyUp.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnImmediatelyUp.Location = new System.Drawing.Point(2, 256);
+            this.btnImmediatelyUp.Margin = new System.Windows.Forms.Padding(1);
+            this.btnImmediatelyUp.Name = "btnImmediatelyUp";
+            this.btnImmediatelyUp.Size = new System.Drawing.Size(102, 27);
+            this.btnImmediatelyUp.TabIndex = 84;
+            this.btnImmediatelyUp.Text = "立即上炉";
+            this.btnImmediatelyUp.UseVisualStyleBackColor = true;
+            this.btnImmediatelyUp.Click += new System.EventHandler(this.btnImmediatelyUp_Click);
             // 
             // label3
             // 
@@ -1144,19 +1163,6 @@
             this.btnIllumination.UseVisualStyleBackColor = true;
             this.btnIllumination.Click += new System.EventHandler(this.btnIllumination_Click);
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label14.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label14.ForeColor = System.Drawing.Color.Gray;
-            this.label14.Location = new System.Drawing.Point(4, 255);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(98, 29);
-            this.label14.TabIndex = 76;
-            this.label14.Text = "照明:";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
@@ -1280,24 +1286,11 @@
             this.timer1.Interval = 8000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // cb_doorok
-            // 
-            this.cb_doorok.AutoSize = true;
-            this.cb_doorok.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cb_doorok.Location = new System.Drawing.Point(1046, 37);
-            this.cb_doorok.Name = "cb_doorok";
-            this.cb_doorok.Size = new System.Drawing.Size(113, 25);
-            this.cb_doorok.TabIndex = 104;
-            this.cb_doorok.Text = "门禁开启";
-            this.cb_doorok.UseVisualStyleBackColor = true;
-            this.cb_doorok.CheckedChanged += new System.EventHandler(this.cb_doorok_CheckedChanged);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1227, 765);
-            this.Controls.Add(this.cb_doorok);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
@@ -1424,11 +1417,9 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button btnIllumination;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.CheckBox cb_down;
-        private System.Windows.Forms.CheckBox cb_doorok;
         private System.Windows.Forms.Button btnAlarmClean;
         private System.Windows.Forms.ToolStripStatusLabel tstrobotstatus;
         private System.Windows.Forms.ToolStripStatusLabel tstrobotstep;
@@ -1438,6 +1429,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel6;
         private System.Windows.Forms.ToolStripButton btnTrayCodeSet;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel7;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel8;
+        private System.Windows.Forms.Button btnImmediatelyUp;
     }
 }
 

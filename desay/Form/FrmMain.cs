@@ -34,9 +34,8 @@ namespace Desay
         //外部条件
         private External m_External = new External();
         private MachineOperate MachineOperation;
-        private Backflow m_Backflow;//输送
+        private Backflow m_Backflow;
         private Robot m_Robot;
-
         private FrmManualPLC FrmPlc;
         private DM100Q QRCodeCom;
         private DM100Q TrayCodeCom;
@@ -149,6 +148,7 @@ namespace Desay
             firsttemp.Add(true);
             firsttemp.Add(true);
 
+
             #region 初始化进度界面
 
             new Thread(new ThreadStart(() =>
@@ -158,8 +158,10 @@ namespace Desay
                 loading.ShowDialog();
             })).Start();
             Thread.Sleep(500);
-
+            RunPara.Instance.cbAuto=false;
+            button5.Text = RunPara.Instance.cbAuto?"空跑模式":"生产模式";
             UserLevelChange(Marking.userLevel);
+            //UserLevelChange(UserLevel.工程师);
 
             #endregion
 
@@ -169,7 +171,7 @@ namespace Desay
             try
             {
                 FrmManualPLC.AppendLog += AppendText;
-                FrmPlc = new FrmManualPLC(Global.Instance.PLCMX.ToString(), "M114", 16, "M316", 16);
+                FrmPlc = new FrmManualPLC(Global.Instance.PLCMX.ToString(), "M114", 16, "M316", 16, tbcMain);
             }
             catch (Exception ex)
             {
@@ -259,7 +261,7 @@ namespace Desay
                 Name = "输送轴",
                 Transmission = AxisParameter.Instance.CarrytransParams,
             };
-            carryAxis.SetAxisHomeParam(new HomeParams(0, 1, 0, 20000, 5000, 0));
+            carryAxis.SetAxisHomeParam(new HomeParams(0, 1, 0, 40000, 4000, 0));
 
             Thread.Sleep(100);
 
@@ -274,6 +276,7 @@ namespace Desay
             #region 加载模组操作资源
 
             LoadingMessage("加载模组操作资源");
+            layerLight = new LayerLight(IoPoints.I2DO02, IoPoints.I2DO01, IoPoints.I2DO00, IoPoints.I2DO03);
 
             var BackflowInitialize = new StationInitialize(
                 () => { return !ManualAutoMode/* && (hasp.LicenseIsOK && !LicenseSheild)*/; },
@@ -287,16 +290,18 @@ namespace Desay
                 () => { return RobotAlarm.IsAlarm; });
             var RobotOperate = new StationOperate(
                 () => { return RobotInitialize.InitializeDone/* && (hasp.LicenseIsOK && !LicenseSheild)*/; },
-                () => { return RobotAlarm.IsAlarm; });        
+                () => { return RobotAlarm.IsAlarm; });
 
             m_Backflow = new Backflow(m_External, BackflowInitialize, BackflowOperate)
             {
                 CarryAxis = carryAxis,
                 frmPlc = FrmPlc,
-                TrayCodeReader = TrayCodeCom
+                TrayCodeReader = TrayCodeCom,
+                Light = layerLight
             };
             m_Backflow.AddPart();
             m_Backflow.Run(RunningModes.Online);
+            m_Backflow.StationAppendTextReceive += new System.Toolkit.Interfaces.DataReceiveCompleteEventHandler(DealWithReceiveData);
 
             m_Robot = new Robot(m_External, RobotInitialize, RobotOperate)
             {
@@ -307,6 +312,7 @@ namespace Desay
             m_Robot.AddPart();
             m_Robot.Run(RunningModes.Online);
             m_Robot.RefreshDataDataGridView += new RefreshDataCompleteEventHandler(DealWithDGVReceiveData);
+            m_Robot.StationAppendTextReceive += new System.Toolkit.Interfaces.DataReceiveCompleteEventHandler(DealWithReceiveData);
             //m_StoveRefresh.RefreshDataDataGridView += new RefreshDataCompleteEventHandler(DealWithDGVReceiveData);
 
             MachineOperation = new MachineOperate(() =>
@@ -320,17 +326,17 @@ namespace Desay
 
             Thread.Sleep(100);
 
-            #endregion
+            #endregion            
 
             #region 加载信号灯资源
 
             LoadingMessage("加载信号灯资源");
-            StartButton = new LightButton(IoPoints.I2DI00,IoPoints.I2DO04);
+            StartButton = new LightButton(IoPoints.I2DI00, IoPoints.I2DO04);
             ResetButton = new LightButton(IoPoints.I2DI02, IoPoints.I2DO06);
             PauseButton = new LightButton(IoPoints.I2DI01, IoPoints.I2DO05);
             StopButton = new LightButton(IoPoints.I2DI14, IoPoints.I2DO14);
             EstopButton = new EventButton(IoPoints.I2DI03);
-            layerLight = new LayerLight(IoPoints.I2DO02, IoPoints.I2DO01, IoPoints.I2DO00, IoPoints.I2DO03);
+            
 
             StartButton.Pressed += btnStart_MouseDown;
             StartButton.Released += btnStart_MouseUp;
@@ -425,13 +431,13 @@ namespace Desay
 
             try
             {
-                if (!RunPara.Instance.ShieldEntraceGuard)
+                if (RunPara.Instance.ShieldEntraceGuard)
                 {
-                    IoPoints.I2DO29.Value = true;
+                    IoPoints.I2DO29.Value = false;
                 }
                 else
                 {
-                    IoPoints.I2DO29.Value = false;
+                    IoPoints.I2DO29.Value = true;
                 }
             }
             catch (Exception ex)
@@ -449,7 +455,7 @@ namespace Desay
         {
             while (true)
             {
-                Thread.Sleep(200);
+                Thread.Sleep(100);
                 m_External.AirSignal = !IoPoints.I2DI06.Value;
                 m_External.ManualAutoMode = ManualAutoMode;
 
@@ -528,7 +534,7 @@ namespace Desay
                                 MachineOperation.Flow = 40;
                             }
 
-                            if (_watch.ElapsedMilliseconds > 20000)
+                            if (_watch.ElapsedMilliseconds > 60000)
                             {
                                 string res = "";
                                 if (m_Backflow.stationInitialize.InitializeDone)
@@ -581,16 +587,16 @@ namespace Desay
                 }
                 #endregion
 
-                if (!Marking.AlarmStopThread)
-                {
-                    IoPoints.I2DO00.Value = true;
-                    IoPoints.I2DO03.Value = true;
-                }
-                else
-                {
-                    IoPoints.I2DO00.Value = false;
-                    IoPoints.I2DO03.Value = false;
-                }
+                //if (!Marking.AlarmStopThread)
+                //{
+                //    IoPoints.I2DO00.Value = true;
+                //    IoPoints.I2DO03.Value = true;
+                //}
+                //else
+                //{
+                //    IoPoints.I2DO00.Value = false;
+                //    IoPoints.I2DO03.Value = false;
+                //}
             }
         }
         #endregion
@@ -704,11 +710,10 @@ namespace Desay
 
             cb_down.Text = cb_down.Checked ? "下炉" : "上炉";
 
-
-
             if (!FrmPlc.IsConnect) return;
 
             ManualAutoMode = rbAuto.Checked ? true : false;
+            button5.Enabled = rbAuto.Checked ? false : true;
             lblMachineStatus.Text = MachineOperation.Status.ToString();
             lblMachineStatus.ForeColor = MachineStatusColor(MachineOperation.Status);
             rbHand.Enabled = !MachineOperation.Running;
@@ -912,7 +917,7 @@ namespace Desay
             try
             {
                 //Marking.QRCodeSign = false;
-                if (Robot.ifemptyrun) //空跑模式
+                if (Robot.ifemptyrun || RunPara.Instance.ShieldProductCode) //空跑模式 屏蔽产品扫码
                 {
                     result = "CV1V3CV4" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Millisecond.ToString();
                     TaryQRCode(result);
@@ -927,7 +932,7 @@ namespace Desay
                     if (result != string.Empty)
                     {
                         Thread.Sleep(200);
-                        if (m_Robot.ScanSN(result)) 
+                        if (m_Robot.ScanSN(result)) //检查条码
                         {
                             TaryQRCode(result);
                             appendText(result);
@@ -959,7 +964,7 @@ namespace Desay
         {
             try
             {
-                if (Robot.ifemptyrun)  //空跑模式
+                if (Robot.ifemptyrun || RunPara.Instance.ShieldTrayCode)  //空跑模式 屏蔽料盘扫码
                 {
                     result = "TrayNum" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Millisecond.ToString();
                     RunPara.Instance.OrgTrayCode = result;
@@ -1079,6 +1084,7 @@ namespace Desay
                     {
                         Product.Instance.CurrentProductType = frmRecipe.CurrentProductType;
                         SerializerManager<RunPara>.Instance.Save(Product.Instance.ProductDataFile, RunPara.Instance);
+                        SerializerManager<Product>.Instance.Save(AppConfig.RecipeFilePath, Product.Instance);
                     }
                     catch (Exception ex)
                     {
@@ -1260,7 +1266,7 @@ namespace Desay
         {
             //蜂鸣
             layerLight.VoiceClosed = !layerLight.VoiceClosed;
-            btnTricolorLamp.Text = layerLight.VoiceClosed ? "蜂鸣静止" : "蜂鸣正常";
+            btnTricolorLamp.Text = layerLight.VoiceClosed ? "蜂鸣静止" : "蜂鸣";
             btnTricolorLamp.BackColor = layerLight.VoiceClosed ? Color.Red : System.Drawing.SystemColors.Control;
         }
 
@@ -1497,6 +1503,8 @@ namespace Desay
             AppendText(string.Format("<<主界面>>:: {0}", str));
         }
 
+        private void DealWithReceiveData(object sender, string result) => AppendText(result);
+
         /// <summary>
         /// 使用委托方式更新AppendText显示
         /// </summary>
@@ -1509,6 +1517,7 @@ namespace Desay
             }
             else
             {
+                if (lstInfo.Items.Count > 500) lstInfo.Items.Clear();
                 txtMessage.AppendText(string.Format("{0}-{1}" + Environment.NewLine, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), txt));
                 log.Info(txt);
             }
@@ -1854,6 +1863,11 @@ namespace Desay
             m_External.AlarmReset = false;
         }
 
+        private void btnImmediatelyUp_Click(object sender, EventArgs e)
+        {
+            Marking.ImmediatelyUpStove = true;
+        }
+
         private void btnAlarmClean_MouseDown(object sender, MouseEventArgs e)
         {
             m_External.AlarmReset = true;
@@ -1893,53 +1907,6 @@ namespace Desay
         #endregion
 
         #region 调试代码
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Marking.AAOK = true;
-            Robot.Step = 710;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //int id = int.Parse(textBox3.Text);
-            //if(id<20)
-            //RunPara.Instance.OKTary.QRCode[id].SN = "";
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            string[] tcpResults = null;
-            QRCodeCom.receiveFinish = false;
-            QRCodeCom.Trigger(new TriggerArgs()  //扫码
-            {
-                sender = this,
-                tryTimes = 1,
-                message = "SN\r\n"
-            });
-
-            Thread.Sleep(2000);
-            if (QRCodeCom.receiveFinish)
-            {
-
-                if (Marking.QRCodeSign)
-                {
-
-                    RunPara.Instance.OKTary.ProductPos++;
-                }
-            }
-
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            RunPara.Instance.OKTary.ProductPos++;
-        }
-
         /// <summary>
         /// 空跑模式
         /// </summary>
@@ -1964,7 +1931,12 @@ namespace Desay
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (RunPara.Instance.OKTary.ProductPos == RunPara.Instance.TrayPoint - 1 && prepos == 0)
+            if (Marking.ImmediatelyDownStove)
+            {
+                Marking.AAOK = false;
+                Marking.AANG = false;
+            }
+            else if (RunPara.Instance.OKTary.ProductPos == RunPara.Instance.TrayPoint - 1 && prepos == 0)
             {
                 Marking.AAOK = false;
                 Marking.AANG = true;
@@ -1986,19 +1958,6 @@ namespace Desay
             Robot.Step = 440;
         }
 
-        private void cb_doorok_CheckedChanged(object sender, EventArgs e)
-        {
-
-            if (!RunPara.Instance.ShieldEntraceGuard)
-            {
-                IoPoints.I2DO29.Value = true;
-            }
-            else
-            {
-                IoPoints.I2DO29.Value = false;
-            }
-
-        }
         #endregion
 
     }

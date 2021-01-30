@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Toolkit;
+using System.Drawing.Printing;
 
 namespace System.Device
 {
@@ -14,24 +15,28 @@ namespace System.Device
     {
         public static Common.void_StringDelegate AppendLog;
         public Common.ExecuteDelegate ConnectStatus;
-
+        /// <summary>
+        /// 主界面TabControl
+        /// </summary>
+        public TabControl FrmTab;
         private MelsecPLCOperator plc1;
         public string plcStationNumber;
 
-        public FrmManualPLC(string plcStationNumber,string inputStartAddressName, int inputCount, string outputStartAddressName, int outputCount)
+        public FrmManualPLC(string plcStationNumber,string inputStartAddressName, int inputCount, string outputStartAddressName, int outputCount,TabControl Tabc)
         {
             InitializeComponent();
             this.plcStationNumber = plcStationNumber;
             toolStripTxtStationNumber.Text = this.plcStationNumber;
             plc1 = new MelsecPLCOperator(new MelsecPLCTcpUtl(toolStripTxtStationNumber.Text), inputStartAddressName, inputCount, outputStartAddressName, outputCount);
             ConnectStatus += plc1.Melsec_PLC.ConnectStatus;
+            FrmTab = Tabc;
         }
 
         private void FrmManualPLC_Load(object sender, EventArgs e)
         {
             onOFFControlsEnabled  = IsConnect;
-
         }
+
 
         #region Public Method        
         public bool IsConnect { get { return plc1.Melsec_PLC.ConnectResult == 0 ? true : false; } }
@@ -54,7 +59,6 @@ namespace System.Device
         }
 
         private object obj = new object();
-
         /// <summary>
         /// 写入M区中的位状态
         /// </summary>
@@ -101,7 +105,7 @@ namespace System.Device
         }
 
         /// <summary>
-        /// 读取M区中的位状态
+        /// 读取X区中的位状态
         /// </summary>
         /// <param name="addr">M地址</param>
         /// <returns>返回状态</returns>
@@ -531,8 +535,7 @@ namespace System.Device
         {
             set
             {
-                toolStripBtnDisconn.Enabled =
-                    toolStripTxtStationNumber.ReadOnly = value;
+                toolStripBtnDisconn.Enabled = toolStripTxtStationNumber.ReadOnly = value;
                 toolStripBtnConn.Enabled = !toolStripBtnDisconn.Enabled;
             }
         }
@@ -559,38 +562,42 @@ namespace System.Device
         {
             timer1.Enabled = false;
 
-            btnPLCI0.Enabled = ReadM(Stove1DoorFront);
-            btnPLCI1.Enabled = ReadM(Stove1DoorQueen);           
-            btnPLCI2.Enabled = ReadM(Stove1STAlarm);
+            bool[] StoveDoors = plc1.melsecPLCTcpUtl.read16Bit(192, "M");
+            bool[] StoveTAlarm = plc1.melsecPLCTcpUtl.read16Bit(304, "M");
+            bool[] StoveAnyMaterial = plc1.melsecPLCTcpUtl.read16Bit(288, "M");
 
-            btnPLCI3.Enabled = ReadM(Stove2DoorFront);
-            btnPLCI4.Enabled = ReadM(Stove2DoorQueen);
-            btnPLCI5.Enabled = ReadM(Stove2STAlarm);
+            btnPLCI0.Enabled = StoveDoors[0];
+            btnPLCI1.Enabled = StoveDoors[6];           
+            btnPLCI2.Enabled = StoveTAlarm[7];//311
 
-            btnPLCI6.Enabled = ReadM(Stove3DoorFront);
-            btnPLCI7.Enabled = ReadM(Stove3DoorQueen);
-            btnPLCI8.Enabled = ReadM(Stove3STAlarm);
+            btnPLCI3.Enabled = StoveDoors[1];
+            btnPLCI4.Enabled = StoveDoors[7];
+            btnPLCI5.Enabled = StoveTAlarm[8];//312
 
-            btnPLCI9.Enabled = ReadM(Stove4DoorFront);
-            btnPLCI10.Enabled = ReadM(Stove4DoorQueen);
-            btnPLCI11.Enabled = ReadM(Stove4STAlarm);
+            btnPLCI6.Enabled = StoveDoors[2];
+            btnPLCI7.Enabled = StoveDoors[8];
+            btnPLCI8.Enabled = StoveTAlarm[9];//313
 
-            btnPLCI12.Enabled = ReadM(Stove5DoorFront);
-            btnPLCI13.Enabled = ReadM(Stove5DoorQueen);
-            btnPLCI14.Enabled = ReadM(Stove5STAlarm);
+            btnPLCI9.Enabled = StoveDoors[3];
+            btnPLCI10.Enabled = StoveDoors[9];
+            btnPLCI11.Enabled = StoveTAlarm[10];//314
 
-            btnPLCI15.Enabled = ReadM(Stove6DoorFront);
-            btnPLCI16.Enabled = ReadM(Stove6DoorQueen);
-            btnPLCI17.Enabled = ReadM(Stove6STAlarm);
+            btnPLCI12.Enabled = StoveDoors[4];
+            btnPLCI13.Enabled = StoveDoors[10];
+            btnPLCI14.Enabled = StoveTAlarm[11];//315
 
-            btnPLCI18.Enabled = ReadM(StoveScram);
+            btnPLCI15.Enabled = StoveDoors[5];
+            btnPLCI16.Enabled = StoveDoors[11];
+            btnPLCI17.Enabled = StoveTAlarm[12];//316
 
-            btnPLCI19.Enabled = ReadM(Stove1AnyMaterial);
-            btnPLCI20.Enabled = ReadM(Stove2AnyMaterial);
-            btnPLCI21.Enabled = ReadM(Stove3AnyMaterial);
-            btnPLCI22.Enabled = ReadM(Stove4AnyMaterial);
-            btnPLCI23.Enabled = ReadM(Stove5AnyMaterial);
-            btnPLCI24.Enabled = ReadM(Stove6AnyMaterial);
+            btnPLCI18.Enabled = StoveDoors[12];
+
+            btnPLCI19.Enabled = StoveAnyMaterial[13]; //ReadM(Stove1AnyMaterial) 301
+            btnPLCI20.Enabled = StoveAnyMaterial[14]; //ReadM(Stove2AnyMaterial) 302
+            btnPLCI21.Enabled = StoveAnyMaterial[15]; //ReadM(Stove3AnyMaterial) 303
+            btnPLCI22.Enabled = StoveTAlarm[0]; //ReadM(Stove4AnyMaterial) 
+            btnPLCI23.Enabled = StoveTAlarm[1]; //ReadM(Stove5AnyMaterial) 
+            btnPLCI24.Enabled = StoveTAlarm[2]; //ReadM(Stove6AnyMaterial) 
 
             txtChannel1Lever.Text = ReadInt16Data(Stove1RunState).ToString();
             txtChannel2Lever.Text = ReadInt16Data(Stove1Temperature).ToString();
@@ -616,7 +623,10 @@ namespace System.Device
             txtChannel17Lever.Text = ReadInt16Data(Stove6Temperature).ToString();
             txtChannel18Lever.Text = ReadInt16Data(Stove6TimeRemaining).ToString();
 
-            //timer1.Enabled = true;
+            if (!ReadM(StoveLockControl) && FrmTab.SelectedTab.Name == "tbgPLCMonitor")
+            {
+                timer1.Enabled = true;
+            }
         }
 
 
@@ -683,13 +693,14 @@ namespace System.Device
         #region 信号输出PLC
         private void btnPLCO0_Click(object sender, EventArgs e)
         {
-            WriteM(Stove1DoorTrip, true);
             if(ReadM(Stove1DoorFront))
             {
+                WriteM(Stove1DoorTrip, false);
                 btnPLCO0.BackColor = Color.Transparent;
             }
             if(ReadM(Stove1DoorQueen))
             {
+                WriteM(Stove1DoorTrip, true);
                 btnPLCO0.BackColor = Color.DarkGray;
             }
             LogHelper.Debug("手动操作：炉1开关");
@@ -709,14 +720,15 @@ namespace System.Device
 
         private void btnPLCO3_Click(object sender, EventArgs e)
         {
-            WriteM(Stove2DoorTrip, true);
             if (ReadM(Stove2DoorFront))
             {
-                btnPLCO0.BackColor = Color.Transparent;
+                WriteM(Stove2DoorTrip, false);
+                btnPLCO3.BackColor = Color.Transparent;
             }
             if (ReadM(Stove2DoorQueen))
             {
-                btnPLCO0.BackColor = Color.DarkGray;
+                WriteM(Stove2DoorTrip, true);
+                btnPLCO3.BackColor = Color.DarkGray;
             }
             LogHelper.Debug("手动操作：炉2开关");
         }
@@ -734,14 +746,15 @@ namespace System.Device
         }
 
         private void btnPLCO6_Click(object sender, EventArgs e)
-        {
-            WriteM(Stove3DoorTrip, true);
+        { 
             if (ReadM(Stove3DoorFront))
             {
+                WriteM(Stove3DoorTrip, false);
                 btnPLCO6.BackColor = Color.Transparent;
             }
             if (ReadM(Stove3DoorQueen))
             {
+                WriteM(Stove3DoorTrip, true);
                 btnPLCO6.BackColor = Color.DarkGray;
             }
             LogHelper.Debug("手动操作：炉3开关");
@@ -761,13 +774,14 @@ namespace System.Device
 
         private void btnPLCO9_Click(object sender, EventArgs e)
         {
-            WriteM(Stove4DoorTrip, true);
             if (ReadM(Stove4DoorFront))
             {
+                WriteM(Stove4DoorTrip, false);
                 btnPLCO9.BackColor = Color.Transparent;
             }
             if (ReadM(Stove4DoorQueen))
             {
+                WriteM(Stove4DoorTrip, true);
                 btnPLCO9.BackColor = Color.DarkGray;
             }
             LogHelper.Debug("手动操作：炉4开关");
@@ -787,13 +801,14 @@ namespace System.Device
 
         private void btnPLCO12_Click(object sender, EventArgs e)
         {
-            WriteM(Stove5DoorTrip, true);
             if (ReadM(Stove5DoorFront))
             {
+                WriteM(Stove5DoorTrip, false);
                 btnPLCO12.BackColor = Color.Transparent;
             }
             if (ReadM(Stove5DoorQueen))
             {
+                WriteM(Stove5DoorTrip, true);
                 btnPLCO12.BackColor = Color.DarkGray;
             }
             LogHelper.Debug("手动操作：炉5开关");
@@ -812,14 +827,15 @@ namespace System.Device
         }
 
         private void btnPLCO15_Click(object sender, EventArgs e)
-        {
-            WriteM(Stove6DoorTrip, true);
+        { 
             if (ReadM(Stove6DoorFront))
             {
+                WriteM(Stove6DoorTrip, false);
                 btnPLCO15.BackColor = Color.Transparent;
             }
             if (ReadM(Stove6DoorQueen))
             {
+                WriteM(Stove6DoorTrip, true);
                 btnPLCO15.BackColor = Color.DarkGray;
             }
             LogHelper.Debug("手动操作：炉6开关");
@@ -842,6 +858,11 @@ namespace System.Device
         private void Refresh_Click(object sender, EventArgs e)
         {
             timer1.Enabled = true;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            bool[] res = plc1.melsecPLCTcpUtl.read16Bit(192, "M");
         }
     }
 }

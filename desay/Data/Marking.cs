@@ -21,12 +21,7 @@ namespace Desay
         public static bool plcStoveTotalStart = false;
 
         public static bool CleanProductDone;
-
-        /// <summary>
-        /// 蜂鸣器关闭
-        /// </summary>
-        public static bool VoiceClosed;
-
+        
         public static string userName = "Local";
         public static UserLevel userLevel = UserLevel.None;
 
@@ -47,7 +42,7 @@ namespace Desay
         /// <summary>
         /// 机器人通知输出盘
         /// </summary>
-      //public static bool RobotInform = false;
+        //public static bool RobotInform = false;
 
         /// <summary>
         /// 输送线状态
@@ -70,6 +65,11 @@ namespace Desay
         /// 立即上炉
         /// </summary>
         public static bool ImmediatelyUpStove = false;
+
+        /// <summary>
+        /// 立即下炉
+        /// </summary>
+        public static bool ImmediatelyDownStove = false;
 
         /// <summary>
         /// 开始计度
@@ -105,7 +105,7 @@ namespace Desay
         ///料盘产品清空
         /// </summary> 
         public static bool TaryProductClear = false;
-
+        
 
         /// <summary>
         ///AAOK

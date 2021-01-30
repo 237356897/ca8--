@@ -17,7 +17,6 @@ namespace System.Device
         protected override int connectResult { get; set; }
         public override int ConnectResult { get { return connectResult; } set { connectResult = value; ConnectStatus?.Invoke(); } }
 
-
         private ActUtlTypeLib.ActUtlTypeClass plc;
 
 
@@ -102,7 +101,7 @@ namespace System.Device
 
         public override int ReadDeviceBlock(string address, int size, out int value)
         {
-            return plc.ReadDeviceBlock(address, size, out value);
+            return plc.ReadDeviceBlock(address, size, out value);            
         }
 
         public override int WriteDeviceBlock(string address, int size, ref int value)
@@ -115,6 +114,7 @@ namespace System.Device
             {
                 plc = new ActUtlTypeLib.ActUtlTypeClass();
                 plc.ActLogicalStationNumber = int.Parse(address);
+
                 Stopwatch PLCTime = new Stopwatch();
                 PLCTime.Restart();
                 do
@@ -178,6 +178,25 @@ namespace System.Device
             return val;
         }
 
+        /// <summary>
+        /// 读取多个寄存器
+        /// </summary>
+        /// <param name="startAddressName">起始地址</param>
+        /// <param name="length">个数</param>
+        /// <returns></returns>
+        public int readsomeWord(string startAddressName, int length)
+        {
+            int val = 0;
+            int res = -1;
+            try
+            {
+                res = plc.ReadDeviceBlock(startAddressName, length, out val);
+            }
+            catch (Exception e)
+            { log.ErrorFormat("{0}", e); }
+            return val;
+        }
+
         protected override bool readBit(int address, string type)
         {
             int index = address % 16;
@@ -187,6 +206,28 @@ namespace System.Device
             int val = readWord(name);
             int mask = 1 << index;
             return (val & mask) > 0;
+        }
+
+        /// <summary>
+        /// 读取16个bit
+        /// </summary>
+        /// <param name="address">起始地址(必须是16的倍数)</param>
+        /// <param name="type">读取类型(X,Y,M)</param>
+        /// <returns></returns>
+        public bool[] read16Bit(int address, string type)
+        {
+            bool[] Bits= new bool[16];
+            if (address % 16 == 0)
+            {
+                string name = type + address.ToString();
+                int val = readWord(name);
+                for (int i = 0; i < Bits.Length; i++)
+                {
+                    int mask = 1 << i;
+                    Bits[i] = (val & mask) > 0;
+                }
+            }
+            return Bits;
         }
 
         protected override void writeInt16(string startAddressName, int value)

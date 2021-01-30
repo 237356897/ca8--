@@ -31,9 +31,9 @@ namespace Desay
 
         private void FrmOperation_Load(object sender, EventArgs e)
         {          
-            m_Backflow.CarryAxis.Speed = 50;
-            tbrJogSpeed.Value = 50;
-            lblJogSpeed.Text = tbrJogSpeed.Value.ToString("0.00") + "mm/s";
+            m_Backflow.CarryAxis.Speed = (RunPara.Instance.CarryvelocityMax * RunPara.Instance.CarryvelocityRate) / 100;
+            tbrJogSpeed.Value = RunPara.Instance.CarryvelocityRate;
+            lblJogSpeed.Text = ((RunPara.Instance.CarryvelocityMax * tbrJogSpeed.Value) / 100).ToString("00.00") + "mm/s";
 
             labOrgPos.Text = RunPara.Instance.CarryAxisOrgPos.ToString("0.000");
             labCoolingPos.Text = RunPara.Instance.CarryAxisCoolingPos.ToString("0.000");
@@ -71,8 +71,8 @@ namespace Desay
 
         private void tbrJogSpeed_Scroll(object sender, EventArgs e)
         {
-            lblJogSpeed.Text = tbrJogSpeed.Value.ToString("0.00") + "mm/s";
-            m_Backflow.CarryAxis.Speed = (int)tbrJogSpeed.Value;
+            lblJogSpeed.Text = (RunPara.Instance.CarryvelocityMax * tbrJogSpeed.Value / 100).ToString("0.00") + "mm/s";
+            m_Backflow.CarryAxis.Speed = (int)(RunPara.Instance.CarryvelocityMax * tbrJogSpeed.Value / 100);
 
             AxisParameter.Instance.CarryvelocityRate = tbrJogSpeed.Value;
         }
@@ -313,24 +313,6 @@ namespace Desay
             }
         }
 
-        private void btnConnectionForeward_Click(object sender, EventArgs e)
-        {
-            IoPoints.I2DO20.Value = true;
-            IoPoints.I2DO21.Value = false;
-            btnConnectionForeward.BackColor = Color.Green;
-            btnConnectionReversal.BackColor = System.Drawing.SystemColors.Control;
-            btnConnectionStop.BackColor = System.Drawing.SystemColors.Control;
-        }
-
-        private void btnConnectionReversal_Click(object sender, EventArgs e)
-        {
-            IoPoints.I2DO20.Value = false;
-            IoPoints.I2DO21.Value = true;
-            btnConnectionForeward.BackColor = System.Drawing.SystemColors.Control;
-            btnConnectionReversal.BackColor = Color.Green;
-            btnConnectionStop.BackColor = System.Drawing.SystemColors.Control;
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             IoPoints.I2DO12.Value = true;
@@ -355,22 +337,53 @@ namespace Desay
             Stopwatch RobotTime = new Stopwatch();
             RobotTime.Restart();
 
-
-            Thread.Sleep(2000);
-
             do
             {
-
                 m_Robot.mAsynTcpRobot.AsynConnect();
-                Thread.Sleep(10);
-                if (RobotTime.ElapsedMilliseconds / 1000 > 10) break;
+                Thread.Sleep(100);
+                if (RobotTime.ElapsedMilliseconds / 1000 > 20) break;
             }
             while (!m_Robot.mAsynTcpRobot.IsConnected);
             if (m_Robot.mAsynTcpRobot.IsConnected)
             {
-                //  btnRobotConnect.BackColor = Color.Green;
-                LogHelper.Debug("手动操作：ABB连接成功");
-                MessageBox.Show("ABB连接成功");
+                string type = string.Empty;
+                string[] result;
+                bool ChangeType = false;
+                Stopwatch RobotChangeTime = new Stopwatch();
+                RobotChangeTime.Restart();
+                switch (Product.Instance.CurrentProductType)
+                {
+                    case "20.5M":
+                        type = "m010000";
+                        break;
+                    case "FreeTech":
+                        type = "m020000";
+                        break;
+                    default:
+                        break;
+                }
+                if (type != string.Empty)
+                {
+                    RobotChangeTime.Restart();
+                    m_Robot.mAsynTcpRobot.AsynSend(type);
+                    do
+                    {
+                        result = m_Robot.mAsynTcpRobot.Result.Split('\r');
+                        if (result.Length > 0 && result[0].Contains(type.Substring(0, 3)))
+                        {
+                            ChangeType = true;
+                        }
+                        Thread.Sleep(100);
+                    } while (!ChangeType && (RobotChangeTime.ElapsedMilliseconds / 1000 < 10));
+                }
+                if (ChangeType)
+                {
+                    MessageBox.Show("ABB连接成功!", Product.Instance.CurrentProductType.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("ABB连接失败!");
+                }
 
             }
             else
@@ -396,15 +409,6 @@ namespace Desay
            
         }
 
-        private void btnConnectionStop_Click(object sender, EventArgs e)
-        {
-            IoPoints.I2DO20.Value = false;
-            IoPoints.I2DO21.Value = false;
-            btnConnectionForeward.BackColor = System.Drawing.SystemColors.Control;
-            btnConnectionReversal.BackColor = System.Drawing.SystemColors.Control;
-            btnConnectionStop.BackColor = System.Drawing.SystemColors.Control;
-        }
-
         private void btnLonFan_Click(object sender, EventArgs e)
         {
             if (IoPoints.I2DO18.Value)
@@ -426,13 +430,13 @@ namespace Desay
             if (IoPoints.T1DO00.Value)
             {
                 IoPoints.T1DO00.Value = false;
-                btnReadyToAA.Text = "ABB取料信号-OFF";
+                btnReadyToAA.Text = "取料完成信号-OFF";
                 btnReadyToAA.BackColor = System.Drawing.SystemColors.Control;
             }
             else
             {
                 IoPoints.T1DO00.Value = true;
-                btnReadyToAA.Text = "ABB取料信号-ON";
+                btnReadyToAA.Text = "取料完成信号-ON";
                 btnReadyToAA.BackColor = Color.Green;
             }
         }
@@ -442,13 +446,13 @@ namespace Desay
             if (IoPoints.T1DO01.Value)
             {
                 IoPoints.T1DO01.Value = false;
-                btnProductToAA.Text = "ABB开夹信号-OFF";
+                btnProductToAA.Text = "AA开夹信号-OFF";
                 btnProductToAA.BackColor = System.Drawing.SystemColors.Control;
             }
             else
             {
                 IoPoints.T1DO01.Value = true;
-                btnProductToAA.Text = "ABB开夹信号-ON";
+                btnProductToAA.Text = "AA开夹信号-ON";
                 btnProductToAA.BackColor = Color.Green;
             }
         }
@@ -462,6 +466,56 @@ namespace Desay
                 tryTimes = 1,
                 message = "FN\r\n"
             });
+        }
+
+        private void btnChangeType_Click(object sender, EventArgs e)
+        {
+            if (m_Robot.mAsynTcpRobot.IsConnected)
+            {
+                string type = string.Empty;
+                string[] result;
+                bool ChangeType = false;
+                Stopwatch RobotChangeTime = new Stopwatch();
+                RobotChangeTime.Restart();
+                switch (Product.Instance.CurrentProductType)
+                {
+                    case "20.5M":
+                        type = "m010000";
+                        break;
+                    case "FreeTech":
+                        type = "m020000";
+                        break;
+                    default:
+                       // type = "m010000";
+                        break;
+                }
+                if (type != string.Empty)
+                {
+                    RobotChangeTime.Restart();
+                    m_Robot.mAsynTcpRobot.AsynSend(type);
+                    do
+                    {
+                        result = m_Robot.mAsynTcpRobot.Result.Split('\r');
+                        if (result.Length > 0 && result[0].Contains(type.Substring(0, 3)))
+                        {
+                            ChangeType = true;
+                        }
+                        Thread.Sleep(100);
+                    } while (!ChangeType && (RobotChangeTime.ElapsedMilliseconds / 1000 < 10));
+                }
+                if (ChangeType)
+                {
+                    MessageBox.Show("ABB换型成功");
+                }
+                else
+                {
+                    MessageBox.Show("ABB换型失败");
+                }
+            }
+            else
+            {
+                MessageBox.Show("ABB未连接");
+            }
         }
     }
 }

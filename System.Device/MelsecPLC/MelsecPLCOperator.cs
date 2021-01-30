@@ -10,12 +10,13 @@ namespace System.Device
    public class MelsecPLCOperator
     {
         public MelsecPLC Melsec_PLC;
+        public MelsecPLCTcpUtl melsecPLCTcpUtl;
         public bool[] Monitor_MInput;
         public bool[] Monitor_MOutput;
 
         private Thread runThread;
         private string inputStartAddressName;
-        private string outputStartAddressName;
+        private string outputStartAddressName;       
 
         #region 构造函数
         /// <summary>
@@ -80,11 +81,13 @@ namespace System.Device
             Monitor_MOutput = new bool[(((outputCount - 1) / 16) + 1) * 16];
 
             Melsec_PLC = plc;
+            melsecPLCTcpUtl = plc;
+
             if (plc.ConnectResult == 0)
             {
-                runThread = new Thread(new ThreadStart(run));
-                runThread.IsBackground = true;
-                runThread.Start();
+                //runThread = new Thread(new ThreadStart(run));
+                //runThread.IsBackground = true;
+                //runThread.Start();
             }
         }
         #endregion
@@ -103,7 +106,7 @@ namespace System.Device
         }
         #endregion
 
-        #region Public Method
+        #region 单个读写 D M
         public bool ReadM(int address)
         {
             return Melsec_PLC.ReadM(address);
@@ -133,6 +136,8 @@ namespace System.Device
         }
         #endregion
 
+
+        #region 批量读写 D M
         private void readData(string startAddressName, bool[] data)
         {
             int count = ((data.Length - 1) / 16) + 1;
@@ -155,6 +160,27 @@ namespace System.Device
             }
         }
 
-
+        private void ReadData_M(string startAddressName, bool[] data)
+        {
+            int count = ((data.Length - 1) / 16) + 1;
+            int startAddress = Convert.ToInt32(startAddressName.Substring(1));
+            for (int n = 0; n < count; ++n)
+            {
+                int outValue = 0;
+                string strBits;
+                Melsec_PLC.ReadDeviceBlock("M" + (startAddress + (n * 16)), 1, out outValue);
+                byte[] byteDatas = BitConverter.GetBytes(outValue);
+                for (int i = 0; i < byteDatas.Length - 2; ++i)
+                {
+                    strBits = Convert.ToString(byteDatas[i], 2);
+                    strBits = strBits.PadLeft(8, '0');
+                    for (int j = 0; j < 8; ++j)
+                    {
+                        data[(n * 16) + (i * 8) + j] = strBits[7 - j] == '1' ? true : false;
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }

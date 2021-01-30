@@ -47,7 +47,6 @@
             this.lstProductType = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.nudTemperatureMax = new System.Windows.Forms.NumericUpDown();
-            this.tbA2C = new System.Windows.Forms.TextBox();
             this.nudTemperatureMin = new System.Windows.Forms.NumericUpDown();
             this.nudStoveTimeMax = new System.Windows.Forms.NumericUpDown();
             this.nudStoveTimeMin = new System.Windows.Forms.NumericUpDown();
@@ -57,7 +56,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
@@ -215,7 +213,6 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.nudTemperatureMax);
-            this.groupBox2.Controls.Add(this.tbA2C);
             this.groupBox2.Controls.Add(this.nudTemperatureMin);
             this.groupBox2.Controls.Add(this.nudStoveTimeMax);
             this.groupBox2.Controls.Add(this.nudStoveTimeMin);
@@ -225,7 +222,6 @@
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Location = new System.Drawing.Point(453, 12);
@@ -253,13 +249,6 @@
             this.nudTemperatureMax.Size = new System.Drawing.Size(59, 21);
             this.nudTemperatureMax.TabIndex = 5;
             this.nudTemperatureMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbA2C
-            // 
-            this.tbA2C.Location = new System.Drawing.Point(99, 150);
-            this.tbA2C.Name = "tbA2C";
-            this.tbA2C.Size = new System.Drawing.Size(150, 21);
-            this.tbA2C.TabIndex = 6;
             // 
             // nudTemperatureMin
             // 
@@ -389,15 +378,6 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "固化温度：";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(19, 156);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 12);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "A2C：";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -475,8 +455,6 @@
         private System.Windows.Forms.NumericUpDown nudStoveTimeMin;
         private System.Windows.Forms.NumericUpDown nudTemperatureMax;
         private System.Windows.Forms.NumericUpDown nudTemperatureMin;
-        private System.Windows.Forms.TextBox tbA2C;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button bt_new;
     }
 }

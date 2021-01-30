@@ -127,7 +127,6 @@ namespace Desay
         {
             bool Result = true;
             string mesInfo = $"{Common.mes.EvData.DB_Password},{Common.mes.EvData.DB_User},{Common.mes.EvData.DatabaseName},{Common.mes.EvData.ServerName},{sn},{Common.mes.EvData.StationID},{Common.mes.EvData.LineGroup},{Common.mes.EvData.LoginName},True,False,False,5";
-
             if (IsLock)
             {
                 try

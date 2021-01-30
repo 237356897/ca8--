@@ -11,6 +11,7 @@ using Motion.Interfaces;
 using System.Toolkit;
 using log4net;
 using System.Device;
+using Motion.AdlinkAps;
 
 namespace Desay
 {
@@ -38,6 +39,10 @@ namespace Desay
         /// </summary>
         public StepAxis CarryAxis { set; get; }
         /// <summary>
+        /// 三色灯
+        /// </summary>
+        public LayerLight Light { set; get; }
+        /// <summary>
         /// 工作盘数(除NG盘外)
         /// </summary>
         int WorkTary = 0;
@@ -48,7 +53,6 @@ namespace Desay
         /// <returns></returns>
         public int calTrayNum()
         {
-            Thread.Sleep(1000);
             if (IoPoints.I2DI16.Value)  //OK位有料盘
             {
                 WorkTary++;
@@ -87,9 +91,17 @@ namespace Desay
             }
             if (WorkTary >= RunPara.Instance.RotatingDisk)
             {
+                WorkTary = 0;
                 return 0;
             }
-            else if (!IoPoints.I2DI16.Value || !IoPoints.I2DI18.Value || !IoPoints.I2DI21.Value)  //三位(OK/待料位1/待料位2)之一无料盘
+            else if ((!IoPoints.I2DI16.Value || !IoPoints.I2DI18.Value || !IoPoints.I2DI21.Value) && !RunPara.Instance.TraySolidify) //三位(OK/待料位1/待料位2)之一无料盘
+            {
+                if (Marking.RobotStatus == Output.s20)
+                {
+                    Marking.RobotStatus = Output.s70;
+                }
+            }
+            else if(!IoPoints.I2DI16.Value && RunPara.Instance.TraySolidify)
             {
                 if (Marking.RobotStatus == Output.s20)
                 {
@@ -114,18 +126,12 @@ namespace Desay
         Stopwatch TrayCodeTime = new Stopwatch();
         public void cool()
         {
-            StopCoolingTime.Restart();
             IoPoints.I2DO18.Value = true; //等离子风扇开
-
-            if (CarryAxis.IsInPosition(RunPara.Instance.CarryAxisCoolingPos))
-            {
-
-            }
+            StopCoolingTime.Restart();
             do
             {
                 Thread.Sleep(1000);
             } while (!IoPoints.I2DI24.Value && StopCoolingTime.ElapsedMilliseconds < RunPara.Instance.CoolingTime);
-
             IoPoints.I2DO18.Value = false; //等离子风扇关
         }
 
@@ -135,7 +141,7 @@ namespace Desay
         {
             while (true)
             {
-                Thread.Sleep(200);
+                Thread.Sleep(100);
                 try
                 {
                     #region 自动化流程
@@ -149,7 +155,7 @@ namespace Desay
                             case Output.s10://初始状态
                                 if (CarryAxis.IsInPosition(RunPara.Instance.CarryAxisOrgPos))
                                 {
-                                    if (IoPoints.I2DI19.Value) 
+                                    if (IoPoints.I2DI19.Value)
                                     {
                                         Marking.RobotStatus = Output.s30; //输送线上料位有料盘
                                     }
@@ -160,7 +166,8 @@ namespace Desay
                                 }
                                 else
                                 {
-                                    Marking.RobotStatus = Output.s30;
+                                    m_Alarm = BackflowAlarm.料盘位置异常;
+                                    Marking.RobotStatus = Output.s10;
                                 }
                                 Marking.preRobotStatus = Output.s10;
                                 coutnumb1 = 0;
@@ -169,12 +176,6 @@ namespace Desay
                                 if (IoPoints.I2DI19.Value && Marking.RobotStatus == Output.s20)
                                 {
                                     Thread.Sleep(100);
-                                    if (alramcheck > 2)
-                                    {
-                                        Marking.RobotStatus = Output.s80;
-                                        alramcheck = 0;
-                                    }
-                                    alramcheck++;
                                 }
                                 ifgetout = false;
                                 Marking.preRobotStatus = Output.s20;
@@ -183,14 +184,10 @@ namespace Desay
                             case Output.s80: //上料位有料盘，等待机械手取走空盘
                                 if (!IoPoints.I2DI19.Value && Marking.RobotStatus == Output.s80)
                                 {
-                                    Marking.RobotStatus = Output.s20;
-                                    Thread.Sleep(100);
-                                    if (alramcheck > 2)
+                                    if (IoPoints.I2DI16.Value && IoPoints.I2DI18.Value && IoPoints.I2DI21.Value)
                                     {
-                                        alramcheck = 0;
                                         Marking.RobotStatus = Output.s20;
                                     }
-                                    alramcheck++;
                                 }
                                 //robot取盘
                                 Marking.preRobotStatus = Output.s80;
@@ -206,9 +203,16 @@ namespace Desay
                                 {
                                     if (IoPoints.I2DI19.Value)
                                     {
-                                        //Marking.RobotStatus = Output.s80;
-                                        Marking.RobotStatus = Output.s40; //扫料盘码
-                                        TrayCodeTime.Restart();
+                                        if (RunPara.Instance.cbAuto || RunPara.Instance.ShieldTrayCode || RunPara.Instance.TraySolidify)
+                                        {
+                                            RunPara.Instance.OrgTrayCode = "TrayNum" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Millisecond.ToString();
+                                            Marking.RobotStatus = Output.s80;
+                                        }
+                                        else
+                                        {
+                                            Marking.RobotStatus = Output.s40; //扫料盘码
+                                            TrayCodeTime.Restart();
+                                        }
                                     }
                                     else
                                     {
@@ -221,64 +225,84 @@ namespace Desay
                             case Output.s70: //回到放盘位通知放盘
                                 if (Marking.preRobotStatus != Output.s70)
                                 {
-                                    CarryAxis.MoveTo(RunPara.Instance.CarryAxisMovePos, AxisParameter.Instance.CarryvelocityCurve);  
+                                    CarryAxis.MoveTo(RunPara.Instance.CarryAxisMovePos, AxisParameter.Instance.CarryvelocityCurve);
                                 }
                                 if (CarryAxis.IsInPosition(RunPara.Instance.CarryAxisMovePos))
                                 {
                                     if (IoPoints.I2DI20.Value) //输送线放好盘，停止报警
-                                    {                                        
-                                        IoPoints.I2DO00.Value = false;
-                                        IoPoints.I2DO03.Value = false;
+                                    {
+                                        //停止蜂鸣
+                                        Light.SpeakImmediately = false;
+                                        //IoPoints.I2DO02.Value = true;
+                                        //IoPoints.I2DO03.Value = false;
                                         if (IoPoints.I2DI25.Value)
                                         {
                                             Marking.RobotStatus = Output.s60;
                                         }
                                     }
-                                    else//输送线无盘 开始报警
-                                    {                                        
-                                        IoPoints.I2DO00.Value = true;
-                                        IoPoints.I2DO03.Value = true;
+                                    else                       //输送线无盘 开始报警
+                                    {
+                                        //蜂鸣
+                                        Light.SpeakImmediately = true;
+                                        //IoPoints.I2DO02.Value = false;
+                                        //IoPoints.I2DO03.Value = true;
                                     }
                                 }
                                 Marking.preRobotStatus = Output.s70;
                                 coutnumb1 = 0;
                                 break;
-                            case Output.s30: //降温，移到下料位
+                            case Output.s30: //移到 降温位，下料位
                                 if (IoPoints.I2DI19.Value)  //机械手放好料盘
                                 {
-                                    Thread.Sleep(3000);
+                                    Thread.Sleep(2000);
                                     if (Marking.preRobotStatus != Output.s30)
                                     {
                                         Marking.preRobotStatus = Output.s30;
-                                        CarryAxis.MoveTo(RunPara.Instance.CarryAxisCoolingPos, AxisParameter.Instance.CarryvelocityCurve);
+                                        CarryAxis.SetAxisHomeParam(AxisParameter.Instance.CarryHomeParams);
+                                        CarryAxis.BackHome();
+                                        //CarryAxis.MoveTo(RunPara.Instance.CarryAxisCoolingPos, AxisParameter.Instance.CarryvelocityCurve);
                                         cool();
-                                        if (RunPara.Instance.CarryAxisMovePos < 800)
-                                        {
-                                            RunPara.Instance.CarryAxisMovePos = 1015.716;
-                                        }
-                                        CarryAxis.MoveTo(RunPara.Instance.CarryAxisMovePos, AxisParameter.Instance.CarryvelocityCurve);                                  
+                                        CarryAxis.MoveTo(RunPara.Instance.CarryAxisMovePos, AxisParameter.Instance.CarryvelocityCurve);
                                     }
-                                }
-                                if (RunPara.Instance.CarryAxisMovePos < 800)
-                                {
-                                    RunPara.Instance.CarryAxisMovePos = 1015.716;
                                 }
                                 if (CarryAxis.IsInPosition(RunPara.Instance.CarryAxisMovePos))
                                 {
-                                    if (IoPoints.I2DI20.Value) //输送线下料有料盘
+                                    bool IsFullTray = IoPoints.I2DI16.Value && IoPoints.I2DI18.Value && IoPoints.I2DI21.Value;
+                                    if ((!IoPoints.I2DI20.Value) || (RunPara.Instance.cbAuto && !IsFullTray))
                                     {
-                                        IoPoints.I2DO00.Value = true; //红灯
-                                        IoPoints.I2DO03.Value = true; //蜂鸣
-                                        if (IoPoints.I2DI25.Value && ifgetout)
-                                        {
-                                            Marking.RobotStatus = Output.s60;
-                                        }
+                                        ifgetout = true;         // 盘已取走 或 空跑时料盘不满
                                     }
-                                    else 
+                                    if (IoPoints.I2DI20.Value && !ifgetout)         //有盘且未取过
                                     {
-                                        IoPoints.I2DO00.Value = false;
-                                        IoPoints.I2DO03.Value = false;
-                                        ifgetout = true; //盘已取走
+                                        //蜂鸣
+                                        Light.SpeakImmediately = true;
+                                        //IoPoints.I2DO02.Value = false;
+                                        //IoPoints.I2DO03.Value = true; 
+                                    }
+                                    else if (IoPoints.I2DI20.Value && IsFullTray)    //有盘且满料盘
+                                    {
+                                        //蜂鸣
+                                        Light.SpeakImmediately = true;
+                                        //IoPoints.I2DO02.Value = false;
+                                        //IoPoints.I2DO03.Value = true; 
+                                    }
+                                    else if (!IoPoints.I2DI20.Value && !IsFullTray)  //无盘且不满料盘
+                                    {
+                                        //蜂鸣
+                                        Light.SpeakImmediately = true;
+                                        //IoPoints.I2DO02.Value = false;
+                                        //IoPoints.I2DO03.Value = true; 
+                                    }
+                                    else
+                                    {
+                                        //停止蜂鸣
+                                        Light.SpeakImmediately = false;
+                                        //IoPoints.I2DO02.Value = true;
+                                        //IoPoints.I2DO03.Value = false; 
+                                    }
+                                    if ((IoPoints.I2DI25.Value && ifgetout && !Light.SpeakImmediately) || (RunPara.Instance.cbAuto && !IsFullTray))
+                                    {
+                                        Marking.RobotStatus = Output.s60;
                                     }
                                 }
                                 else if (CarryAxis.IsInPosition(RunPara.Instance.CarryAxisOrgPos) && IoPoints.I2DI19.Value)
@@ -311,13 +335,20 @@ namespace Desay
                                     {
                                         Marking.RobotStatus = Output.s80;
                                     }
-                                    else if(TrayCodeReader.receiveFinish)
+                                    else if (TrayCodeReader.receiveFinish)
                                     {
-                                        if(TrayCodeTime.ElapsedMilliseconds < RunPara.Instance.TrayCodeDelayTime)
+                                        if (TrayCodeTime.ElapsedMilliseconds < RunPara.Instance.TrayCodeDelayTime)
                                         {
                                             Marking.preRobotStatus = Output.s60; //重新扫描
                                         }
                                         else
+                                        {
+                                            m_Alarm = BackflowAlarm.料盘扫码NG;   //超时报警
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (TrayCodeTime.ElapsedMilliseconds > RunPara.Instance.TrayCodeDelayTime)
                                         {
                                             m_Alarm = BackflowAlarm.料盘扫码NG;   //超时报警
                                         }
@@ -350,6 +381,7 @@ namespace Desay
                         switch (stationInitialize.Flow)
                         {
                             case 0:
+                                AppendText("输送轴初始化中...");
                                 stationInitialize.InitializeDone = false;
                                 stationOperate.RunningSign = false;
                                 //Marking.BackflowInform = false;
@@ -380,6 +412,7 @@ namespace Desay
                                 {
                                     stationInitialize.InitializeDone = true;
                                     stationInitialize.Flow = 50;
+                                    AppendText("输送轴初始化完成！");
                                 }
                                 break;
                             default:
@@ -464,6 +497,11 @@ namespace Desay
                 AlarmLevel = AlarmLevels.Error,
                 Name = BackflowAlarm.料盘扫码NG.ToString()
             });
+            list.Add(new Alarm(() => m_Alarm == BackflowAlarm.料盘位置异常)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = BackflowAlarm.料盘位置异常.ToString()
+            });
 
             return list;
         }
@@ -485,7 +523,8 @@ namespace Desay
         {
             无消息,
             初始化故障,
-            料盘扫码NG
+            料盘扫码NG,
+            料盘位置异常
         }
     }
 

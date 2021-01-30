@@ -120,7 +120,7 @@ namespace System.Toolkit
         int checknum = 0;
         public void AsynSend(string message)
         {
-           
+
             try
             {
                 Result = "";
@@ -148,34 +148,20 @@ namespace System.Toolkit
                 }, null);
 
                 checknum = 0;
-                while (checknum<80)
+                while (checknum < 100 && !ifget)
                 {
                     checknum++;
-
                     Thread.Sleep(200);
-                    if (ifget)
-                        break;
                 }
-                if(checknum>=80)
+                if (checknum >= 100)
                 {
-                  //  Marking.AlarmStopThread = false;
-
                     MessageBox.Show("机器人无信号");
-
                 }
-
-
-
-
-                
-
-
             }
             catch (Exception ex)
             {
                 LogHelper.Info(ex.ToString());
             }
-
         }
 
         #endregion

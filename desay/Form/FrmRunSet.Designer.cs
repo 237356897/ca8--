@@ -29,9 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cbAuto = new System.Windows.Forms.CheckBox();
+            this.cbshieldTrayCode = new System.Windows.Forms.CheckBox();
+            this.cbshieldProductCode = new System.Windows.Forms.CheckBox();
             this.cbShieldFixtureInduction = new System.Windows.Forms.CheckBox();
             this.cbShieldAANG = new System.Windows.Forms.CheckBox();
+            this.cbImmediatelyDownStove = new System.Windows.Forms.CheckBox();
             this.cbImmediatelyUpStove = new System.Windows.Forms.CheckBox();
             this.cbIsUseMesLock = new System.Windows.Forms.CheckBox();
             this.cbShieldAAOK = new System.Windows.Forms.CheckBox();
@@ -60,6 +62,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.numRotatingDisk = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.cbTraySolidify = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCoolingTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWishoutDiskWaitTime)).BeginInit();
@@ -69,9 +72,12 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.cbAuto);
+            this.groupBox2.Controls.Add(this.cbTraySolidify);
+            this.groupBox2.Controls.Add(this.cbshieldTrayCode);
+            this.groupBox2.Controls.Add(this.cbshieldProductCode);
             this.groupBox2.Controls.Add(this.cbShieldFixtureInduction);
             this.groupBox2.Controls.Add(this.cbShieldAANG);
+            this.groupBox2.Controls.Add(this.cbImmediatelyDownStove);
             this.groupBox2.Controls.Add(this.cbImmediatelyUpStove);
             this.groupBox2.Controls.Add(this.cbIsUseMesLock);
             this.groupBox2.Controls.Add(this.cbShieldAAOK);
@@ -107,42 +113,62 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "参数";
             // 
-            // cbAuto
+            // cbshieldTrayCode
             // 
-            this.cbAuto.AutoSize = true;
-            this.cbAuto.Location = new System.Drawing.Point(258, 280);
-            this.cbAuto.Name = "cbAuto";
-            this.cbAuto.Size = new System.Drawing.Size(72, 16);
-            this.cbAuto.TabIndex = 11;
-            this.cbAuto.Text = "自动空跑";
-            this.cbAuto.UseVisualStyleBackColor = true;
+            this.cbshieldTrayCode.AutoSize = true;
+            this.cbshieldTrayCode.Location = new System.Drawing.Point(258, 276);
+            this.cbshieldTrayCode.Name = "cbshieldTrayCode";
+            this.cbshieldTrayCode.Size = new System.Drawing.Size(96, 16);
+            this.cbshieldTrayCode.TabIndex = 12;
+            this.cbshieldTrayCode.Text = "屏蔽料盘扫码";
+            this.cbshieldTrayCode.UseVisualStyleBackColor = true;
+            // 
+            // cbshieldProductCode
+            // 
+            this.cbshieldProductCode.AutoSize = true;
+            this.cbshieldProductCode.Location = new System.Drawing.Point(258, 245);
+            this.cbshieldProductCode.Name = "cbshieldProductCode";
+            this.cbshieldProductCode.Size = new System.Drawing.Size(96, 16);
+            this.cbshieldProductCode.TabIndex = 11;
+            this.cbshieldProductCode.Text = "屏蔽产品扫码";
+            this.cbshieldProductCode.UseVisualStyleBackColor = true;
             // 
             // cbShieldFixtureInduction
             // 
             this.cbShieldFixtureInduction.AutoSize = true;
-            this.cbShieldFixtureInduction.Location = new System.Drawing.Point(258, 185);
+            this.cbShieldFixtureInduction.Location = new System.Drawing.Point(258, 214);
             this.cbShieldFixtureInduction.Name = "cbShieldFixtureInduction";
-            this.cbShieldFixtureInduction.Size = new System.Drawing.Size(132, 16);
+            this.cbShieldFixtureInduction.Size = new System.Drawing.Size(114, 16);
             this.cbShieldFixtureInduction.TabIndex = 10;
-            this.cbShieldFixtureInduction.Text = "屏蔽接驳台有料感应";
+            this.cbShieldFixtureInduction.Text = "屏蔽AA 有料感应";
             this.cbShieldFixtureInduction.UseVisualStyleBackColor = true;
             this.cbShieldFixtureInduction.CheckedChanged += new System.EventHandler(this.cbShieldAANG_CheckedChanged);
             // 
             // cbShieldAANG
             // 
             this.cbShieldAANG.AutoSize = true;
-            this.cbShieldAANG.Location = new System.Drawing.Point(258, 154);
+            this.cbShieldAANG.Location = new System.Drawing.Point(258, 183);
             this.cbShieldAANG.Name = "cbShieldAANG";
-            this.cbShieldAANG.Size = new System.Drawing.Size(96, 16);
+            this.cbShieldAANG.Size = new System.Drawing.Size(102, 16);
             this.cbShieldAANG.TabIndex = 10;
-            this.cbShieldAANG.Text = "屏蔽AANG信号";
+            this.cbShieldAANG.Text = "屏蔽AA NG信号";
             this.cbShieldAANG.UseVisualStyleBackColor = true;
             this.cbShieldAANG.CheckedChanged += new System.EventHandler(this.cbShieldAANG_CheckedChanged);
+            // 
+            // cbImmediatelyDownStove
+            // 
+            this.cbImmediatelyDownStove.AutoSize = true;
+            this.cbImmediatelyDownStove.Location = new System.Drawing.Point(422, 276);
+            this.cbImmediatelyDownStove.Name = "cbImmediatelyDownStove";
+            this.cbImmediatelyDownStove.Size = new System.Drawing.Size(72, 16);
+            this.cbImmediatelyDownStove.TabIndex = 10;
+            this.cbImmediatelyDownStove.Text = "立即下炉";
+            this.cbImmediatelyDownStove.UseVisualStyleBackColor = true;
             // 
             // cbImmediatelyUpStove
             // 
             this.cbImmediatelyUpStove.AutoSize = true;
-            this.cbImmediatelyUpStove.Location = new System.Drawing.Point(258, 249);
+            this.cbImmediatelyUpStove.Location = new System.Drawing.Point(422, 245);
             this.cbImmediatelyUpStove.Name = "cbImmediatelyUpStove";
             this.cbImmediatelyUpStove.Size = new System.Drawing.Size(72, 16);
             this.cbImmediatelyUpStove.TabIndex = 10;
@@ -162,18 +188,18 @@
             // cbShieldAAOK
             // 
             this.cbShieldAAOK.AutoSize = true;
-            this.cbShieldAAOK.Location = new System.Drawing.Point(258, 123);
+            this.cbShieldAAOK.Location = new System.Drawing.Point(258, 152);
             this.cbShieldAAOK.Name = "cbShieldAAOK";
-            this.cbShieldAAOK.Size = new System.Drawing.Size(96, 16);
+            this.cbShieldAAOK.Size = new System.Drawing.Size(102, 16);
             this.cbShieldAAOK.TabIndex = 10;
-            this.cbShieldAAOK.Text = "屏蔽AAOK信号";
+            this.cbShieldAAOK.Text = "屏蔽AA OK信号";
             this.cbShieldAAOK.UseVisualStyleBackColor = true;
             this.cbShieldAAOK.CheckedChanged += new System.EventHandler(this.cbShieldAAOK_CheckedChanged);
             // 
             // cbShieldAAReady
             // 
             this.cbShieldAAReady.AutoSize = true;
-            this.cbShieldAAReady.Location = new System.Drawing.Point(258, 92);
+            this.cbShieldAAReady.Location = new System.Drawing.Point(258, 121);
             this.cbShieldAAReady.Name = "cbShieldAAReady";
             this.cbShieldAAReady.Size = new System.Drawing.Size(120, 16);
             this.cbShieldAAReady.TabIndex = 10;
@@ -183,7 +209,7 @@
             // cbShieldEntraceGuard
             // 
             this.cbShieldEntraceGuard.AutoSize = true;
-            this.cbShieldEntraceGuard.Location = new System.Drawing.Point(258, 60);
+            this.cbShieldEntraceGuard.Location = new System.Drawing.Point(258, 90);
             this.cbShieldEntraceGuard.Name = "cbShieldEntraceGuard";
             this.cbShieldEntraceGuard.Size = new System.Drawing.Size(84, 16);
             this.cbShieldEntraceGuard.TabIndex = 10;
@@ -193,7 +219,7 @@
             // cbTaryProductClear
             // 
             this.cbTaryProductClear.AutoSize = true;
-            this.cbTaryProductClear.Location = new System.Drawing.Point(422, 217);
+            this.cbTaryProductClear.Location = new System.Drawing.Point(422, 214);
             this.cbTaryProductClear.Name = "cbTaryProductClear";
             this.cbTaryProductClear.Size = new System.Drawing.Size(96, 16);
             this.cbTaryProductClear.TabIndex = 9;
@@ -203,7 +229,7 @@
             // cbStove6ProductClear
             // 
             this.cbStove6ProductClear.AutoSize = true;
-            this.cbStove6ProductClear.Location = new System.Drawing.Point(422, 185);
+            this.cbStove6ProductClear.Location = new System.Drawing.Point(422, 183);
             this.cbStove6ProductClear.Name = "cbStove6ProductClear";
             this.cbStove6ProductClear.Size = new System.Drawing.Size(90, 16);
             this.cbStove6ProductClear.TabIndex = 9;
@@ -213,7 +239,7 @@
             // cbStove6Shield
             // 
             this.cbStove6Shield.AutoSize = true;
-            this.cbStove6Shield.Location = new System.Drawing.Point(572, 185);
+            this.cbStove6Shield.Location = new System.Drawing.Point(571, 183);
             this.cbStove6Shield.Name = "cbStove6Shield";
             this.cbStove6Shield.Size = new System.Drawing.Size(66, 16);
             this.cbStove6Shield.TabIndex = 9;
@@ -223,7 +249,7 @@
             // cbStove4ProductClear
             // 
             this.cbStove4ProductClear.AutoSize = true;
-            this.cbStove4ProductClear.Location = new System.Drawing.Point(422, 122);
+            this.cbStove4ProductClear.Location = new System.Drawing.Point(422, 121);
             this.cbStove4ProductClear.Name = "cbStove4ProductClear";
             this.cbStove4ProductClear.Size = new System.Drawing.Size(90, 16);
             this.cbStove4ProductClear.TabIndex = 8;
@@ -233,7 +259,7 @@
             // cbStove4Shield
             // 
             this.cbStove4Shield.AutoSize = true;
-            this.cbStove4Shield.Location = new System.Drawing.Point(572, 122);
+            this.cbStove4Shield.Location = new System.Drawing.Point(571, 121);
             this.cbStove4Shield.Name = "cbStove4Shield";
             this.cbStove4Shield.Size = new System.Drawing.Size(66, 16);
             this.cbStove4Shield.TabIndex = 8;
@@ -243,7 +269,7 @@
             // cbStove2ProductClear
             // 
             this.cbStove2ProductClear.AutoSize = true;
-            this.cbStove2ProductClear.Location = new System.Drawing.Point(422, 60);
+            this.cbStove2ProductClear.Location = new System.Drawing.Point(422, 59);
             this.cbStove2ProductClear.Name = "cbStove2ProductClear";
             this.cbStove2ProductClear.Size = new System.Drawing.Size(90, 16);
             this.cbStove2ProductClear.TabIndex = 7;
@@ -253,7 +279,7 @@
             // cbStove5ProductClear
             // 
             this.cbStove5ProductClear.AutoSize = true;
-            this.cbStove5ProductClear.Location = new System.Drawing.Point(422, 153);
+            this.cbStove5ProductClear.Location = new System.Drawing.Point(422, 152);
             this.cbStove5ProductClear.Name = "cbStove5ProductClear";
             this.cbStove5ProductClear.Size = new System.Drawing.Size(90, 16);
             this.cbStove5ProductClear.TabIndex = 6;
@@ -263,7 +289,7 @@
             // cbStove2Shield
             // 
             this.cbStove2Shield.AutoSize = true;
-            this.cbStove2Shield.Location = new System.Drawing.Point(572, 60);
+            this.cbStove2Shield.Location = new System.Drawing.Point(571, 57);
             this.cbStove2Shield.Name = "cbStove2Shield";
             this.cbStove2Shield.Size = new System.Drawing.Size(66, 16);
             this.cbStove2Shield.TabIndex = 7;
@@ -273,7 +299,7 @@
             // cbStove3ProductClear
             // 
             this.cbStove3ProductClear.AutoSize = true;
-            this.cbStove3ProductClear.Location = new System.Drawing.Point(422, 91);
+            this.cbStove3ProductClear.Location = new System.Drawing.Point(422, 90);
             this.cbStove3ProductClear.Name = "cbStove3ProductClear";
             this.cbStove3ProductClear.Size = new System.Drawing.Size(90, 16);
             this.cbStove3ProductClear.TabIndex = 5;
@@ -283,7 +309,7 @@
             // cbStove5Shield
             // 
             this.cbStove5Shield.AutoSize = true;
-            this.cbStove5Shield.Location = new System.Drawing.Point(572, 153);
+            this.cbStove5Shield.Location = new System.Drawing.Point(571, 152);
             this.cbStove5Shield.Name = "cbStove5Shield";
             this.cbStove5Shield.Size = new System.Drawing.Size(66, 16);
             this.cbStove5Shield.TabIndex = 6;
@@ -303,7 +329,7 @@
             // cbStove3Shield
             // 
             this.cbStove3Shield.AutoSize = true;
-            this.cbStove3Shield.Location = new System.Drawing.Point(572, 91);
+            this.cbStove3Shield.Location = new System.Drawing.Point(571, 90);
             this.cbStove3Shield.Name = "cbStove3Shield";
             this.cbStove3Shield.Size = new System.Drawing.Size(66, 16);
             this.cbStove3Shield.TabIndex = 5;
@@ -313,7 +339,7 @@
             // cbStove1Shield
             // 
             this.cbStove1Shield.AutoSize = true;
-            this.cbStove1Shield.Location = new System.Drawing.Point(572, 28);
+            this.cbStove1Shield.Location = new System.Drawing.Point(571, 27);
             this.cbStove1Shield.Name = "cbStove1Shield";
             this.cbStove1Shield.Size = new System.Drawing.Size(66, 16);
             this.cbStove1Shield.TabIndex = 4;
@@ -334,7 +360,7 @@
             // cbFirstStart
             // 
             this.cbFirstStart.AutoSize = true;
-            this.cbFirstStart.Location = new System.Drawing.Point(258, 217);
+            this.cbFirstStart.Location = new System.Drawing.Point(258, 59);
             this.cbFirstStart.Name = "cbFirstStart";
             this.cbFirstStart.Size = new System.Drawing.Size(72, 16);
             this.cbFirstStart.TabIndex = 2;
@@ -423,6 +449,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "周转盘数：";
             // 
+            // cbTraySolidify
+            // 
+            this.cbTraySolidify.AutoSize = true;
+            this.cbTraySolidify.Location = new System.Drawing.Point(571, 214);
+            this.cbTraySolidify.Name = "cbTraySolidify";
+            this.cbTraySolidify.Size = new System.Drawing.Size(72, 16);
+            this.cbTraySolidify.TabIndex = 13;
+            this.cbTraySolidify.Text = "固化模式";
+            this.cbTraySolidify.UseVisualStyleBackColor = true;
+            // 
             // FrmRunSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -476,6 +512,9 @@
         private System.Windows.Forms.CheckBox cbShieldFixtureInduction;
         private System.Windows.Forms.NumericUpDown nudCoolingTime;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox cbAuto;
+        private System.Windows.Forms.CheckBox cbImmediatelyDownStove;
+        private System.Windows.Forms.CheckBox cbshieldTrayCode;
+        private System.Windows.Forms.CheckBox cbshieldProductCode;
+        private System.Windows.Forms.CheckBox cbTraySolidify;
     }
 }

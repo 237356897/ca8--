@@ -17,14 +17,16 @@ namespace Motion.Enginee
             YellowLamp = yellowIo;
             RedLamp = redIo;
             Speeker = speakerIo;
+            SpeakImmediately = false;
         }
 
         public IoPoint GreenLamp { get; set; }
         public IoPoint YellowLamp { get; set; }
         public IoPoint RedLamp { get; set; }
         public IoPoint Speeker { get; set; }
-        public bool VoiceClosed { get; set; }
+        public bool VoiceClosed { get; set; }    
         public MachineStatus Status { private get; set; }
+        public bool SpeakImmediately { get; set; }
 
         public void Refreshing()
         {
@@ -52,8 +54,7 @@ namespace Motion.Enginee
             #endregion
 
             //红灯
-            if (Status == MachineStatus.设备未准备好 ||
-                (intervalSign && (Status == MachineStatus.设备报警中 || Status == MachineStatus.设备急停已按下)))
+            if (Status == MachineStatus.设备未准备好 || (intervalSign && (Status == MachineStatus.设备报警中 || Status == MachineStatus.设备急停已按下)))
             {
                 RedLamp.Value = true;
             }
@@ -63,7 +64,7 @@ namespace Motion.Enginee
             }
 
             //蜂鸣器
-            if (RedLamp.Value && !VoiceClosed && Status != MachineStatus.设备未准备好)
+            if ((RedLamp.Value && !VoiceClosed && Status != MachineStatus.设备未准备好) || (intervalSign && SpeakImmediately && !VoiceClosed))
             {
                 Speeker.Value = true;
             }
@@ -88,7 +89,7 @@ namespace Motion.Enginee
             //绿灯
             if (!RedLamp.Value && Status == MachineStatus.设备运行中)
             {
-                GreenLamp.Value = true;
+                GreenLamp.Value = true; 
             }
             else
             {

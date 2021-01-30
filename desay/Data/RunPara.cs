@@ -16,15 +16,15 @@ namespace Desay
 
         private RunPara()
         {
-            // 6炉 20个产品
+            // 6炉 
             for(int i = 0; i < Stove.Length; i++)
             {
-                Stove[i].Tray.QRCode = new QRCodeStruct[20];
+                Stove[i].Tray.QRCode = new QRCodeStruct[TrayPoint];
             }
-            OKTary.QRCode = new QRCodeStruct[20];
-            NGTary.QRCode = new QRCodeStruct[20];
+            OKTary.QRCode = new QRCodeStruct[TrayPoint];
+            NGTary.QRCode = new QRCodeStruct[TrayPoint];
 
-            OutTary.QRCode = new QRCodeStruct[20];
+            OutTary.QRCode = new QRCodeStruct[TrayPoint];
 
 
         }
@@ -138,7 +138,19 @@ namespace Desay
         /// <summary>
         /// 屏蔽接驳台夹具有料感应
         /// </summary>
-        public bool ShieldFixtureInduction;                     
+        public bool ShieldFixtureInduction;
+        /// <summary>
+        /// 屏蔽产品扫码
+        /// </summary>
+        public bool ShieldProductCode;
+        /// <summary>
+        /// 屏蔽料盘扫码
+        /// </summary>
+        public bool ShieldTrayCode;
+        /// <summary>
+        /// 整盘上料固化模式
+        /// </summary>
+        public bool TraySolidify;
         /// <summary>
         /// 炉1屏蔽
         /// </summary>
@@ -164,15 +176,25 @@ namespace Desay
         /// </summary>
         public bool Stove6Shield;
         /// <summary>
-        /// 自动
+        /// 空跑模式
         /// </summary>
-        public bool cbAuto;
+        public bool cbAuto=false;
         /// <summary>
         /// 整线
         /// </summary>
         public bool cbWholeline;
-
+        /// <summary>
+        /// 整盘个数
+        /// </summary>
         public int TrayPoint = 25;
+        /// <summary>
+        /// 最大速度
+        /// </summary>
+        public int CarryvelocityMax = 200;
+        /// <summary>
+        /// 速度比率
+        /// </summary>
+        public int CarryvelocityRate = 50;
 
         #region Mes
         //机型 505941
@@ -183,7 +205,7 @@ namespace Desay
         /// <summary>
         /// 是否启用Mes查询
         /// </summary>
-        public bool IsUseMesLock = true;
+        public bool IsUseMesLock = false;
 
         public StoveData MesStoveTime = new StoveData();
         public StoveData MesStoveTemperature = new StoveData();
