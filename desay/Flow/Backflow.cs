@@ -101,7 +101,7 @@ namespace Desay
                     Marking.RobotStatus = Output.s70;
                 }
             }
-            else if(!IoPoints.I2DI16.Value && RunPara.Instance.TraySolidify)
+            else if(!IoPoints.I2DI16.Value && RunPara.Instance.TraySolidify && Marking.ImmediatelyUpStove)
             {
                 if (Marking.RobotStatus == Output.s20)
                 {
@@ -186,6 +186,7 @@ namespace Desay
                                 {
                                     if (IoPoints.I2DI16.Value && IoPoints.I2DI18.Value && IoPoints.I2DI21.Value)
                                     {
+                                        Thread.Sleep(1000);
                                         Marking.RobotStatus = Output.s20;
                                     }
                                 }
@@ -286,7 +287,7 @@ namespace Desay
                                         //IoPoints.I2DO02.Value = false;
                                         //IoPoints.I2DO03.Value = true; 
                                     }
-                                    else if (!IoPoints.I2DI20.Value && !IsFullTray)  //无盘且不满料盘
+                                    else if (!IoPoints.I2DI20.Value && !IsFullTray && !RunPara.Instance.TraySolidify)  //无盘且不满料盘
                                     {
                                         //蜂鸣
                                         Light.SpeakImmediately = true;

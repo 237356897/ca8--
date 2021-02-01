@@ -13,10 +13,10 @@ namespace Motion.Enginee
             m_condition = Condition;
             m_isAlarm = IsAlarm;
         }
-        public EventButton StartButton { private get; set; }
-        public EventButton StopButton { private get; set; }
-        public EventButton PauseButton { private get; set; }
-        public EventButton ResetButton { private get; set; }
+        public LightButton StartButton { private get; set; }
+        public LightButton StopButton { private get; set; }
+        public LightButton PauseButton { private get; set; }
+        public LightButton ResetButton { private get; set; }
         public EventButton EstopButton { private get; set; }
         public bool Start { private get; set; }
         public bool Stop { private get; set; }

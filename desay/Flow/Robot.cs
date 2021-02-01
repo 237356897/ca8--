@@ -1095,7 +1095,7 @@ namespace Desay
                             #endregion
                             #region 产品调度(节点700~900)
                             case 700:
-                                if (RunPara.Instance.OKTary.ProductPos == RunPara.Instance.TrayPoint || Marking.ImmediatelyUpStove)  //OK满盘上炉 或 立即上炉
+                                if ((RunPara.Instance.OKTary.ProductPos == RunPara.Instance.TrayPoint || Marking.ImmediatelyUpStove) && IoPoints.I2DI16.Value) //OK满盘上炉 或 立即上炉
                                 {
                                     RunPara.Instance.OKTary.CurProductPos = RunPara.Instance.TrayPoint;
                                     RunPara.Instance.OKTary.ProductPos = RunPara.Instance.TrayPoint + 1;

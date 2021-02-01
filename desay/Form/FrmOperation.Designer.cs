@@ -36,6 +36,8 @@
             this.btnRobotReset = new System.Windows.Forms.Button();
             this.btnRobotStop = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnChangeType = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -82,9 +84,10 @@
             this.btnLonFan = new System.Windows.Forms.Button();
             this.btnReadyToAA = new System.Windows.Forms.Button();
             this.btnProductToAA = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnChangeType = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnOpenJaw = new System.Windows.Forms.Button();
+            this.btnCloseJaw = new System.Windows.Forms.Button();
+            this.btnOpenCylinder = new System.Windows.Forms.Button();
+            this.btnCloseCylinder = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -94,15 +97,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbrJogSpeed)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRobotConnect
             // 
-            this.btnRobotConnect.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotConnect.Location = new System.Drawing.Point(14, 230);
+            this.btnRobotConnect.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRobotConnect.Location = new System.Drawing.Point(206, 244);
             this.btnRobotConnect.Name = "btnRobotConnect";
-            this.btnRobotConnect.Size = new System.Drawing.Size(153, 31);
+            this.btnRobotConnect.Size = new System.Drawing.Size(153, 35);
             this.btnRobotConnect.TabIndex = 6;
             this.btnRobotConnect.Text = "连接ABB";
             this.btnRobotConnect.UseVisualStyleBackColor = true;
@@ -110,10 +112,10 @@
             // 
             // btnRobotStart
             // 
-            this.btnRobotStart.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotStart.Location = new System.Drawing.Point(14, 189);
+            this.btnRobotStart.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRobotStart.Location = new System.Drawing.Point(206, 200);
             this.btnRobotStart.Name = "btnRobotStart";
-            this.btnRobotStart.Size = new System.Drawing.Size(153, 31);
+            this.btnRobotStart.Size = new System.Drawing.Size(153, 35);
             this.btnRobotStart.TabIndex = 7;
             this.btnRobotStart.Text = "启动ABB";
             this.btnRobotStart.UseVisualStyleBackColor = true;
@@ -121,10 +123,10 @@
             // 
             // btnRobotInit
             // 
-            this.btnRobotInit.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotInit.Location = new System.Drawing.Point(14, 148);
+            this.btnRobotInit.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRobotInit.Location = new System.Drawing.Point(206, 156);
             this.btnRobotInit.Name = "btnRobotInit";
-            this.btnRobotInit.Size = new System.Drawing.Size(153, 31);
+            this.btnRobotInit.Size = new System.Drawing.Size(153, 35);
             this.btnRobotInit.TabIndex = 8;
             this.btnRobotInit.Text = "ABB程序复位";
             this.btnRobotInit.UseVisualStyleBackColor = true;
@@ -132,10 +134,10 @@
             // 
             // btnRobotElectrify
             // 
-            this.btnRobotElectrify.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotElectrify.Location = new System.Drawing.Point(14, 107);
+            this.btnRobotElectrify.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRobotElectrify.Location = new System.Drawing.Point(206, 112);
             this.btnRobotElectrify.Name = "btnRobotElectrify";
-            this.btnRobotElectrify.Size = new System.Drawing.Size(153, 31);
+            this.btnRobotElectrify.Size = new System.Drawing.Size(153, 35);
             this.btnRobotElectrify.TabIndex = 9;
             this.btnRobotElectrify.Text = "ABB电机上电";
             this.btnRobotElectrify.UseVisualStyleBackColor = true;
@@ -143,10 +145,10 @@
             // 
             // btnRobotReset
             // 
-            this.btnRobotReset.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotReset.Location = new System.Drawing.Point(14, 66);
+            this.btnRobotReset.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRobotReset.Location = new System.Drawing.Point(206, 68);
             this.btnRobotReset.Name = "btnRobotReset";
-            this.btnRobotReset.Size = new System.Drawing.Size(153, 31);
+            this.btnRobotReset.Size = new System.Drawing.Size(153, 35);
             this.btnRobotReset.TabIndex = 10;
             this.btnRobotReset.Text = "ABB急停复位";
             this.btnRobotReset.UseVisualStyleBackColor = true;
@@ -154,10 +156,10 @@
             // 
             // btnRobotStop
             // 
-            this.btnRobotStop.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRobotStop.Location = new System.Drawing.Point(14, 25);
+            this.btnRobotStop.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRobotStop.Location = new System.Drawing.Point(206, 24);
             this.btnRobotStop.Name = "btnRobotStop";
-            this.btnRobotStop.Size = new System.Drawing.Size(153, 31);
+            this.btnRobotStop.Size = new System.Drawing.Size(153, 35);
             this.btnRobotStop.TabIndex = 11;
             this.btnRobotStop.Text = "ABB停止";
             this.btnRobotStop.UseVisualStyleBackColor = true;
@@ -165,20 +167,48 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.btnChangeType);
-            this.groupBox1.Controls.Add(this.btnRobotStop);
+            this.groupBox1.Controls.Add(this.btnCloseCylinder);
+            this.groupBox1.Controls.Add(this.btnOpenCylinder);
             this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.btnRobotConnect);
-            this.groupBox1.Controls.Add(this.btnRobotReset);
-            this.groupBox1.Controls.Add(this.btnRobotStart);
-            this.groupBox1.Controls.Add(this.btnRobotElectrify);
+            this.groupBox1.Controls.Add(this.btnRobotStop);
+            this.groupBox1.Controls.Add(this.btnCloseJaw);
             this.groupBox1.Controls.Add(this.btnRobotInit);
-            this.groupBox1.Location = new System.Drawing.Point(726, 3);
+            this.groupBox1.Controls.Add(this.btnOpenJaw);
+            this.groupBox1.Controls.Add(this.btnRobotElectrify);
+            this.groupBox1.Controls.Add(this.btnProductToAA);
+            this.groupBox1.Controls.Add(this.btnChangeType);
+            this.groupBox1.Controls.Add(this.btnReadyToAA);
+            this.groupBox1.Controls.Add(this.btnRobotStart);
+            this.groupBox1.Controls.Add(this.btnLonFan);
+            this.groupBox1.Controls.Add(this.btnRobotReset);
+            this.groupBox1.Controls.Add(this.btnRobotConnect);
+            this.groupBox1.Location = new System.Drawing.Point(464, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(180, 363);
+            this.groupBox1.Size = new System.Drawing.Size(383, 514);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "机器人操作";
+            // 
+            // btnChangeType
+            // 
+            this.btnChangeType.Location = new System.Drawing.Point(206, 288);
+            this.btnChangeType.Name = "btnChangeType";
+            this.btnChangeType.Size = new System.Drawing.Size(153, 35);
+            this.btnChangeType.TabIndex = 17;
+            this.btnChangeType.Text = "ABB换型";
+            this.btnChangeType.UseVisualStyleBackColor = true;
+            this.btnChangeType.Click += new System.EventHandler(this.btnChangeType_Click);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button1.Location = new System.Drawing.Point(206, 335);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(153, 35);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "机器人一键复位";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // refreshTimer
             // 
@@ -200,7 +230,7 @@
             this.groupBox3.Controls.Add(this.tableLayoutPanel1);
             this.groupBox3.Location = new System.Drawing.Point(12, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(697, 514);
+            this.groupBox3.Size = new System.Drawing.Size(434, 514);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "轴操作";
@@ -208,7 +238,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(19, 211);
+            this.label7.Location = new System.Drawing.Point(28, 211);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(65, 12);
             this.label7.TabIndex = 15;
@@ -216,14 +246,14 @@
             // 
             // SN
             // 
-            this.SN.Location = new System.Drawing.Point(12, 462);
+            this.SN.Location = new System.Drawing.Point(21, 462);
             this.SN.Name = "SN";
             this.SN.Size = new System.Drawing.Size(271, 21);
             this.SN.TabIndex = 14;
             // 
             // btnscan2
             // 
-            this.btnscan2.Location = new System.Drawing.Point(301, 476);
+            this.btnscan2.Location = new System.Drawing.Point(310, 476);
             this.btnscan2.Name = "btnscan2";
             this.btnscan2.Size = new System.Drawing.Size(104, 23);
             this.btnscan2.TabIndex = 13;
@@ -233,7 +263,7 @@
             // 
             // btnscan
             // 
-            this.btnscan.Location = new System.Drawing.Point(301, 447);
+            this.btnscan.Location = new System.Drawing.Point(310, 447);
             this.btnscan.Name = "btnscan";
             this.btnscan.Size = new System.Drawing.Size(104, 23);
             this.btnscan.TabIndex = 13;
@@ -261,7 +291,7 @@
             this.tableLayoutPanel2.Controls.Add(this.btnGotoMove, 3, 2);
             this.tableLayoutPanel2.Controls.Add(this.btnSaveMove, 2, 2);
             this.tableLayoutPanel2.Controls.Add(this.labMovePos, 1, 2);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 284);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(15, 284);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -414,7 +444,7 @@
             // btnRightMove
             // 
             this.btnRightMove.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRightMove.Location = new System.Drawing.Point(301, 242);
+            this.btnRightMove.Location = new System.Drawing.Point(310, 242);
             this.btnRightMove.Name = "btnRightMove";
             this.btnRightMove.Size = new System.Drawing.Size(108, 28);
             this.btnRightMove.TabIndex = 10;
@@ -427,7 +457,7 @@
             // btnLeftMove
             // 
             this.btnLeftMove.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnLeftMove.Location = new System.Drawing.Point(301, 214);
+            this.btnLeftMove.Location = new System.Drawing.Point(310, 214);
             this.btnLeftMove.Name = "btnLeftMove";
             this.btnLeftMove.Size = new System.Drawing.Size(108, 28);
             this.btnLeftMove.TabIndex = 11;
@@ -445,7 +475,7 @@
             this.grpLocationMoveSelect.Controls.Add(this.rbnPos1000um);
             this.grpLocationMoveSelect.Controls.Add(this.rbnPos100um);
             this.grpLocationMoveSelect.Controls.Add(this.rbnPos10um);
-            this.grpLocationMoveSelect.Location = new System.Drawing.Point(153, 123);
+            this.grpLocationMoveSelect.Location = new System.Drawing.Point(162, 123);
             this.grpLocationMoveSelect.Name = "grpLocationMoveSelect";
             this.grpLocationMoveSelect.Size = new System.Drawing.Size(256, 69);
             this.grpLocationMoveSelect.TabIndex = 8;
@@ -531,7 +561,7 @@
             // 
             this.groupBox4.Controls.Add(this.rbnLocationMoveSelect);
             this.groupBox4.Controls.Add(this.rbnContinueMoveSelect);
-            this.groupBox4.Location = new System.Drawing.Point(6, 123);
+            this.groupBox4.Location = new System.Drawing.Point(15, 123);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(141, 69);
             this.groupBox4.TabIndex = 9;
@@ -563,7 +593,7 @@
             // lblJogSpeed
             // 
             this.lblJogSpeed.AutoSize = true;
-            this.lblJogSpeed.Location = new System.Drawing.Point(93, 211);
+            this.lblJogSpeed.Location = new System.Drawing.Point(102, 211);
             this.lblJogSpeed.Name = "lblJogSpeed";
             this.lblJogSpeed.Size = new System.Drawing.Size(41, 12);
             this.lblJogSpeed.TabIndex = 7;
@@ -572,7 +602,7 @@
             // tbrJogSpeed
             // 
             this.tbrJogSpeed.AutoSize = false;
-            this.tbrJogSpeed.Location = new System.Drawing.Point(13, 233);
+            this.tbrJogSpeed.Location = new System.Drawing.Point(22, 233);
             this.tbrJogSpeed.Maximum = 100;
             this.tbrJogSpeed.Name = "tbrJogSpeed";
             this.tbrJogSpeed.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -598,7 +628,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label12, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label13, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 17);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(15, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -717,10 +747,10 @@
             // 
             // btnLonFan
             // 
-            this.btnLonFan.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnLonFan.Location = new System.Drawing.Point(13, 21);
+            this.btnLonFan.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnLonFan.Location = new System.Drawing.Point(22, 200);
             this.btnLonFan.Name = "btnLonFan";
-            this.btnLonFan.Size = new System.Drawing.Size(153, 31);
+            this.btnLonFan.Size = new System.Drawing.Size(153, 35);
             this.btnLonFan.TabIndex = 12;
             this.btnLonFan.Text = "等离子风扇开";
             this.btnLonFan.UseVisualStyleBackColor = true;
@@ -728,10 +758,10 @@
             // 
             // btnReadyToAA
             // 
-            this.btnReadyToAA.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnReadyToAA.Location = new System.Drawing.Point(13, 62);
+            this.btnReadyToAA.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnReadyToAA.Location = new System.Drawing.Point(22, 244);
             this.btnReadyToAA.Name = "btnReadyToAA";
-            this.btnReadyToAA.Size = new System.Drawing.Size(153, 31);
+            this.btnReadyToAA.Size = new System.Drawing.Size(153, 35);
             this.btnReadyToAA.TabIndex = 12;
             this.btnReadyToAA.Text = "取料完成信号-OFF";
             this.btnReadyToAA.UseVisualStyleBackColor = true;
@@ -739,53 +769,60 @@
             // 
             // btnProductToAA
             // 
-            this.btnProductToAA.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnProductToAA.Location = new System.Drawing.Point(13, 100);
+            this.btnProductToAA.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnProductToAA.Location = new System.Drawing.Point(22, 288);
             this.btnProductToAA.Name = "btnProductToAA";
-            this.btnProductToAA.Size = new System.Drawing.Size(153, 31);
+            this.btnProductToAA.Size = new System.Drawing.Size(153, 35);
             this.btnProductToAA.TabIndex = 12;
             this.btnProductToAA.Text = "AA开夹信号-OFF";
             this.btnProductToAA.UseVisualStyleBackColor = true;
             this.btnProductToAA.Click += new System.EventHandler(this.btnProductToAA_Click);
             // 
-            // button1
+            // btnOpenJaw
             // 
-            this.button1.Location = new System.Drawing.Point(14, 313);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(153, 32);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "机器人一键复位";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnOpenJaw.Location = new System.Drawing.Point(22, 24);
+            this.btnOpenJaw.Name = "btnOpenJaw";
+            this.btnOpenJaw.Size = new System.Drawing.Size(153, 35);
+            this.btnOpenJaw.TabIndex = 18;
+            this.btnOpenJaw.Text = "打开产品夹爪";
+            this.btnOpenJaw.UseVisualStyleBackColor = true;
+            this.btnOpenJaw.Click += new System.EventHandler(this.btnOpenJaw_Click);
             // 
-            // btnChangeType
+            // btnCloseJaw
             // 
-            this.btnChangeType.Location = new System.Drawing.Point(14, 271);
-            this.btnChangeType.Name = "btnChangeType";
-            this.btnChangeType.Size = new System.Drawing.Size(153, 32);
-            this.btnChangeType.TabIndex = 17;
-            this.btnChangeType.Text = "ABB换型";
-            this.btnChangeType.UseVisualStyleBackColor = true;
-            this.btnChangeType.Click += new System.EventHandler(this.btnChangeType_Click);
+            this.btnCloseJaw.Location = new System.Drawing.Point(22, 68);
+            this.btnCloseJaw.Name = "btnCloseJaw";
+            this.btnCloseJaw.Size = new System.Drawing.Size(153, 35);
+            this.btnCloseJaw.TabIndex = 19;
+            this.btnCloseJaw.Text = "关闭产品夹爪";
+            this.btnCloseJaw.UseVisualStyleBackColor = true;
+            this.btnCloseJaw.Click += new System.EventHandler(this.btnCloseJaw_Click);
             // 
-            // groupBox2
+            // btnOpenCylinder
             // 
-            this.groupBox2.Controls.Add(this.btnProductToAA);
-            this.groupBox2.Controls.Add(this.btnLonFan);
-            this.groupBox2.Controls.Add(this.btnReadyToAA);
-            this.groupBox2.Location = new System.Drawing.Point(726, 372);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(180, 145);
-            this.groupBox2.TabIndex = 16;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "AA操作";
+            this.btnOpenCylinder.Location = new System.Drawing.Point(22, 112);
+            this.btnOpenCylinder.Name = "btnOpenCylinder";
+            this.btnOpenCylinder.Size = new System.Drawing.Size(153, 35);
+            this.btnOpenCylinder.TabIndex = 20;
+            this.btnOpenCylinder.Text = "打开料盘夹爪";
+            this.btnOpenCylinder.UseVisualStyleBackColor = true;
+            this.btnOpenCylinder.Click += new System.EventHandler(this.btnOpenCylinder_Click);
+            // 
+            // btnCloseCylinder
+            // 
+            this.btnCloseCylinder.Location = new System.Drawing.Point(22, 156);
+            this.btnCloseCylinder.Name = "btnCloseCylinder";
+            this.btnCloseCylinder.Size = new System.Drawing.Size(153, 35);
+            this.btnCloseCylinder.TabIndex = 21;
+            this.btnCloseCylinder.Text = "关闭料盘夹爪";
+            this.btnCloseCylinder.UseVisualStyleBackColor = true;
+            this.btnCloseCylinder.Click += new System.EventHandler(this.btnCloseCylinder_Click);
             // 
             // FrmOperationReversal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(918, 522);
-            this.Controls.Add(this.groupBox2);
+            this.ClientSize = new System.Drawing.Size(865, 522);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Name = "FrmOperationReversal";
@@ -806,7 +843,6 @@
             this.tableLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -868,6 +904,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnscan2;
         private System.Windows.Forms.Button btnChangeType;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btnCloseCylinder;
+        private System.Windows.Forms.Button btnOpenCylinder;
+        private System.Windows.Forms.Button btnCloseJaw;
+        private System.Windows.Forms.Button btnOpenJaw;
     }
 }

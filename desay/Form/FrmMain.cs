@@ -41,7 +41,8 @@ namespace Desay
         private DM100Q TrayCodeCom;
         private AsynTcpClient AsynTcpRobot;
 
-        private EventButton StartButton, EstopButton, StopButton, PauseButton, ResetButton;
+        private LightButton StartButton, StopButton, PauseButton, ResetButton;
+        private EventButton EstopButton;
         private LayerLight layerLight;
         private bool ManualAutoMode;
         private Thread threadMachineRun = null;
@@ -159,9 +160,18 @@ namespace Desay
             })).Start();
             Thread.Sleep(500);
             RunPara.Instance.cbAuto=false;
-            button5.Text = RunPara.Instance.cbAuto?"空跑模式":"生产模式";
-            UserLevelChange(Marking.userLevel);
-            //UserLevelChange(UserLevel.工程师);
+            //UserLevelChange(Marking.userLevel);
+            UserLevelChange(UserLevel.工程师);
+            if (RunPara.Instance.TraySolidify)
+            {
+                button5.Text = "固化模式";
+                button5.Enabled = false;
+            }
+            else
+            {
+                button5.Text = RunPara.Instance.cbAuto ? "空跑模式" : "生产模式";
+                button5.Enabled = true;
+            }            
 
             #endregion
 
@@ -478,9 +488,25 @@ namespace Desay
 
                 #region 按钮灯响应
                 IoPoints.I2DO04.Value = IoPoints.I2DI00.Value;
-                IoPoints.I2DO05.Value = IoPoints.I2DI01.Value;
-                IoPoints.I2DO06.Value = IoPoints.I2DI02.Value;
+                //IoPoints.I2DO05.Value = IoPoints.I2DI01.Value;
+                //IoPoints.I2DO06.Value = IoPoints.I2DI02.Value;
                 IoPoints.I2DO07.Value = IoPoints.I2DI25.Value;
+                #endregion
+
+                #region 设备运行中
+                if (MachineOperation.Running)
+                {
+                    IoPoints.I2DO04.Value = true;
+                    IoPoints.I2DO05.Value = false;
+                }
+                #endregion
+
+                #region 设备暂停中
+                if (MachineOperation.Pausing)
+                {
+                    IoPoints.I2DO04.Value = false;
+                    IoPoints.I2DO05.Value = true;
+                }
                 #endregion
 
                 #region 设备复位中
@@ -496,6 +522,9 @@ namespace Desay
                             m_Robot.stationInitialize.InitializeDone = false;
                             m_Backflow.stationInitialize.Start = false;
                             m_Robot.stationInitialize.Start = false;
+                            IoPoints.I2DO04.Value = false;
+                            IoPoints.I2DO05.Value = false;
+                            IoPoints.I2DO06.Value = true;
                             MachineOperation.Flow = 10;
                             break;
                         case 10:
@@ -532,6 +561,7 @@ namespace Desay
                             {
                                 MachineOperation.IniliazieDone = true;
                                 MachineOperation.Flow = 40;
+                                IoPoints.I2DO06.Value = false;
                             }
 
                             if (_watch.ElapsedMilliseconds > 60000)
@@ -561,9 +591,13 @@ namespace Desay
                     m_Backflow.CarryAxis.Stop();
                     m_Backflow.stationInitialize.Estop = true;
                     m_Robot.stationInitialize.Estop = true;
+                    IoPoints.I2DO04.Value = false;
+                    IoPoints.I2DO05.Value = true;
+                    IoPoints.I2DO06.Value = false;
 
                     if (!m_Backflow.stationInitialize.Running  && !m_Robot.stationInitialize.Running)
                     {
+                        IoPoints.I2DO05.Value = false;
                         MachineOperation.IniliazieDone = false;
                         MachineOperation.Stopping = false;
                         m_Backflow.stationInitialize.Estop = false;
@@ -579,6 +613,10 @@ namespace Desay
                     m_Backflow.stationInitialize.InitializeDone = false;
                     m_Robot.stationInitialize.InitializeDone = false;
                     MachineOperation.IniliazieDone = false;
+                    IoPoints.I2DO04.Value = false;
+                    IoPoints.I2DO05.Value = false;
+                    IoPoints.I2DO06.Value = false;
+
 
                     //ABB停止
                     IoPoints.I2DO12.Value = true;
@@ -586,17 +624,6 @@ namespace Desay
                     IoPoints.I2DO12.Value = false;
                 }
                 #endregion
-
-                //if (!Marking.AlarmStopThread)
-                //{
-                //    IoPoints.I2DO00.Value = true;
-                //    IoPoints.I2DO03.Value = true;
-                //}
-                //else
-                //{
-                //    IoPoints.I2DO00.Value = false;
-                //    IoPoints.I2DO03.Value = false;
-                //}
             }
         }
         #endregion
@@ -713,7 +740,7 @@ namespace Desay
             if (!FrmPlc.IsConnect) return;
 
             ManualAutoMode = rbAuto.Checked ? true : false;
-            button5.Enabled = rbAuto.Checked ? false : true;
+            button5.Enabled = rbAuto.Checked ? false : !RunPara.Instance.TraySolidify;
             lblMachineStatus.Text = MachineOperation.Status.ToString();
             lblMachineStatus.ForeColor = MachineStatusColor(MachineOperation.Status);
             rbHand.Enabled = !MachineOperation.Running;

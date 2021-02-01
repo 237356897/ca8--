@@ -517,5 +517,53 @@ namespace Desay
                 MessageBox.Show("ABB未连接");
             }
         }
+
+        private void btnOpenJaw_Click(object sender, EventArgs e)
+        {
+            if (m_Robot.mAsynTcpRobot.IsConnected)
+            {
+                m_Robot.mAsynTcpRobot.AsynSend("opengr");
+            }
+            else
+            {
+                MessageBox.Show("ABB未连接");
+            }
+        }
+
+        private void btnCloseJaw_Click(object sender, EventArgs e)
+        {
+            if (m_Robot.mAsynTcpRobot.IsConnected)
+            {
+                m_Robot.mAsynTcpRobot.AsynSend("closgr");
+            }
+            else
+            {
+                MessageBox.Show("ABB未连接");
+            }
+        }
+
+        private void btnOpenCylinder_Click(object sender, EventArgs e)
+        {
+            if (m_Robot.mAsynTcpRobot.IsConnected)
+            {
+                m_Robot.mAsynTcpRobot.AsynSend("setcyl");
+            }
+            else
+            {
+                MessageBox.Show("ABB未连接");
+            }
+        }
+
+        private void btnCloseCylinder_Click(object sender, EventArgs e)
+        {
+            if (m_Robot.mAsynTcpRobot.IsConnected)
+            {
+                m_Robot.mAsynTcpRobot.AsynSend("resetc");
+            }
+            else
+            {
+                MessageBox.Show("ABB未连接");
+            }
+        }
     }
 }
