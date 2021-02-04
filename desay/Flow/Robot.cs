@@ -1307,6 +1307,8 @@ namespace Desay
                                 tcpResults = mAsynTcpRobot.Result.Split('\r');
                                 if (tcpResults.Length > 0 && tcpResults[0].Contains("1linpw"))
                                 {
+                                    IoPoints.T1DO00.Value = true;
+                                    IoPoints.T1DO01.Value = false;
                                     AppendText("机械手——移至产品扫码位");
                                     mAsynTcpRobot.AsynSend("codeps"); //通知机械手扫码
                                     Step = 760;
@@ -1316,8 +1318,7 @@ namespace Desay
                                 tcpResults = mAsynTcpRobot.Result.Split('\r');
                                 if (tcpResults.Length > 0 && tcpResults[0].Contains("codeps"))
                                 {
-                                    IoPoints.T1DO00.Value = true;
-                                    IoPoints.T1DO01.Value = false;
+                                    IoPoints.T1DO00.Value = false;    //OK到达扫码位，发送取料完成信号
                                     QRCodeTime.Restart();
                                     QRCodeReader.receiveFinish = false;
                                     QRCodeReader.Trigger(new TriggerArgs()
@@ -1426,6 +1427,8 @@ namespace Desay
                                 tcpResults = mAsynTcpRobot.Result.Split('\r');
                                 if (tcpResults.Length > 0 && tcpResults[0].Contains("1linpw"))
                                 {
+                                    IoPoints.T1DO00.Value = true;
+                                    IoPoints.T1DO01.Value = false;
                                     Thread.Sleep(500);
                                     TcpRobotCmd = "2pla" + (RunPara.Instance.NGTary.ProductPos + 1).ToString("D2");
                                     AppendText("机械手——NG位放料");
@@ -1433,12 +1436,11 @@ namespace Desay
                                     Step = 810;
                                 }
                                 break;
-                            case 810: //扫描_NG产品
+                            case 810: //NG产品
                                 tcpResults = mAsynTcpRobot.Result.Split('\r');
                                 if (tcpResults.Length > 0 && tcpResults[0].Contains(TcpRobotCmd))
                                 {
-                                    IoPoints.T1DO00.Value = true;
-                                    IoPoints.T1DO01.Value = false;
+                                    IoPoints.T1DO00.Value = false;  //NG放置完成，发送取料完成信号
                                     RunPara.Instance.NGTary.ProductPos++;
                                     if (RunPara.Instance.NGTary.ProductPos >= RunPara.Instance.TrayPoint)
                                     {

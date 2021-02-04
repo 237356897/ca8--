@@ -353,10 +353,10 @@ namespace Desay
                 RobotChangeTime.Restart();
                 switch (Product.Instance.CurrentProductType)
                 {
-                    case "20.5M":
+                    case "FreeTech":
                         type = "m010000";
                         break;
-                    case "FreeTech":
+                    case "20.5M":
                         type = "m020000";
                         break;
                     default:
@@ -479,10 +479,10 @@ namespace Desay
                 RobotChangeTime.Restart();
                 switch (Product.Instance.CurrentProductType)
                 {
-                    case "20.5M":
+                    case "FreeTech":
                         type = "m010000";
                         break;
-                    case "FreeTech":
+                    case "20.5M":
                         type = "m020000";
                         break;
                     default:

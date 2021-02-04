@@ -161,17 +161,7 @@ namespace Desay
             Thread.Sleep(500);
             RunPara.Instance.cbAuto=false;
             //UserLevelChange(Marking.userLevel);
-            UserLevelChange(UserLevel.工程师);
-            if (RunPara.Instance.TraySolidify)
-            {
-                button5.Text = "固化模式";
-                button5.Enabled = false;
-            }
-            else
-            {
-                button5.Text = RunPara.Instance.cbAuto ? "空跑模式" : "生产模式";
-                button5.Enabled = true;
-            }            
+            UserLevelChange(UserLevel.工程师);            
 
             #endregion
 
@@ -592,12 +582,11 @@ namespace Desay
                     m_Backflow.stationInitialize.Estop = true;
                     m_Robot.stationInitialize.Estop = true;
                     IoPoints.I2DO04.Value = false;
-                    IoPoints.I2DO05.Value = true;
+                    IoPoints.I2DO05.Value = false;
                     IoPoints.I2DO06.Value = false;
 
                     if (!m_Backflow.stationInitialize.Running  && !m_Robot.stationInitialize.Running)
                     {
-                        IoPoints.I2DO05.Value = false;
                         MachineOperation.IniliazieDone = false;
                         MachineOperation.Stopping = false;
                         m_Backflow.stationInitialize.Estop = false;
@@ -741,6 +730,8 @@ namespace Desay
 
             ManualAutoMode = rbAuto.Checked ? true : false;
             button5.Enabled = rbAuto.Checked ? false : !RunPara.Instance.TraySolidify;
+            button5.Text = RunPara.Instance.TraySolidify ? "固化模式" : (RunPara.Instance.cbAuto ? "空跑模式" : "生产模式");
+
             lblMachineStatus.Text = MachineOperation.Status.ToString();
             lblMachineStatus.ForeColor = MachineStatusColor(MachineOperation.Status);
             rbHand.Enabled = !MachineOperation.Running;
@@ -1202,59 +1193,33 @@ namespace Desay
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-
             //退出
-            MessageBox.Show("自动保存配置文件退出！！", "退出", MessageBoxButtons.OK);
+            DialogResult result = MessageBox.Show("退出程序？", "退出", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                IoPoints.I2DO20.Value = false;
+                IoPoints.I2DO21.Value = false;
 
-            IoPoints.I2DO20.Value = false;
-            IoPoints.I2DO21.Value = false;
+                Thread.Sleep(600);
 
-            Thread.Sleep(600);
+                threadMachineRun.Abort();
+                threadAlarmCheck.Abort();
+                threadStatusCheck.Abort();
 
-            threadMachineRun.Abort();
-            threadAlarmCheck.Abort();
-            threadStatusCheck.Abort();
+                FrmPlc.Disconnect();
 
-            FrmPlc.Disconnect();
+                SerializerManager<Delay>.Instance.Save(AppConfig.DelayFilePath, Delay.Instance);
+                SerializerManager<Product>.Instance.Save(AppConfig.RecipeFilePath, Product.Instance);
+                SerializerManager<Global>.Instance.Save(AppConfig.GlobalFilePath, Global.Instance);
+                SerializerManager<RunPara>.Instance.Save(Product.Instance.ProductDataFile, RunPara.Instance);
 
-
-            SerializerManager<Delay>.Instance.Save(AppConfig.DelayFilePath, Delay.Instance);
-            SerializerManager<Product>.Instance.Save(AppConfig.RecipeFilePath, Product.Instance);
-            SerializerManager<Global>.Instance.Save(AppConfig.GlobalFilePath, Global.Instance);
-            SerializerManager<RunPara>.Instance.Save(Product.Instance.ProductDataFile, RunPara.Instance);
-
-
-            base.OnClosing(e);
-
-
-            //DialogResult result = MessageBox.Show("是否保存配置文件再退出？", "退出", MessageBoxButtons.YesNoCancel);
-            //if (result == DialogResult.Cancel)
-            //{
-            //    e.Cancel = true;
-            //}
-            //else
-            //{
-            //    IoPoints.I2DO20.Value = false;
-            //    IoPoints.I2DO21.Value = false;
-
-            //    Thread.Sleep(600);
-
-            //    threadMachineRun.Abort();
-            //    threadAlarmCheck.Abort();
-            //    threadStatusCheck.Abort();
-
-            //    FrmPlc.Disconnect();
-
-            //    if (result == DialogResult.Yes)
-            //    {
-            //        SerializerManager<Delay>.Instance.Save(AppConfig.DelayFilePath, Delay.Instance);
-            //        SerializerManager<Product>.Instance.Save(AppConfig.RecipeFilePath, Product.Instance);
-            //        SerializerManager<Global>.Instance.Save(AppConfig.GlobalFilePath, Global.Instance);
-            //        SerializerManager<RunPara>.Instance.Save(Product.Instance.ProductDataFile, RunPara.Instance);
-            //    }
-
-            //    base.OnClosing(e);
-            //}
+                base.OnClosing(e);
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+           
         }
 
         private void btnExit_Click(object sender, EventArgs e)
