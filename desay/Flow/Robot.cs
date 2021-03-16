@@ -1170,7 +1170,7 @@ namespace Desay
                                 }
                                 break;
                             case 710:
-                                if (/*IoPoints.T1DI08.Value*/Marking.AAOK || RunPara.Instance.ShieldAAOK) //产品OK
+                                if ((Marking.AAOK || RunPara.Instance.ShieldAAOK) && !RunPara.Instance.ShieldAANG) //产品OK
                                 {
                                     if (IoPoints.I2DI16.Value) //OK位有盘
                                     {
@@ -1216,7 +1216,7 @@ namespace Desay
                                         Step = 0;
                                     }
                                 }
-                                else if (/*IoPoints.T1DI09.Value*/Marking.AANG || RunPara.Instance.ShieldAANG) // 产品NG
+                                else if ((Marking.AANG && !RunPara.Instance.ShieldNGTray)  || RunPara.Instance.ShieldAANG) // 产品NG
                                 {
                                     if (RunPara.Instance.NGTary.ProductPos < RunPara.Instance.TrayPoint) //NG位未满盘
                                     {
@@ -1246,6 +1246,19 @@ namespace Desay
                                         Marking.AlarmStopThread = false;
                                         Step = 0;  //1130
                                     }
+                                }
+                                else if (Marking.AANG && RunPara.Instance.ShieldNGTray)
+                                {
+                                    IoPoints.T1DO01.Value = true; //通知AA开夹
+                                    AppendText("机械手——屏蔽NG料盘，NG料不取");
+                                    Thread.Sleep(500);
+                                    IoPoints.T1DO00.Value = true;
+                                    IoPoints.T1DO01.Value = false;
+                                    Thread.Sleep(500);
+                                    IoPoints.T1DO00.Value = false;
+                                    RunPara.Instance.Continuous3Alarm++;
+                                    AwaitProductTime.Restart();
+                                    Step = 820;
                                 }
                                 else
                                 {
@@ -1309,9 +1322,24 @@ namespace Desay
                                 {
                                     IoPoints.T1DO00.Value = true;
                                     IoPoints.T1DO01.Value = false;
-                                    AppendText("机械手——移至产品扫码位");
-                                    mAsynTcpRobot.AsynSend("codeps"); //通知机械手扫码
-                                    Step = 760;
+                                    if (!RunPara.Instance.ShieldProductCode)
+                                    {
+                                        AppendText("机械手——移至产品扫码位");
+                                        mAsynTcpRobot.AsynSend("codeps"); //通知机械手扫码
+                                        Step = 760;
+                                    }
+                                    else
+                                    {
+                                        TcpRobotCmd = "1pla" + (RunPara.Instance.OKTary.ProductPos + 1).ToString("D2");
+                                        RunPara.Instance.OKTary.CurProductPos = RunPara.Instance.OKTary.ProductPos;
+                                        RunPara.Instance.OKTary.ProductPos++;
+                                        RunPara.Instance.OKTary.QRCode[RunPara.Instance.OKTary.CurProductPos].A2C = RunPara.Instance.A2C;
+                                        AppendText("机械手——OK位放料");
+                                        mAsynTcpRobot.AsynSend(TcpRobotCmd); //OK料放置
+                                        IoPoints.T1DO00.Value = false;
+                                        Step = 790;
+                                    }
+                                    
                                 }
                                 break;
                             case 760: //产品到扫码位
@@ -1409,7 +1437,7 @@ namespace Desay
                                         {
                                             AppendText("AA——开夹气缸已打开");
                                             Thread.Sleep(500);
-                                            AppendText("机械手——接驳台取料完成");
+                                            AppendText("机械手——接驳台夹料完成");
                                             mAsynTcpRobot.AsynSend("1linpw"); //通知机械手已开夹
                                             Step = 805;
                                         }
@@ -1459,6 +1487,7 @@ namespace Desay
                                     RunPara.Instance.Continuous3Alarm = 0;
                                     m_Alarm = RobotAlarm.连续NG报警;
                                     Marking.AlarmStopThread = false;
+                                    Step = 0;
                                 }
                                 else
                                 {
@@ -2107,6 +2136,7 @@ namespace Desay
                     if (AlarmReset.AlarmReset)
                     {
                         m_Alarm = RobotAlarm.无消息;
+                        Marking.AlarmStopThread = true;
                         WhileTimes = 0;
                     }
 

@@ -148,6 +148,10 @@ namespace Desay
         /// </summary>
         public bool ShieldTrayCode;
         /// <summary>
+        /// 屏蔽NG料盘
+        /// </summary>
+        public bool ShieldNGTray;
+        /// <summary>
         /// 整盘上料固化模式
         /// </summary>
         public bool TraySolidify;

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbTraySolidify = new System.Windows.Forms.CheckBox();
             this.cbshieldTrayCode = new System.Windows.Forms.CheckBox();
             this.cbshieldProductCode = new System.Windows.Forms.CheckBox();
             this.cbShieldFixtureInduction = new System.Windows.Forms.CheckBox();
@@ -62,7 +63,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.numRotatingDisk = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.cbTraySolidify = new System.Windows.Forms.CheckBox();
+            this.cbShieldNGTray = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCoolingTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWishoutDiskWaitTime)).BeginInit();
@@ -72,6 +73,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbShieldNGTray);
             this.groupBox2.Controls.Add(this.cbTraySolidify);
             this.groupBox2.Controls.Add(this.cbshieldTrayCode);
             this.groupBox2.Controls.Add(this.cbshieldProductCode);
@@ -112,6 +114,16 @@
             this.groupBox2.TabIndex = 36;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "参数";
+            // 
+            // cbTraySolidify
+            // 
+            this.cbTraySolidify.AutoSize = true;
+            this.cbTraySolidify.Location = new System.Drawing.Point(571, 214);
+            this.cbTraySolidify.Name = "cbTraySolidify";
+            this.cbTraySolidify.Size = new System.Drawing.Size(72, 16);
+            this.cbTraySolidify.TabIndex = 13;
+            this.cbTraySolidify.Text = "固化模式";
+            this.cbTraySolidify.UseVisualStyleBackColor = true;
             // 
             // cbshieldTrayCode
             // 
@@ -449,15 +461,15 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "周转盘数：";
             // 
-            // cbTraySolidify
+            // cbShieldNGTray
             // 
-            this.cbTraySolidify.AutoSize = true;
-            this.cbTraySolidify.Location = new System.Drawing.Point(571, 214);
-            this.cbTraySolidify.Name = "cbTraySolidify";
-            this.cbTraySolidify.Size = new System.Drawing.Size(72, 16);
-            this.cbTraySolidify.TabIndex = 13;
-            this.cbTraySolidify.Text = "固化模式";
-            this.cbTraySolidify.UseVisualStyleBackColor = true;
+            this.cbShieldNGTray.AutoSize = true;
+            this.cbShieldNGTray.Location = new System.Drawing.Point(258, 305);
+            this.cbShieldNGTray.Name = "cbShieldNGTray";
+            this.cbShieldNGTray.Size = new System.Drawing.Size(84, 16);
+            this.cbShieldNGTray.TabIndex = 14;
+            this.cbShieldNGTray.Text = "屏蔽NG料盘";
+            this.cbShieldNGTray.UseVisualStyleBackColor = true;
             // 
             // FrmRunSet
             // 
@@ -516,5 +528,6 @@
         private System.Windows.Forms.CheckBox cbshieldTrayCode;
         private System.Windows.Forms.CheckBox cbshieldProductCode;
         private System.Windows.Forms.CheckBox cbTraySolidify;
+        private System.Windows.Forms.CheckBox cbShieldNGTray;
     }
 }

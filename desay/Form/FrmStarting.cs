@@ -23,7 +23,11 @@ namespace Desay
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<string>(ShowMessage), str);
+                try
+                {
+                    Invoke(new Action<string>(ShowMessage), str);
+                }
+                catch { }
             }
             else
             {

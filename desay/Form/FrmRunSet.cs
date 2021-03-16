@@ -39,6 +39,7 @@ namespace Desay
             cbShieldAAReady.Checked = RunPara.Instance.ShieldAAReady;
             cbShieldAAOK.Checked = RunPara.Instance.ShieldAAOK;
             cbShieldAANG.Checked = RunPara.Instance.ShieldAANG;
+            cbShieldNGTray.Checked = RunPara.Instance.ShieldNGTray;
             cbShieldFixtureInduction.Checked = RunPara.Instance.ShieldFixtureInduction;
 
             cbStove1Shield.Checked = RunPara.Instance.Stove1Shield;
@@ -97,6 +98,7 @@ namespace Desay
             RunPara.Instance.ShieldProductCode = cbshieldProductCode.Checked;
             RunPara.Instance.ShieldTrayCode = cbshieldTrayCode.Checked;
             RunPara.Instance.TraySolidify = cbTraySolidify.Checked;
+            RunPara.Instance.ShieldNGTray = cbShieldNGTray.Checked;
 
             Marking.StoveProductClear[0] = cbStove1ProductClear.Checked;
             Marking.StoveProductClear[1] = cbStove2ProductClear.Checked;
