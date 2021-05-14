@@ -211,8 +211,7 @@ namespace Desay
                                         }
                                         else
                                         {
-                                            Marking.RobotStatus = Output.s40; //扫料盘码
-                                            TrayCodeTime.Restart();
+                                            Marking.RobotStatus = Output.s40; //扫料盘码                                            
                                         }
                                     }
                                     else
@@ -331,6 +330,7 @@ namespace Desay
                                             tryTimes = 1,
                                             message = "FN\r\n"
                                         });
+                                        TrayCodeTime.Restart();
                                     }
                                     if (TrayCodeReader.receiveFinish && RunPara.Instance.OrgTrayCode != string.Empty) //此处增加条码判断
                                     {
@@ -414,6 +414,8 @@ namespace Desay
                                     stationInitialize.InitializeDone = true;
                                     stationInitialize.Flow = 50;
                                     AppendText("输送轴初始化完成！");
+                                    Marking.RobotStatus = Output.s10;
+                                    Marking.preRobotStatus = Output.s10;
                                 }
                                 break;
                             default:
@@ -430,7 +432,7 @@ namespace Desay
                         m_Alarm = BackflowAlarm.无消息;
                         if (Marking.RobotStatus == Output.s40)
                         {
-                            Marking.preRobotStatus = Output.s40;
+                            Marking.preRobotStatus = Output.s60;
                             TrayCodeReader.receiveFinish = false;
                             TrayCodeTime.Restart();
                         }

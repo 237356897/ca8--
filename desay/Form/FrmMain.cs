@@ -1800,12 +1800,12 @@ namespace Desay
 
         private void btnAlarmClean_MouseDown_1(object sender, MouseEventArgs e)
         {
-            m_External.AlarmReset = false;
+            m_External.AlarmReset = true;
         }
 
         private void btnAlarmClean_MouseUp_1(object sender, MouseEventArgs e)
         {
-            m_External.AlarmReset = true;
+            m_External.AlarmReset = false;
             if (m_Backflow.CarryAxis.IsAlarmed)
             {
                 m_Backflow.CarryAxis.Clean();

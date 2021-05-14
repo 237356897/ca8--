@@ -1152,7 +1152,7 @@ namespace Desay
                                         ///10014
                                     }
                                 }
-                                else if (((IoPoints.T1DI00.Value || IoPoints.T1DI01.Value) && (IoPoints.T1DI00.Value != IoPoints.T1DI01.Value)) || ifemptyrun)//通知机械手——取料
+                                else if (((IoPoints.T1DI00.Value || IoPoints.T1DI01.Value) && (IoPoints.T1DI00.Value != IoPoints.T1DI01.Value) && IoPoints.I2DI16.Value) || ifemptyrun)//通知机械手——取料
                                 {
                                     if (!ifemptyrun)
                                     {
@@ -1163,6 +1163,36 @@ namespace Desay
                                     AppendText("AA——接驳台到位");
                                     AwaitProductTime.Restart();//等待产品时间
                                     Step = 710;
+                                }
+                                else if (!IoPoints.I2DI16.Value) //OK位无盘
+                                {
+                                    if (IoPoints.I2DI18.Value && !RunPara.Instance.TraySolidify) //待料位1有盘
+                                    {
+                                        AppendText("机械手——待料位1取盘");
+                                        mAsynTcpRobot.AsynSend("4plapk"); //通知机械手——从待料位1取盘至OK位
+                                        Step = 720;
+                                    }
+                                    else if (IoPoints.I2DI21.Value && !RunPara.Instance.TraySolidify) //待料位2有盘
+                                    {
+                                        AppendText("机械手——待料位2取盘");
+                                        mAsynTcpRobot.AsynSend("3plapk"); //通知机械手——从待料位2取盘至OK位
+                                        Step = 730;
+                                    }
+                                    else if (WishoutDiskWait) //无盘进入等待来盘，初始化为True
+                                    {
+                                        WishoutDiskWait = false;
+                                        WishoutDiskTime.Restart();
+                                    }
+                                    else if ((WishoutDiskTime.ElapsedMilliseconds > RunPara.Instance.WishoutDiskWaitTime) && !RunPara.Instance.TraySolidify)  //等待来盘超时报警
+                                    {
+                                        WishoutDiskWait = true;
+                                        Marking.AlarmStopThread = false;
+                                        m_Alarm = RobotAlarm.无盘等待超时报警;
+                                    }
+                                    else
+                                    {
+                                        Step = 0;
+                                    }
                                 }
                                 else
                                 {
@@ -1187,29 +1217,6 @@ namespace Desay
                                         {
                                             Step = 700; //等待上炉
                                         }
-                                    }
-                                    else if (IoPoints.I2DI18.Value && !RunPara.Instance.TraySolidify) //待料位1有盘
-                                    {
-                                        AppendText("机械手——待料位1取盘");
-                                        mAsynTcpRobot.AsynSend("4plapk"); //通知机械手——从待料位1取盘至OK位
-                                        Step = 720;
-                                    }
-                                    else if (IoPoints.I2DI21.Value && !RunPara.Instance.TraySolidify) //待料位2有盘
-                                    {
-                                        AppendText("机械手——待料位2取盘");
-                                        mAsynTcpRobot.AsynSend("3plapk"); //通知机械手——从待料位2取盘至OK位
-                                        Step = 730;
-                                    }
-                                    else if (WishoutDiskWait) //无盘进入等待来盘，初始化为True
-                                    {
-                                        WishoutDiskWait = false;
-                                        WishoutDiskTime.Restart();
-                                    }
-                                    else if ((WishoutDiskTime.ElapsedMilliseconds > RunPara.Instance.WishoutDiskWaitTime) && !RunPara.Instance.TraySolidify)  //等待来盘超时报警
-                                    {
-                                        WishoutDiskWait = true;
-                                        Marking.AlarmStopThread = false;
-                                        m_Alarm = RobotAlarm.无盘等待超时报警;
                                     }
                                     else
                                     {
