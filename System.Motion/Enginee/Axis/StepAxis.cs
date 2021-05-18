@@ -16,6 +16,15 @@ namespace Motion.Enginee
                 return ApsController.GetCurrentCommandPosition(NoId) * Transmission.PulseEquivalent;
             }
         }
+
+        public double TargetPos
+        {
+            get
+            {
+                return ApsController.GetCurrentTargetPosition(NoId) * Transmission.PulseEquivalent;
+            }
+        }
+
         /// <summary>
         ///     是否原点
         /// </summary>

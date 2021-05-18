@@ -364,12 +364,12 @@ namespace Desay
             Description = "气压不足报警"
         };
         /// <summary>
-        ///  固化炉急停
+        ///  输送轴光栅
         /// </summary>
         public static IoPoint I2DI07 = new IoPoint(m_DaskController, PCI7432, 7, IoModes.Senser)
         {
             Name = "I2DI07",
-            Description = "固化炉急停"
+            Description = "输送轴光栅"
         };
         /// <summary>
         ///  备用

@@ -25,7 +25,7 @@ namespace Desay
 
         private BackflowAlarm m_Alarm;
 
-
+        Stopwatch strtime = new Stopwatch();
         /// <summary>
         /// 读码器
         /// </summary>
@@ -111,11 +111,6 @@ namespace Desay
             return 0;
         }
 
-        public void GetTray()
-        {
-
-        }
-
         /// <summary>
         /// 降温时间
         /// </summary>
@@ -135,8 +130,22 @@ namespace Desay
             IoPoints.I2DO18.Value = false; //等离子风扇关
         }
 
-        int alramcheck = 0;
+        /// <summary>
+        /// 料盘已取走过
+        /// </summary>
         bool ifgetout = false;
+        /// <summary>
+        /// 光栅感应轴停止
+        /// </summary>
+        bool isGratingStop = false;
+        /// <summary>
+        ///轴回原到降温位
+        /// </summary>
+        bool isHomeToCoolPos = false;
+        /// <summary>
+        /// 步近电机目标位置
+        /// </summary>
+        double StepAxisTargetPos = 0;
         public override void Running(RunningModes runningMode)
         {
             while (true)
@@ -144,10 +153,34 @@ namespace Desay
                 Thread.Sleep(100);
                 try
                 {
-                    #region 自动化流程
-                    if (stationOperate.Running)
+                    #region 光栅
+                    if (!IoPoints.I2DI07.Value && !CarryAxis.IsDone && !isHomeToCoolPos && !isGratingStop)
                     {
+                        Light.SpeakImmediately = true;
+                        StepAxisTargetPos = CarryAxis.TargetPos;
+                        CarryAxis.Stop();
+                        isGratingStop = true;
+                    }
+                    else if (stationOperate.Running && IoPoints.I2DI07.Value && isGratingStop)
+                    {
+                        Light.SpeakImmediately = false;
+                        Thread.Sleep(1000);
+                        CarryAxis.MoveTo(StepAxisTargetPos, AxisParameter.Instance.CarryvelocityCurve);
+                        isGratingStop = false;
+                    }
+                    else if (stationInitialize.Running && IoPoints.I2DI07.Value && isGratingStop)
+                    {
+                        Light.SpeakImmediately = false;
+                        Thread.Sleep(1000);
+                        IoPoints.m_ApsController.SetAxisHomeConfig(CarryAxis.NoId, AxisParameter.Instance.CarryHomeParams);
+                        IoPoints.m_ApsController.BackHome(CarryAxis.NoId);
+                        isGratingStop = false;
+                    }
+                    #endregion
 
+                    #region 自动化流程
+                    if (stationOperate.Running && !isGratingStop)
+                    {
                         calTrayNum(); //OK/待料位1/待料位2之一无料盘，则去取空盘
 
                         switch (Marking.RobotStatus)
@@ -257,11 +290,13 @@ namespace Desay
                                     Thread.Sleep(2000);
                                     if (Marking.preRobotStatus != Output.s30)
                                     {
+                                        isHomeToCoolPos = true;
                                         Marking.preRobotStatus = Output.s30;
                                         CarryAxis.SetAxisHomeParam(AxisParameter.Instance.CarryHomeParams);
                                         CarryAxis.BackHome();
                                         //CarryAxis.MoveTo(RunPara.Instance.CarryAxisCoolingPos, AxisParameter.Instance.CarryvelocityCurve);
                                         cool();
+                                        isHomeToCoolPos = false;
                                         CarryAxis.MoveTo(RunPara.Instance.CarryAxisMovePos, AxisParameter.Instance.CarryvelocityCurve);
                                     }
                                 }
@@ -373,11 +408,12 @@ namespace Desay
                                 break;
                         }
                     }
+
                     #endregion
 
                     #region 初始化流程
 
-                    if (stationInitialize.Running)
+                    if (stationInitialize.Running && !isGratingStop)
                     {
                         switch (stationInitialize.Flow)
                         {
@@ -399,13 +435,19 @@ namespace Desay
                             case 20://输送线设置回原参数并回原
                                 IoPoints.m_ApsController.SetAxisHomeConfig(CarryAxis.NoId, AxisParameter.Instance.CarryHomeParams);
                                 IoPoints.m_ApsController.BackHome(CarryAxis.NoId);
+                                strtime.Restart();
                                 stationInitialize.Flow = 30;
                                 break;
                             case 30://输送线移到原点位
-                                if (IoPoints.m_ApsController.CheckHomeDone(CarryAxis.NoId, 200.0) == 0)
+                                if (IoPoints.m_ApsController.CheckHomeDone(CarryAxis.NoId) == 0)
                                 {
                                     CarryAxis.MoveTo(RunPara.Instance.CarryAxisOrgPos, AxisParameter.Instance.CarryvelocityCurve);
                                     stationInitialize.Flow = 40;
+                                }
+                                else if (strtime.ElapsedMilliseconds / 1000.0 > 120.0)
+                                {
+                                    APS168.APS_emg_stop(CarryAxis.NoId);
+                                    m_Alarm = BackflowAlarm.输送轴复位超时;
                                 }
                                 break;
                             case 40://初始化完成
@@ -505,7 +547,11 @@ namespace Desay
                 AlarmLevel = AlarmLevels.Error,
                 Name = BackflowAlarm.料盘位置异常.ToString()
             });
-
+            list.Add(new Alarm(() => m_Alarm == BackflowAlarm.输送轴复位超时)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = BackflowAlarm.输送轴复位超时.ToString()
+            });
             return list;
         }
 
@@ -527,7 +573,8 @@ namespace Desay
             无消息,
             初始化故障,
             料盘扫码NG,
-            料盘位置异常
+            料盘位置异常,
+            输送轴复位超时
         }
     }
 

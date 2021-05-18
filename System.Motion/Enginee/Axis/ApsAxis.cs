@@ -191,7 +191,7 @@ namespace Motion.Enginee
         public void SetAxisHomeParam(HomeParams homeParam) => ApsController.SetAxisHomeConfig(NoId, homeParam);
         public override void BackHome() => ApsController.BackHome(NoId);
 
-        public override int CheckHomeDone(double timeoutLimit) => ApsController.CheckHomeDone(NoId, timeoutLimit);
+        public override int CheckHomeDone(double timeoutLimit) => ApsController.CheckHomeDone(NoId);
 
         public override void APS_set_command(double pos)
         {

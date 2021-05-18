@@ -30,7 +30,7 @@ namespace Motion.AdlinkAps
 
         public void Initialize()
         {
-            if (!_isInitialized)  InitializeCard();   
+            if (!_isInitialized) InitializeCard();
         }
         public bool LoadParamFromFile(string xmlfilename)
         {
@@ -51,7 +51,7 @@ namespace Motion.AdlinkAps
 
         public int RelativeMove(int axisNo, double position, double maxSpeed)
         {
-            if (!_isInitialized) return 1; 
+            if (!_isInitialized) return 1;
 
             SetAxisParam(axisNo, 36, maxSpeed);
 
@@ -60,7 +60,7 @@ namespace Motion.AdlinkAps
             return ret;
         }
         //绝对值移动
-        public int  AbsoluteMove(int axisNo, double position, double maxSpeed)
+        public int AbsoluteMove(int axisNo, double position, double maxSpeed)
         {
             if (!_isInitialized) return 1;
 
@@ -97,7 +97,7 @@ namespace Motion.AdlinkAps
         {
             if (!_isInitialized) return false;
 
-            return ((GetMotionIoStatus(axisNo) >> (int) APS_Define.MIO_PEL) & 1) == 1;
+            return ((GetMotionIoStatus(axisNo) >> (int)APS_Define.MIO_PEL) & 1) == 1;
         }
         /// <summary>
         ///     是否到达正负位
@@ -107,7 +107,7 @@ namespace Motion.AdlinkAps
         {
             if (!_isInitialized) return false;
 
-            return ((GetMotionIoStatus(axisNo) >> (int) APS_Define.MIO_MEL) & 1) == 1;
+            return ((GetMotionIoStatus(axisNo) >> (int)APS_Define.MIO_MEL) & 1) == 1;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Motion.AdlinkAps
         {
             if (!_isInitialized) return false;
 
-            return ((GetMotionIoStatus(axisNo) >> (int) APS_Define.MIO_ORG) & 1) == 1;
+            return ((GetMotionIoStatus(axisNo) >> (int)APS_Define.MIO_ORG) & 1) == 1;
         }
         /// <summary>
         ///     是否急停
@@ -179,6 +179,17 @@ namespace Motion.AdlinkAps
             ThrowIfResultError(ret);
             return position;
         }
+
+        public int GetCurrentTargetPosition(int axisNo)
+        {
+            if (!_isInitialized) return 1;
+
+            int position = 0;
+            var ret = APS168.APS_get_target_position(axisNo, ref position);
+            ThrowIfResultError(ret);
+            return position;
+        }
+
         public int GetCurrentFeedbackPosition(int axisNo)
         {
             if (!_isInitialized) return 1;
@@ -412,7 +423,7 @@ namespace Motion.AdlinkAps
             SetAxisVelocity(axisNo, velocityCurveParams);
 
             //启动运动
-            APS168.APS_relative_move(axisNo, pulseNum, (int) velocityCurveParams.Maxvel);
+            APS168.APS_relative_move(axisNo, pulseNum, (int)velocityCurveParams.Maxvel);
         }
 
         /// <summary>
@@ -427,9 +438,9 @@ namespace Motion.AdlinkAps
 
             //设置速度
             SetAxisVelocity(axisNo, velocityCurveParams);
-      
+
             //启动运动
-            APS168.APS_absolute_move(axisNo, pulseNum, (int) velocityCurveParams.Maxvel);
+            APS168.APS_absolute_move(axisNo, pulseNum, (int)velocityCurveParams.Maxvel);
         }
 
         /// <summary>
@@ -521,15 +532,15 @@ namespace Motion.AdlinkAps
             {
                 //判断是否正常停止
                 status = APS168.APS_motion_status(axisNo);
-                if (((status >> (int) APS_Define.MTS_ASTP) & 1) == 1)
+                if (((status >> (int)APS_Define.MTS_ASTP) & 1) == 1)
                     return -1;
-                status = (status >> (int) APS_Define.MTS_NSTP) & 1;
+                status = (status >> (int)APS_Define.MTS_NSTP) & 1;
 
                 //判断INP鑫海
                 if (hasExtEncode)
                 {
                     inp = APS168.APS_motion_io_status(axisNo);
-                    inp = (inp >> (int) APS_Define.MIO_INP) & 1;
+                    inp = (inp >> (int)APS_Define.MIO_INP) & 1;
                 }
 
                 //break条件是否满足
@@ -538,7 +549,7 @@ namespace Motion.AdlinkAps
 
                 //检查是否超时
                 strtime.Stop();
-                if (strtime.ElapsedMilliseconds/1000.0 > timeoutLimit)
+                if (strtime.ElapsedMilliseconds / 1000.0 > timeoutLimit)
                 {
                     APS168.APS_emg_stop(axisNo);
                     return -2;
@@ -576,7 +587,7 @@ namespace Motion.AdlinkAps
             //设置速度
             SetAxisVelocity(axisNo1, velocityCurveParams);
             //启动运动
-            APS168.APS_relative_linear_move(2, axis, pos, (int) velocityCurveParams.Maxvel);
+            APS168.APS_relative_linear_move(2, axis, pos, (int)velocityCurveParams.Maxvel);
         }
         /// <summary>
         ///     两轴直线插补绝对移动
@@ -603,7 +614,7 @@ namespace Motion.AdlinkAps
             SetAxisVelocity(axisNo1, velocityCurveParams);
 
             //启动运动
-            APS168.APS_absolute_linear_move(2, axis, pos, (int) velocityCurveParams.Maxvel);
+            APS168.APS_absolute_linear_move(2, axis, pos, (int)velocityCurveParams.Maxvel);
         }
         /// <summary>
         /// 两轴直线插补轨迹移动
@@ -643,7 +654,7 @@ namespace Motion.AdlinkAps
         /// <param name="centreNum2">圆心2</param>
         /// <param name="Angle">角度</param>
         /// <param name="velocityCurveParams">速度参数</param>
-        public void MoveArc2Relative(int axisNo1,int axisNo2,int centreNum1,int centreNum2,int Angle,VelocityCurve velocityCurveParams)
+        public void MoveArc2Relative(int axisNo1, int axisNo2, int centreNum1, int centreNum2, int Angle, VelocityCurve velocityCurveParams)
         {
             if (!_isInitialized) return;
 
@@ -660,7 +671,7 @@ namespace Motion.AdlinkAps
             //启动运动
             APS168.APS_relative_arc_move(2, axis, pos, (int)velocityCurveParams.Maxvel, Angle);
         }
-        
+
         /// <summary>
         /// 两轴圆弧插补绝对移动
         /// </summary>
@@ -699,14 +710,14 @@ namespace Motion.AdlinkAps
         /// <param name="dir">方向</param>
         /// <param name="velocityCurveParams">速度参数</param>
         /// <param name="Option">位集指定选项，该选项可以启用指定的参数和函数。</param>
-        public void MoveArc2(int axisNo1, int axisNo2, double centreNum1, double centreNum2, double endNum1,double endNum2, short dir,VelocityCurve velocityCurveParams,int Option)
+        public void MoveArc2(int axisNo1, int axisNo2, double centreNum1, double centreNum2, double endNum1, double endNum2, short dir, VelocityCurve velocityCurveParams, int Option)
         {
             if (!_isInitialized) return;
 
             var axis = new int[2];
             var pos1 = new double[2];
             var pos2 = new double[2];
-            double TranPara = 0; 
+            double TranPara = 0;
             ASYNCALL wait = new ASYNCALL();
 
             axis[0] = axisNo1;
@@ -717,7 +728,7 @@ namespace Motion.AdlinkAps
             //设置速度
             SetAxisVelocity(axisNo1, velocityCurveParams);
             //启动运动
-            APS168.APS_arc2_ce_all(axis,Option,pos1,pos2, dir,ref TranPara, velocityCurveParams.Strvel, velocityCurveParams.Maxvel, velocityCurveParams.Strvel, velocityCurveParams.Svacc, velocityCurveParams.Svdec, velocityCurveParams.Sfac, ref wait);
+            APS168.APS_arc2_ce_all(axis, Option, pos1, pos2, dir, ref TranPara, velocityCurveParams.Strvel, velocityCurveParams.Maxvel, velocityCurveParams.Strvel, velocityCurveParams.Svacc, velocityCurveParams.Svdec, velocityCurveParams.Sfac, ref wait);
         }
         /// <summary>
         ///     回零
@@ -735,36 +746,17 @@ namespace Motion.AdlinkAps
         /// </summary>
         /// <param name="axisNo"></param>
         /// <returns></returns>
-        public int CheckHomeDone(int axisNo, double timeoutLimit)
+        public int CheckHomeDone(int axisNo)
         {
             if (!_isInitialized) return 1;
 
             var status = 0;
-
-            var strtime = new Stopwatch();
-            strtime.Start();
-            do
-            {
-                //检查运动是否完成
-                status = APS168.APS_motion_status(axisNo);
-                if (((status >> (int) APS_Define.MTS_ASTP) & 1) == 1)
-                    return -1;
-                status = (status >> (int) APS_Define.MTS_HMV) & 1;
-                if (status == 0)
-                    break;
-                //检查是否超时
-                strtime.Stop();
-                if (strtime.ElapsedMilliseconds/1000.0 > timeoutLimit)
-                {
-                    APS168.APS_emg_stop(axisNo);
-                    return -2;
-                }
-                strtime.Start();
-                //延时
-                Thread.Sleep(20);
-            } while (true);
-
-            return 0;
+            //检查运动是否完成
+            status = APS168.APS_motion_status(axisNo);
+            if (((status >> (int)APS_Define.MTS_ASTP) & 1) == 1)
+                return -1;
+            status = (status >> (int)APS_Define.MTS_HMV) & 1;
+            return status;
         }
 
         /// <summary>
@@ -777,23 +769,23 @@ namespace Motion.AdlinkAps
             if (!_isInitialized) return;
 
             //配置各轴
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_EL_LOGIC, axisSignalParams.ElLogic);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_EL_LOGIC, axisSignalParams.ElLogic);
             // 限位信号: 0-not inverse, 1-inverse
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_ORG_LOGIC, axisSignalParams.OrgLogic);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_ORG_LOGIC, axisSignalParams.OrgLogic);
             // ORG信号: 0-not inverse, 1-inverse    
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_ALM_LOGIC, axisSignalParams.AlmLogic);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_ALM_LOGIC, axisSignalParams.AlmLogic);
             // ALM信号：0-low active, 1-high active    
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_EZ_LOGIC, axisSignalParams.EzLogic);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_EZ_LOGIC, axisSignalParams.EzLogic);
             // EZ信号： 0-low active, 1-high active 
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_INP_LOGIC, axisSignalParams.InpLogic);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_INP_LOGIC, axisSignalParams.InpLogic);
             // INP信号：0-low active, 1-high active 
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_SERVO_LOGIC, axisSignalParams.ServoLogic);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_SERVO_LOGIC, axisSignalParams.ServoLogic);
             // SERVO信号： 0-low logic, 1-high active
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_PLS_OPT_MODE, axisSignalParams.PlsOutMode);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_PLS_OPT_MODE, axisSignalParams.PlsOutMode);
             //PLS Output Mode: pulse/dir
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_PLS_IPT_MODE, axisSignalParams.PlsInMode);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_PLS_IPT_MODE, axisSignalParams.PlsInMode);
             //PLS Input Mode: 1xAB
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_ENCODER_DIR, axisSignalParams.EncodeDir);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_ENCODER_DIR, axisSignalParams.EncodeDir);
             //encoder dir: positive
         }
 
@@ -806,22 +798,22 @@ namespace Motion.AdlinkAps
         {
             if (!_isInitialized) return;
 
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_HOME_MODE, homeConfigParams.Mode);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_HOME_MODE, homeConfigParams.Mode);
             // home mode  0:ORG  1:EL   2:EZ
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_HOME_DIR, homeConfigParams.Dir);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_HOME_DIR, homeConfigParams.Dir);
             // Set home direction   0:p-dir   1:n-dir
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_HOME_EZA, homeConfigParams.EZ);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_HOME_EZA, homeConfigParams.EZ);
             // EZ alignment enable 0-no 1-yes    
-            APS168.APS_set_axis_param_f(axisNo, (int) APS_Define.PRA_HOME_CURVE, 0.5);
+            APS168.APS_set_axis_param_f(axisNo, (int)APS_Define.PRA_HOME_CURVE, 0.5);
             // homing curve parten(T or s curve)  0-T 0~1.0-S       	      
-            APS168.APS_set_axis_param_f(axisNo, (int) APS_Define.PRA_HOME_ACC, homeConfigParams.MaxVel*5);
+            APS168.APS_set_axis_param_f(axisNo, (int)APS_Define.PRA_HOME_ACC, homeConfigParams.MaxVel * 5);
             // Acceleration deceleration rate    
-            APS168.APS_set_axis_param_f(axisNo, (int) APS_Define.PRA_HOME_VS, 0); // homing start velocity          
-            APS168.APS_set_axis_param_f(axisNo, (int) APS_Define.PRA_HOME_VM, homeConfigParams.MaxVel);
+            APS168.APS_set_axis_param_f(axisNo, (int)APS_Define.PRA_HOME_VS, 0); // homing start velocity          
+            APS168.APS_set_axis_param_f(axisNo, (int)APS_Define.PRA_HOME_VM, homeConfigParams.MaxVel);
             // homing max velocity              
-            APS168.APS_set_axis_param_f(axisNo, (int) APS_Define.PRA_HOME_VO, homeConfigParams.OrgVel);
+            APS168.APS_set_axis_param_f(axisNo, (int)APS_Define.PRA_HOME_VO, homeConfigParams.OrgVel);
             // Homing leave ORG velocity     
-            APS168.APS_set_axis_param_f(axisNo, (int) APS_Define.PRA_HOME_SHIFT, homeConfigParams.ZeroOffset);
+            APS168.APS_set_axis_param_f(axisNo, (int)APS_Define.PRA_HOME_SHIFT, homeConfigParams.ZeroOffset);
             // The shift from ORG
         }
 
@@ -833,8 +825,8 @@ namespace Motion.AdlinkAps
         {
             if (!_isInitialized) return;
 
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_SPEL_EN, 0);
-            APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_SMEL_EN, 0);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_SPEL_EN, 0);
+            APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_SMEL_EN, 0);
         }
 
         /// <summary>
@@ -848,10 +840,10 @@ namespace Motion.AdlinkAps
 
             if (softLimitParams.Enable)
             {
-                APS168.APS_set_axis_param_f(axisNo, (int) APS_Define.PRA_SPEL_POS, softLimitParams.SPelPosition);
-                APS168.APS_set_axis_param_f(axisNo, (int) APS_Define.PRA_SMEL_POS, softLimitParams.SMelPosition);
-                APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_SPEL_EN, 2);
-                APS168.APS_set_axis_param(axisNo, (int) APS_Define.PRA_SMEL_EN, 2);
+                APS168.APS_set_axis_param_f(axisNo, (int)APS_Define.PRA_SPEL_POS, softLimitParams.SPelPosition);
+                APS168.APS_set_axis_param_f(axisNo, (int)APS_Define.PRA_SMEL_POS, softLimitParams.SMelPosition);
+                APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_SPEL_EN, 2);
+                APS168.APS_set_axis_param(axisNo, (int)APS_Define.PRA_SMEL_EN, 2);
             }
             else
             {
@@ -867,8 +859,8 @@ namespace Motion.AdlinkAps
             //if (velocityCurveParams.Sfac != 0)
             //{ 
             //SetAxisParam(axisNo, (int) APS_Define.PRA_SF, velocityCurveParams.Sfac);
-            SetAxisParam(axisNo, (int) APS_Define.PRA_ACC, velocityCurveParams.Svacc);
-            SetAxisParam(axisNo, (int) APS_Define.PRA_DEC, velocityCurveParams.Svdec);
+            SetAxisParam(axisNo, (int)APS_Define.PRA_ACC, velocityCurveParams.Svacc);
+            SetAxisParam(axisNo, (int)APS_Define.PRA_DEC, velocityCurveParams.Svdec);
             //}
         }
 
@@ -904,7 +896,7 @@ namespace Motion.AdlinkAps
         /// <returns></returns>
         public double GetCommandPosition(int axisNo)
         {
-            if (!_isInitialized) return 1; 
+            if (!_isInitialized) return 1;
 
             var tmp = 0.0;
             APS168.APS_get_command_f(axisNo, ref tmp);
@@ -1016,8 +1008,8 @@ namespace Motion.AdlinkAps
                     //ThrowIfResultError(ret, "Initial");
 
 
-                    if ((cardName == (int) APS_Define.DEVICE_NAME_PCI_825458) ||
-                        (cardName == (int) APS_Define.DEVICE_NAME_AMP_20408C))
+                    if ((cardName == (int)APS_Define.DEVICE_NAME_PCI_825458) ||
+                        (cardName == (int)APS_Define.DEVICE_NAME_AMP_20408C))
                     {
                         var startAxisId = 0;
                         var totalAxisNum = 0;

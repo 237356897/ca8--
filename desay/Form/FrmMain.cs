@@ -159,9 +159,9 @@ namespace Desay
                 loading.ShowDialog();
             })).Start();
             Thread.Sleep(500);
-            RunPara.Instance.cbAuto=false;
+            RunPara.Instance.cbAuto = false;
             //UserLevelChange(Marking.userLevel);
-            UserLevelChange(UserLevel.工程师);            
+            UserLevelChange(UserLevel.工程师);
 
             #endregion
 
@@ -336,7 +336,7 @@ namespace Desay
             PauseButton = new LightButton(IoPoints.I2DI01, IoPoints.I2DO05);
             StopButton = new LightButton(IoPoints.I2DI14, IoPoints.I2DO14);
             EstopButton = new EventButton(IoPoints.I2DI03);
-            
+
 
             StartButton.Pressed += btnStart_MouseDown;
             StartButton.Released += btnStart_MouseUp;
@@ -554,15 +554,10 @@ namespace Desay
                                 IoPoints.I2DO06.Value = false;
                             }
 
-                            if (_watch.ElapsedMilliseconds > 60000)
+                            if (_watch.ElapsedMilliseconds / 1000 > 120)
                             {
-                                string res = "";
-                                if (m_Backflow.stationInitialize.InitializeDone)
-                                {
-                                    res += res + "输出轴复位异常";
-                                }
-                                AppendText(res);
-                                // MessageBox.Show(res);
+                                AppendText("输送轴复位异常！");
+                                _watch.Restart();
                             }
                             break;
                         default:
@@ -585,7 +580,7 @@ namespace Desay
                     IoPoints.I2DO05.Value = false;
                     IoPoints.I2DO06.Value = false;
 
-                    if (!m_Backflow.stationInitialize.Running  && !m_Robot.stationInitialize.Running)
+                    if (!m_Backflow.stationInitialize.Running && !m_Robot.stationInitialize.Running)
                     {
                         MachineOperation.IniliazieDone = false;
                         MachineOperation.Stopping = false;
@@ -621,47 +616,44 @@ namespace Desay
         Stopwatch _watch = new Stopwatch();
         private void AlarmCheck()
         {
+            var list = new List<Alarm>();
 
+            list.Add(new Alarm(() => !IoPoints.I2DI03.Value)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = "急停按钮已按下，注意安全！"
+            });
+            list.Add(new Alarm(() => !IoPoints.I2DI07.Value && !m_Backflow.CarryAxis.IsInPosition(RunPara.Instance.CarryAxisMovePos))
+            {
+                AlarmLevel = AlarmLevels.Warrning,
+                Name = "光栅感应"
+            });
+            list.Add(new Alarm(() => !IoPoints.I2DI04.Value && !RunPara.Instance.ShieldEntraceGuard)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = "门禁报警"
+            });
+            list.Add(new Alarm(() => !IoPoints.I2DI17.Value)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = "NG位无料盘报警"
+            });
+            if (!LicenseSheild)
+            {
+                list.Add(new Alarm(() => !hasp.LicenseIsOK && hasp.Duetime <= 0)
+                {
+                    AlarmLevel = AlarmLevels.Error,
+                    Name = "该软件为试用软件，现已到期，或加密狗已拔出，请尽快联系厂商！"
+                });
+                list.Add(new Alarm(() => !hasp.LicenseIsOK && hasp.Duetime > 0)
+                {
+                    AlarmLevel = AlarmLevels.Error,
+                    Name = "加密狗无法授权，请检查加密狗或联系厂商！"
+                });
+            }
             while (true)
             {
-                Thread.Sleep(1000);
-
-                var list = new List<Alarm>();
-
-                list.Add(new Alarm(() => !IoPoints.I2DI03.Value)
-                {
-                    AlarmLevel = AlarmLevels.Error,
-                    Name = "急停按钮已按下，注意安全！"
-                });
-                list.Add(new Alarm(() => IoPoints.I2DI07.Value)
-                {
-                    AlarmLevel = AlarmLevels.Error,
-                    Name = "机器人报警"
-                });
-                list.Add(new Alarm(() => !IoPoints.I2DI04.Value && !RunPara.Instance.ShieldEntraceGuard)
-                {
-                    AlarmLevel = AlarmLevels.Error,
-                    Name = "门禁报警"
-                });
-                list.Add(new Alarm(() => !IoPoints.I2DI17.Value)
-                {
-                    AlarmLevel = AlarmLevels.Error,
-                    Name = "NG位无料盘报警"
-                });
-                if (!LicenseSheild)
-                {
-                    list.Add(new Alarm(() => !hasp.LicenseIsOK && hasp.Duetime <= 0)
-                    {
-                        AlarmLevel = AlarmLevels.Error,
-                        Name = "该软件为试用软件，现已到期，或加密狗已拔出，请尽快联系厂商！"
-                    });
-                    list.Add(new Alarm(() => !hasp.LicenseIsOK && hasp.Duetime > 0)
-                    {
-                        AlarmLevel = AlarmLevels.Error,
-                        Name = "加密狗无法授权，请检查加密狗或联系厂商！"
-                    });
-                }
-
+                Thread.Sleep(200);
                 BackflowAlarm = AlarmCheck(m_Backflow.Alarms);
                 RobotAlarm = AlarmCheck(m_Robot.Alarms);
                 MachineIsAlarm = AlarmCheck(list);
@@ -735,7 +727,7 @@ namespace Desay
             lblMachineStatus.Text = MachineOperation.Status.ToString();
             lblMachineStatus.ForeColor = MachineStatusColor(MachineOperation.Status);
             rbHand.Enabled = !MachineOperation.Running;
-           
+
             if (cb_down.Checked)
             {
                 labOven1Start.BackColor = (Marking.DownStoveRefreshState[0]) ? Color.Green : Color.Red;
@@ -1000,7 +992,7 @@ namespace Desay
                         RunPara.Instance.OrgTrayCode = result;
                         appendText(result);
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -1219,7 +1211,7 @@ namespace Desay
             {
                 e.Cancel = true;
             }
-           
+
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -1627,7 +1619,7 @@ namespace Desay
                 TaryDGVShow(RunPara.Instance.OKTary.ProductPos);
             }
             Marking.QRCodeSign = true;
-        }        
+        }
 
         public void DGVLoad()
         {
